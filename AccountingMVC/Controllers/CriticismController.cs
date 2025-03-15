@@ -29,12 +29,12 @@ namespace AccountingMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            //var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            //if (!int.TryParse(userIdString, out var userId))
-            //{
-            //    return BadRequest("Invalid user ID.");
-            //}
+            if (!int.TryParse(userIdString, out var userId))
+            {
+                return BadRequest("Invalid user ID.");
+            }
 
             var categoryCosts = await _categoryCostAppService.GetCategoryCostByUserIdAsync(1);
 
