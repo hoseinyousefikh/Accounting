@@ -33,6 +33,11 @@ namespace AccountingMVC.Models
 
         [Required(ErrorMessage = "Please select an expense type.")]
         public Xxpens Xxpenses { get; set; }
+
+        public string? CategoryCostName { get; set; }
+        public int? CategoryCostId { get; set; }
+        public string? SubcategoryCostName { get; set; }
+
         public List<CategoryCost> CategoryCosts { get; set; }
         public List<SubcategoryCost> SubcategoryCosts { get; set; }
     }

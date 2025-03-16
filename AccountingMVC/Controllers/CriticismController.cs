@@ -25,33 +25,53 @@ namespace AccountingMVC.Controllers
             _categoryCostAppService = categoryCostAppService;
         }
 
-
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public IActionResult Create(int? subcategoryId, string subcategoryName, int categoryId, string categoryName)
         {
-            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var viewModel = new CriticismViewModel();
 
-            if (!int.TryParse(userIdString, out var userId))
+            if (subcategoryId.HasValue)
             {
-                return BadRequest("Invalid user ID.");
+                viewModel.SubcategoryCostId = subcategoryId.Value;
+                viewModel.SubcategoryCostName = subcategoryName;
             }
 
-            var categoryCosts = await _categoryCostAppService.GetCategoryCostByUserIdAsync(1);
-
-            var viewModel = new CriticismViewModel
-            {
-                CategoryCosts = categoryCosts
-            };
+            viewModel.CategoryCostId = categoryId;
+            viewModel.CategoryCostName = categoryName;
 
             return View(viewModel);
         }
 
+
+
+
+
         [HttpGet]
-        public async Task<IActionResult> GetSubcategories(int categoryId)
+        public async Task<IActionResult> GetCategories()
+        {
+            var categoryCosts = await _categoryCostAppService.GetCategoryCostByUserIdAsync(1); 
+            var viewModel = new CriticismViewModel
+            {
+                CategoryCosts = categoryCosts
+            };
+            return View(viewModel); 
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetSubcategories(int categoryId, string categoryName)
         {
             var subcategories = await _subCategoryCostAppService.GetSubCatCostByCategoryIdAsync(categoryId);
-            return Json(subcategories);
+
+            var viewModel = new CriticismViewModel
+            {
+                SubcategoryCosts = subcategories,
+                CategoryCostId = categoryId,
+                CategoryCostName = categoryName 
+            };
+
+            return View(viewModel); 
         }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CriticismViewModel viewModel)
@@ -82,5 +102,6 @@ namespace AccountingMVC.Controllers
             TempData["SuccessMessage"] = "Criticism added successfully.";
             return RedirectToAction("Index", "Home");
         }
+
     }
 }
