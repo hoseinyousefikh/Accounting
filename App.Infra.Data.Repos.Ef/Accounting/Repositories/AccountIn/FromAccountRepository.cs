@@ -22,13 +22,17 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.AccountIn
         }
 
 
-        public async Task AddFromAccountAsync(FromAccount fromAccount)
+        public async Task<int> AddFromAccountAsync(FromAccount fromAccount)
         {
             if (fromAccount == null)
                 throw new ArgumentNullException(nameof(fromAccount), "The fromAccount object cannot be null.");
-            await _context.FromAccounts.AddAsync(fromAccount);
+
+            var entityEntry = await _context.FromAccounts.AddAsync(fromAccount);
             await _context.SaveChangesAsync();
+
+            return entityEntry.Entity.Id;
         }
+
         public async Task UpdateFromAccountAsync(FromAccount fromAccount)
         {
             if (fromAccount == null)
@@ -54,82 +58,55 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.AccountIn
         public async Task<List<Assets>> GetAllAssetsAsync()
         {
             var assets = await _context.Assets.ToListAsync();
-            if (assets == null || !assets.Any())
-                throw new InvalidOperationException("No assets found.");
-
-            return assets;
+            return assets?.Any() == true ? assets : null;
         }
 
         public async Task<List<Bank>> GetAllBanksAsync()
         {
             var banks = await _context.Banks.ToListAsync();
-            if (banks == null || !banks.Any())
-                throw new InvalidOperationException("No banks found.");
-
-            return banks;
+            return banks?.Any() == true ? banks : null;
         }
 
         public async Task<List<Capital>> GetAllCapitalsAsync()
         {
             var capitals = await _context.Capitals.ToListAsync();
-            if (capitals == null || !capitals.Any())
-                throw new InvalidOperationException("No capitals found.");
-
-            return capitals;
+            return capitals?.Any() == true ? capitals : null;
         }
 
         public async Task<List<CategoryCost>> GetAllCategoryCostsAsync()
         {
             var categoryCosts = await _context.CategoryCosts.ToListAsync();
-            if (categoryCosts == null || !categoryCosts.Any())
-                throw new InvalidOperationException("No category costs found.");
-
-            return categoryCosts;
+            return categoryCosts?.Any() == true ? categoryCosts : null;
         }
 
         public async Task<List<CategoryIncome>> GetAllCategoryIncomesAsync()
         {
             var categoryIncomes = await _context.CategoryIncomes.ToListAsync();
-            if (categoryIncomes == null || !categoryIncomes.Any())
-                throw new InvalidOperationException("No category incomes found.");
-
-            return categoryIncomes;
+            return categoryIncomes?.Any() == true ? categoryIncomes : null;
         }
 
         public async Task<List<Debts>> GetAllDebtsAsync()
         {
             var debts = await _context.Debts.ToListAsync();
-            if (debts == null || !debts.Any())
-                throw new InvalidOperationException("No debts found.");
-
-            return debts;
+            return debts?.Any() == true ? debts : null;
         }
 
         public async Task<List<Funds>> GetAllFundsAsync()
         {
             var funds = await _context.Funds.ToListAsync();
-            if (funds == null || !funds.Any())
-                throw new InvalidOperationException("No funds found.");
-
-            return funds;
+            return funds?.Any() == true ? funds : null;
         }
 
         public async Task<List<Persons>> GetAllPersonsAsync()
         {
             var persons = await _context.Persons.ToListAsync();
-            if (persons == null || !persons.Any())
-                throw new InvalidOperationException("No persons found.");
-
-            return persons;
+            return persons?.Any() == true ? persons : null;
         }
 
         public async Task<List<Criticism>> GetAllCriticismsAsync()
         {
             var criticisms = await _context.Criticisms.ToListAsync();
-            if (criticisms == null || !criticisms.Any())
-                throw new InvalidOperationException("No criticisms found.");
-
-            return criticisms;
+            return criticisms?.Any() == true ? criticisms : null;
         }
     }
 }

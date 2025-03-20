@@ -11,6 +11,8 @@ namespace App.Domain.Core.Accounting.Entities.payment
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
+        public DateTime Time { get; set; }
+
         [Required]
         public string ChecNumber { get; set; }
 

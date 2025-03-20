@@ -1,0 +1,71 @@
+﻿@model MemberViewModel
+
+@{
+    ViewData["Title"] = "ایجاد عضو";
+}
+
+<div class="glass-card">
+    <h2 class="title">ایجاد عضو</h2>
+
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="Name">نام</label>
+            <input asp-for="Name" class="form-control" placeholder="نام را وارد کنید" />
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description">توضیحات</label>
+            <textarea asp-for="Description" class="form-control" placeholder="توضیحات را وارد کنید"></textarea>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">ثبت</button>
+            <a asp-action="Index" class="btn btn-secondary">بازگشت</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        display: flex;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        background-color: #e3f2fd;
+        direction: rtl;
+        text-align: center;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        padding: 30px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        text-align: center;
+    }
+
+    .title {
+        margin-bottom: 20px;
+        color: #0d47a1;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn-primary {
+        background-color: #0d47a1;
+        border: none;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+</style>

@@ -3,12 +3,14 @@ using App.Domain.AppServices.Accounting.AppServices.AccountIn;
 using App.Domain.AppServices.Accounting.AppServices.Accounts;
 using App.Domain.AppServices.Accounting.AppServices.Accounts.Sub;
 using App.Domain.AppServices.Accounting.AppServices.payment;
+using App.Domain.AppServices.Accounting.AppServices.PMEList;
 using App.Domain.AppServices.Accounting.AppServices.Reports;
 using App.Domain.Core.Accounting.Contract.AppServices;
 using App.Domain.Core.Accounting.Contract.AppServices.AccountIn;
 using App.Domain.Core.Accounting.Contract.AppServices.Accounts;
 using App.Domain.Core.Accounting.Contract.AppServices.Accounts.Sub;
 using App.Domain.Core.Accounting.Contract.AppServices.payment;
+using App.Domain.Core.Accounting.Contract.AppServices.PMEList;
 using App.Domain.Core.Accounting.Contract.AppServices.Reports;
 using App.Domain.Core.Accounting.Contract.Repositories.AccountIn;
 using App.Domain.Core.Accounting.Contract.Repositories.Accounts;
@@ -23,13 +25,16 @@ using App.Domain.Core.Accounting.Contract.Services;
 using App.Domain.Core.Accounting.Contract.Services.AccountIn;
 using App.Domain.Core.Accounting.Contract.Services.Accounts;
 using App.Domain.Core.Accounting.Contract.Services.payment;
+using App.Domain.Core.Accounting.Contract.Services.PMEList;
 using App.Domain.Core.Accounting.Contract.Services.Reports;
 using App.Domain.Core.Accounting.Entities.Users;
+using App.Domain.Core.Accounting.Maper;
 using App.Domain.Services.Accounting.Services;
 using App.Domain.Services.Accounting.Services.AccountIn;
 using App.Domain.Services.Accounting.Services.Accounts;
 using App.Domain.Services.Accounting.Services.Accounts.Sub;
 using App.Domain.Services.Accounting.Services.payment;
+using App.Domain.Services.Accounting.Services.PMEList;
 using App.Domain.Services.Accounting.Services.Reports;
 using App.Infra.Data.Db.SqlServer.Ef.Accounting.DBContaxt;
 using App.Infra.Data.Repos.Ef.Accounting.Repositories.AccountIn;
@@ -65,8 +70,18 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
   .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddScoped<AppDbContext>();
+builder.Services.AddDistributedMemoryCache();  
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); 
+    options.Cookie.HttpOnly = true; 
+    options.Cookie.IsEssential = true; 
+});
 
-//*****************************************************************************
+
+builder.Services.AddAutoMapper(typeof(ProjectProfile));  
+
+//******************************************************************************
 builder.Services.AddScoped<IFromAccountRepository, FromAccountRepository>();
 builder.Services.AddScoped<IAddAssetsRepository, AddAssetsRepository>();
 builder.Services.AddScoped<IAddCapitalRepository, AddCapitalRepository>();
@@ -106,6 +121,15 @@ builder.Services.AddScoped<ICriticismService, CriticismService>();
 builder.Services.AddScoped<ICategoryCostService, CategoryCostService>();
 builder.Services.AddScoped<ISubCategoryCostService, SubCategoryCostService>();
 builder.Services.AddScoped<IFromAccountService, FromAccountService>();
+builder.Services.AddScoped<IMemberService, MemberService>();
+builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IProjectAppService, ProjectAppService>();
+builder.Services.AddScoped<IBankAppService, BankAppService>();
+builder.Services.AddScoped<ICheckAppService, CheckAppService>();
+builder.Services.AddScoped<ISubcategoryIncomeAppService, SubcategoryIncomeAppService>();
+builder.Services.AddScoped<ICategoryIncomeAppService, CategoryIncomeAppService>();
+
+
 //*************************************************************************
 builder.Services.AddScoped<IUserAppService, UserAppService>();
 builder.Services.AddScoped<IIncomeListAppService, IncomeListAppService>();
@@ -114,6 +138,17 @@ builder.Services.AddScoped<ICriticismAppService, CriticismAppService>();
 builder.Services.AddScoped<ICategoryCostAppService, CategoryCostAppService>();
 builder.Services.AddScoped<ISubCategoryCostAppService, SubCategoryCostAppService>();
 builder.Services.AddScoped<IFromAccountAppService, FromAccountAppService>();
+builder.Services.AddScoped<IMemberAppService, MemberAppService>();
+builder.Services.AddScoped<IEventAppService, EventAppService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IBankService, BankService>();
+builder.Services.AddScoped<ICheckService, CheckService>();
+builder.Services.AddScoped<ISubcategoryIncomeService, SubcategoryIncomeService>();
+builder.Services.AddScoped<ICategoryIncomeService, CategoryIncomeService>();
+
+
+
+
 
 
 // Add services to the container.
@@ -127,6 +162,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+app.UseSession();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

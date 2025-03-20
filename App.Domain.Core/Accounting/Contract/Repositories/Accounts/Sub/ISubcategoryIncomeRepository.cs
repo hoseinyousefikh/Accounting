@@ -14,6 +14,7 @@ namespace App.Domain.Core.Accounting.Contract.Repositories.Accounts.Sub
         Task DeleteSubCatIncome(int id);
         Task<List<SubcategoryIncome>> GetAllSubCatIncome();
         Task<SubcategoryIncome> GetBySubCatIncomeId(int id);
+        Task<List<SubcategoryIncome>> GetByCategoryIncomeId(int categoryIncomeId);
         Task<List<SubcategoryIncome>> GetBySubCatIncomeUserId(int userId);
     }
 }

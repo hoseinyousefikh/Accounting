@@ -58,6 +58,13 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts.Sub
             }
             throw new Exception("is null");
         }
+        public async Task<List<SubcategoryIncome>> GetByCategoryIncomeId(int categoryIncomeId)
+        {
+            return await _context.SubcategoryIncomes
+                .Where(s => s.CategoryIncomeId == categoryIncomeId && !s.IsDeleted)
+                .ToListAsync();
+        }
+
 
         public async Task<List<SubcategoryIncome>> GetBySubCatIncomeUserId(int userId)
         {

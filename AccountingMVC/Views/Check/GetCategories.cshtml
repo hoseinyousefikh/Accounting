@@ -1,0 +1,30 @@
+﻿@model AccountingMVC.Models.CriticismViewModel
+
+@{
+    ViewData["Title"] = "دسته‌بندی‌ها";
+}
+
+<div class="container my-4">
+    <h2 class="text-center mb-4">انتخاب دسته‌بندی</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg" style="background-color: rgba(0, 123, 255, 0.1); border-radius: 10px; backdrop-filter: blur(10px);">
+                <div class="card-body">
+                    <ul class="list-group">
+                        @foreach (var category in Model.CategoryCosts)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>@category.Name</span>
+
+                                <a href="@Url.Action("GetSubcategories", "Check", new { categoryId = category.Id, categoryName = category.Name })" class="btn btn-info btn-sm">
+                                    انتخاب زیر دسته
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -17,14 +17,14 @@ namespace App.Domain.AppServices.Accounting.AppServices.Accounts.Sub
             _subCategoryCostService = subCategoryCostService;
         }
 
-        public Task<List<SubcategoryCost>> GetSubCatCostByCategoryIdAsync(int categoryId)
+        public async Task<List<SubcategoryCost>> GetSubCatCostByCategoryIdAsync(int categoryId)
         {
-            return _subCategoryCostService.GetSubCatCostByCategoryIdAsync(categoryId);
+            return await _subCategoryCostService.GetSubCatCostByCategoryIdAsync(categoryId);
         }
 
-        public Task<List<SubcategoryCost>> GetSubcategoryCostByUserIdAsync(int userId)
+        public async Task<List<SubcategoryCost>> GetSubcategoryCostByUserIdAsync(int userId)
         {
-            return _subCategoryCostService.GetSubcategoryCostByUserIdAsync(userId);
+            return await _subCategoryCostService.GetSubcategoryCostByUserIdAsync(userId);
         }
 
     }

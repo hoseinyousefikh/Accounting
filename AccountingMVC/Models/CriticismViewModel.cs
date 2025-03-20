@@ -1,4 +1,6 @@
-﻿using App.Domain.Core.Accounting.Entities.Accounts;
+﻿using App.Domain.Core.Accounting.DTO;
+using App.Domain.Core.Accounting.Entities.AccountIn;
+using App.Domain.Core.Accounting.Entities.Accounts;
 using App.Domain.Core.Accounting.Entities.Accounts.Sub;
 using App.Domain.Core.Accounting.Entities.Enum;
 using System.ComponentModel.DataAnnotations;
@@ -20,10 +22,9 @@ namespace AccountingMVC.Models
         public string? Description { get; set; }
 
         public int? SubcategoryCostId { get; set; }
-        public int? SubcategoryIncomeId { get; set; }
-        public int? MemderId { get; set; }
-        public int? EventId { get; set; }
-        public int? ProjectId { get; set; }
+        public int? MemberId { get; set; } = 0; 
+        public int? EventId { get; set; } = 0; 
+        public int? ProjectId { get; set; } = 0;
 
         [Required]
         public int UserId { get; set; }
@@ -38,7 +39,15 @@ namespace AccountingMVC.Models
         public int? CategoryCostId { get; set; }
         public string? SubcategoryCostName { get; set; }
 
-        public List<CategoryCost> CategoryCosts { get; set; }
-        public List<SubcategoryCost> SubcategoryCosts { get; set; }
+        public List<CategoryCost>? CategoryCosts { get; set; }
+        public List<SubcategoryCost>? SubcategoryCosts { get; set; }
+        public string? FromAccountName { get; set; }
+        public int? FromAccountSubId { get; set; }
+        public int? SubcategoryIncomeId { get; set; }
+        public int? CategoryIncomeId { get; set; }
+        public string? CategoryIncomeName { get; set; }
+        public string? SubcategoryIncomeName { get; set; }
+        public List<CategoryIncomeDto>? CategoryIncomes { get; set; }
+        public List<SubcategoryIncomeDto>? SubcategoryIncomes { get; set; }
     }
 }

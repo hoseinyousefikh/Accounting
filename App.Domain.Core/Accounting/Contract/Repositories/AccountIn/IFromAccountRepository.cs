@@ -20,7 +20,7 @@ namespace App.Domain.Core.Accounting.Contract.Repositories.AccountIn
         Task<List<Funds>> GetAllFundsAsync();
         Task<List<Persons>> GetAllPersonsAsync();
         Task<List<Criticism>> GetAllCriticismsAsync();
-        Task AddFromAccountAsync(FromAccount fromAccount);
+        Task<int> AddFromAccountAsync(FromAccount fromAccount);
         Task UpdateFromAccountAsync(FromAccount fromAccount);
     }
 }

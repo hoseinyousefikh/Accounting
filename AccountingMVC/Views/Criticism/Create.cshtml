@@ -11,25 +11,26 @@
         <form asp-action="Create" method="post">
             @Html.AntiForgeryToken()
 
+
             <div class="form-group">
                 <label for="Date">تاریخ:</label>
-                <input type="date" class="form-control" id="Date" name="Date" required />
+                <input type="date" class="form-control" id="Date" name="Date" value="@Model.Date.ToString("yyyy-MM-dd")" required />
             </div>
 
             <div class="form-group">
                 <label for="Time">زمان:</label>
-                <input type="time" class="form-control" id="Time" name="Time" required />
+                <input type="time" class="form-control" id="Time" name="Time" value="@Model.Time.ToString("HH:mm")" required />
             </div>
 
             <div class="form-group">
                 <label for="Amount">مبلغ:</label>
                 <input type="number" class="form-control" id="Amount" name="Amount" required />
             </div>
-
             <div class="form-group">
                 <label for="CategoryCostId">دسته‌بندی:</label>
                 <div class="d-flex align-items-center">
-                    <input type="text" class="form-control" id="CategoryCostName" name="CategoryCostName" value="@Model.CategoryCostName" readonly />
+                    <input type="text" class="form-control" id="CategoryCostName" name="CategoryCostName"
+                           value="@Model.CategoryCostName" readonly />
                     <button type="button" class="btn btn-info btn-sm ml-2" id="CategoryCostButton"
                             data-toggle="modal"
                             data-target="#CategoryCostModal"
@@ -42,45 +43,75 @@
             <div class="form-group">
                 <label for="SubcategoryCostId">زیر دسته:</label>
                 <div class="d-flex align-items-center">
-                    <input type="text" class="form-control" id="SubcategoryCostName" name="SubcategoryCostName" value="@Model.SubcategoryCostName" readonly />
-                    <button type="button" class="btn btn-info btn-sm ml-2" id="SubcategoryCostButton"
+                    <input type="text" class="form-control" id="SubcategoryCostName" name="SubcategoryCostName"
+                           value="@Model.SubcategoryCostName" readonly />
+                    <input type="hidden" id="SubcategoryCostId" name="SubcategoryCostId" value="@Model.SubcategoryCostId" />
+                    <a class="btn btn-info btn-sm ml-2"
+                       href="@Url.Action("Create", "Criticism", new { subcategoryId = Model.SubcategoryCostId, subcategoryName = Model.SubcategoryCostName })">
+                        انتخاب
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="FromAccountId">از حساب:</label>
+                <div class="d-flex align-items-center">
+                    <input type="text" class="form-control" id="FromAccountName" name="FromAccountName"
+                           value="@Model.FromAccountName" readonly />
+                    <button type="button" class="btn btn-info btn-sm ml-2" id="FromAccountButton"
                             data-toggle="modal"
-                            data-target="#SubcategoryCostModal">
+                            data-target="#FromAccountModal"
+                            onclick="window.location.href='@Url.Action("GetOptions", "Criticism")'">
                         انتخاب
                     </button>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="FromAccountId">از حساب:</label>
-                <select id="FromAccountId" name="FromAccountId" class="form-control" required>
-                    <option value="">حساب را انتخاب کنید</option>
-                </select>
-            </div>
+
 
             <div class="form-group">
                 <label for="Description">توضیحات:</label>
                 <textarea class="form-control" id="Description" name="Description" required></textarea>
             </div>
-
             <div class="form-group">
-                <label for="MemderId">عضو:</label>
-                <select id="MemderId" name="MemderId" class="form-control" required>
+                <label for="MemberId">عضو:</label>
+                <select id="MemberId" name="MemberId" class="form-control">
                     <option value="">عضو را انتخاب کنید</option>
+                    @foreach (var member in ViewBag.Member)
+                    {
+                        <option value="@member.Id" selected="@(member.Id == Model.MemberId ? "selected" : null)">
+                            @member.Name
+                        </option>
+                    }
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="EventId">رویداد:</label>
-                <select id="EventId" name="EventId" class="form-control" required>
+                <select id="EventId" name="EventId" class="form-control">
                     <option value="">رویداد را انتخاب کنید</option>
+                    @foreach (var member in ViewBag.Events)
+                    {
+                        <option value="@member.Id"
+                                selected="@(member.Id == Model.EventId ? "selected" : null)">
+                            @member.Name
+                        </option>
+                    }
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="ProjectId">پروژه:</label>
-                <select id="ProjectId" name="ProjectId" class="form-control" required>
+                <select id="ProjectId" name="ProjectId" class="form-control">
                     <option value="">پروژه را انتخاب کنید</option>
+                    @foreach (var member in ViewBag.Projects)
+                    {
+                        <option value="@member.Id"
+                                selected="@(member.Id == Model.ProjectId ? "selected" : null)">
+                            @member.Name
+                        </option>
+                    }
                 </select>
             </div>
 
@@ -165,4 +196,8 @@
         padding: 5px 10px;
         font-size: 0.875rem;
     }
+
 </style>
+<head>
+    <link href="~/css/styles.css" rel="stylesheet" />
+</head>
