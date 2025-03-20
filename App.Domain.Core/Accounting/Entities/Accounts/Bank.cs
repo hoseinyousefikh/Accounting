@@ -12,8 +12,8 @@ namespace App.Domain.Core.Accounting.Entities.Accounts
         public string? Description { get; set; }
         public string Oranches { get; set; }
         public int AccountNumber { get; set; }
-        public int CardNumber { get; set; }
-        public int ShabaNumber { get; set; }
+        public long CardNumber { get; set; }
+        public long ShabaNumber { get; set; }
 
         [Range(0.01, 100000000000.00, ErrorMessage = "The amount must be between 0.01 and 100,000,000,000.")]
         public decimal Amount { get; set; }

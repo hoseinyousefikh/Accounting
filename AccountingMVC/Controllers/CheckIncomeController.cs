@@ -6,11 +6,13 @@ using App.Domain.Core.Accounting.Contract.AppServices.PMEList;
 using App.Domain.Core.Accounting.DTO;
 using App.Domain.Core.Accounting.Entities.Enum;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace AccountingMVC.Controllers
 {
+    [Authorize]
     public class CheckIncomeController : Controller
     {
         private readonly IMemberAppService _memberAppService;
@@ -48,7 +50,7 @@ namespace AccountingMVC.Controllers
 
             }
 
-            var bank = await _bankAppService.GetBankByUserIdAsync(1);
+            var bank = await _bankAppService.GetBankByUserIdAsync(userId);
             var banks = bank.Select(b => new
             {
                 b.Id,
@@ -57,7 +59,7 @@ namespace AccountingMVC.Controllers
 
             ViewBag.Banks = banks;
 
-            var members = await _memberAppService.GetMembersByUserIdAsync(1);
+            var members = await _memberAppService.GetMembersByUserIdAsync(userId);
             var memberNames = members.Select(m => new
             {
                 m.Id,
@@ -66,7 +68,7 @@ namespace AccountingMVC.Controllers
 
             ViewBag.Member = memberNames;
 
-            var events = await _eventAppService.GetEventByUserIdAsync(1);
+            var events = await _eventAppService.GetEventByUserIdAsync(userId);
             var eventNames = events.Select(e => new
             {
                 e.Id,
@@ -76,7 +78,7 @@ namespace AccountingMVC.Controllers
             ViewBag.Events = eventNames;
 
 
-            var project = await _projectAppService.GetProjectsByUserIdAsync(1);
+            var project = await _projectAppService.GetProjectsByUserIdAsync(userId);
             var projectNames = project.Select(p => new
             {
                 p.Id,
@@ -157,7 +159,13 @@ namespace AccountingMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            var categoryIncomes = await _categoryIncomeAppService.GetCategoryIncomeByUserIdAsync(1);
+            int userId = 0;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out userId))
+            {
+
+            }
+            var categoryIncomes = await _categoryIncomeAppService.GetCategoryIncomeByUserIdAsync(userId);
             var viewModel = new CheckViewModel
             {
                 CategoryIncomes = categoryIncomes
@@ -184,6 +192,12 @@ namespace AccountingMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCheck(CheckViewModel viewModel)
         {
+            int userId = 0;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out userId))
+            {
+
+            }
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
@@ -199,7 +213,7 @@ namespace AccountingMVC.Controllers
                 MemberId = viewModel.MemberId,
                 EventId = viewModel.EventId,
                 ProjectId = viewModel.ProjectId,
-                UserId = 1,
+                UserId = userId,
                 Xxpenses = Xxpens.revenues,
                 BankId = viewModel.BankId,
                 DuDate = viewModel.DuDate,

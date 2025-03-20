@@ -126,8 +126,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<int>("CardNumber")
-                        .HasColumnType("int");
+                    b.Property<long>("CardNumber")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -148,8 +148,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("ShabaNumber")
-                        .HasColumnType("int");
+                    b.Property<long>("ShabaNumber")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -2355,7 +2355,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "46ac90a2-6cfb-47de-a935-2e73e7bf4d77",
+                            ConcurrencyStamp = "d42888d1-a2d9-4a9b-b956-ee4e8492037a",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -2366,10 +2366,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBU4cKKkWtP3F0EwlbKVNVqEczrdg2dM4CsgXc1WLRmclCfkRrH2PdL5zyOpBGr58A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL6YCg2ViT1zB2+ZJ0nqjpUFIVTu/zLWGFKVWAvnItfB+glux646zykmGhMWjw1i7A==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
+                            SecurityStamp = "36579e6e-acf1-40b9-842e-df3c8f4d5384",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -2377,7 +2378,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0a7ddf5a-a4fe-482a-85da-04ebd4dd7c10",
+                            ConcurrencyStamp = "8dffe5a7-00d2-4dbf-9ea5-2470ba9741ef",
                             Email = "employee@example.com",
                             EmailConfirmed = true,
                             FirstName = "Employee",
@@ -2388,10 +2389,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "EMPLOYEE@EXAMPLE.COM",
                             NormalizedUserName = "EMPLOYEE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIY9Etl7oNsAjtFgtNZPdQEIPPurUtd75soYP/YE72h8cdIq5PVPtzzbE6SaHsXdDA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEORaINCmT4wyAAcJorYjwxv2RliWSXFg4JwtLV90JuMFHhkuYHWrg+0n8RHzv7GAyw==",
                             PhoneNumber = "0987654321",
                             PhoneNumberConfirmed = false,
                             RoleId = 2,
+                            SecurityStamp = "bb46e04d-8809-47c3-a70b-b47f446e5603",
                             TwoFactorEnabled = false,
                             UserName = "employee"
                         });

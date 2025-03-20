@@ -198,8 +198,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Oranches = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     AccountNumber = table.Column<int>(type: "int", nullable: false),
-                    CardNumber = table.Column<int>(type: "int", nullable: false),
-                    ShabaNumber = table.Column<int>(type: "int", nullable: false),
+                    CardNumber = table.Column<long>(type: "bigint", nullable: false),
+                    ShabaNumber = table.Column<long>(type: "bigint", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
@@ -961,8 +961,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "IsActive", "IsDeleted", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "46ac90a2-6cfb-47de-a935-2e73e7bf4d77", "admin@example.com", true, "Admin", true, false, "User", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEBU4cKKkWtP3F0EwlbKVNVqEczrdg2dM4CsgXc1WLRmclCfkRrH2PdL5zyOpBGr58A==", "1234567890", false, 1, null, false, "admin" },
-                    { 2, 0, "0a7ddf5a-a4fe-482a-85da-04ebd4dd7c10", "employee@example.com", true, "Employee", true, false, "User", false, null, "EMPLOYEE@EXAMPLE.COM", "EMPLOYEE", "AQAAAAIAAYagAAAAEIY9Etl7oNsAjtFgtNZPdQEIPPurUtd75soYP/YE72h8cdIq5PVPtzzbE6SaHsXdDA==", "0987654321", false, 2, null, false, "employee" }
+                    { 1, 0, "d42888d1-a2d9-4a9b-b956-ee4e8492037a", "admin@example.com", true, "Admin", true, false, "User", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEL6YCg2ViT1zB2+ZJ0nqjpUFIVTu/zLWGFKVWAvnItfB+glux646zykmGhMWjw1i7A==", "1234567890", false, 1, "36579e6e-acf1-40b9-842e-df3c8f4d5384", false, "admin" },
+                    { 2, 0, "8dffe5a7-00d2-4dbf-9ea5-2470ba9741ef", "employee@example.com", true, "Employee", true, false, "User", false, null, "EMPLOYEE@EXAMPLE.COM", "EMPLOYEE", "AQAAAAIAAYagAAAAEORaINCmT4wyAAcJorYjwxv2RliWSXFg4JwtLV90JuMFHhkuYHWrg+0n8RHzv7GAyw==", "0987654321", false, 2, "bb46e04d-8809-47c3-a70b-b47f446e5603", false, "employee" }
                 });
 
             migrationBuilder.InsertData(

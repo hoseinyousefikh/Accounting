@@ -147,6 +147,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Accounting.Configoration.Users
                 PhoneNumber = "1234567890",
                 IsActive = true,
                 RoleId = 1,
+                SecurityStamp = Guid.NewGuid().ToString() 
+
 
             };
             admin.PasswordHash = hasher.HashPassword(admin, "H1h2h3h4@");
@@ -164,6 +166,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Accounting.Configoration.Users
                 PhoneNumber = "0987654321",
                 IsActive = true,
                 RoleId = 2,
+                SecurityStamp = Guid.NewGuid().ToString() 
 
             };
             employee.PasswordHash = hasher.HashPassword(employee, "H1h2h3h4@");

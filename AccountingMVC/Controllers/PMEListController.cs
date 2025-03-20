@@ -4,11 +4,13 @@ using App.Domain.Core.Accounting.Contract.AppServices.PMEList;
 using App.Domain.Core.Accounting.Contract.Services.PMEList;
 using App.Domain.Core.Accounting.DTO;
 using App.Domain.Services.Accounting.Services.PMEList;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace AccountingMVC.Controllers
 {
+    [Authorize]
     public class PMEListController : Controller
     {
         private readonly IMemberAppService _memberAppService;
