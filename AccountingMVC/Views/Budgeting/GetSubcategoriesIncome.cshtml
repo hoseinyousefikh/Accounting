@@ -1,0 +1,30 @@
+﻿@model AccountingMVC.Models.BudgetingViewModel
+
+@{
+    ViewData["Title"] = "زیر دسته‌ها";
+}
+
+<div class="container my-4">
+    <h2 class="text-center mb-4">انتخاب زیر دسته</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg" style="background-color: rgba(0, 123, 255, 0.1); border-radius: 10px; backdrop-filter: blur(10px);">
+                <div class="card-body">
+                    <ul class="list-group">
+                        @foreach (var subcategory in Model.SubcategoryIncomes)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>@subcategory.Name</span>
+
+                                <a href="@Url.Action("Create", "Budgeting", new { subcategoryIncomeId = subcategory.Id, subcategoryIncomeName = subcategory.Name, categoryIncomeId = Model.CategoryIncomeId, categoryIncomeName = Model.CategoryIncomeName })" class="btn btn-info btn-sm">
+                                    انتخاب
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

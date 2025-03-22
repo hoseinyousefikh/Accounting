@@ -229,6 +229,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     FDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    SubCategoryCostId = table.Column<int>(type: "int", nullable: true),
+                    SubCategoryIncomeId = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -424,7 +426,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
-                    FundOperations = table.Column<int>(type: "int", nullable: false),
+                    PersonConditions = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -961,8 +963,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "IsActive", "IsDeleted", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "d42888d1-a2d9-4a9b-b956-ee4e8492037a", "admin@example.com", true, "Admin", true, false, "User", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEL6YCg2ViT1zB2+ZJ0nqjpUFIVTu/zLWGFKVWAvnItfB+glux646zykmGhMWjw1i7A==", "1234567890", false, 1, "36579e6e-acf1-40b9-842e-df3c8f4d5384", false, "admin" },
-                    { 2, 0, "8dffe5a7-00d2-4dbf-9ea5-2470ba9741ef", "employee@example.com", true, "Employee", true, false, "User", false, null, "EMPLOYEE@EXAMPLE.COM", "EMPLOYEE", "AQAAAAIAAYagAAAAEORaINCmT4wyAAcJorYjwxv2RliWSXFg4JwtLV90JuMFHhkuYHWrg+0n8RHzv7GAyw==", "0987654321", false, 2, "bb46e04d-8809-47c3-a70b-b47f446e5603", false, "employee" }
+                    { 1, 0, "55c82fea-0ed5-4b28-984a-65b326655a7b", "admin@example.com", true, "Admin", true, false, "User", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAENkB1vTk36pnBJhQqdVT/SIqr2KmuS7yfE8Pd2Gslxf2Ugu0Sx5B1q4+Ty1PAVzQTA==", "1234567890", false, 1, "499291e2-44ce-4f65-9939-6ae1a855b1fb", false, "admin" },
+                    { 2, 0, "cc756784-7722-4318-8fd5-87015951f02b", "employee@example.com", true, "Employee", true, false, "User", false, null, "EMPLOYEE@EXAMPLE.COM", "EMPLOYEE", "AQAAAAIAAYagAAAAEN5OjarMwttwx68th4/GLgV3vXV1IVWl6KodFOCwJT8QOLuTDXxLSRtcp2ft78krEA==", "0987654321", false, 2, "2f19bb59-bff4-4b8b-9f1d-290997e1e886", false, "employee" }
                 });
 
             migrationBuilder.InsertData(
@@ -1007,12 +1009,12 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
 
             migrationBuilder.InsertData(
                 table: "Funds",
-                columns: new[] { "Id", "FundOperations", "IsDeleted", "IsPublic", "Name", "UserId" },
+                columns: new[] { "Id", "IsDeleted", "IsPublic", "Name", "PersonConditions", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 0, false, true, "کیف پول", 1 },
-                    { 2, 0, false, true, "گاو صندوق", 1 },
-                    { 3, 0, false, true, " منزل", 1 }
+                    { 1, false, true, "کیف پول", 0, 1 },
+                    { 2, false, true, "گاو صندوق", 0, 1 },
+                    { 3, false, true, " منزل", 0, 1 }
                 });
 
             migrationBuilder.InsertData(

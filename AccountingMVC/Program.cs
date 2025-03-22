@@ -2,6 +2,7 @@ using App.Domain.AppServices.Accounting.AppServices;
 using App.Domain.AppServices.Accounting.AppServices.AccountIn;
 using App.Domain.AppServices.Accounting.AppServices.Accounts;
 using App.Domain.AppServices.Accounting.AppServices.Accounts.Sub;
+using App.Domain.AppServices.Accounting.AppServices.Budgetings;
 using App.Domain.AppServices.Accounting.AppServices.payment;
 using App.Domain.AppServices.Accounting.AppServices.PMEList;
 using App.Domain.AppServices.Accounting.AppServices.Reports;
@@ -9,6 +10,7 @@ using App.Domain.Core.Accounting.Contract.AppServices;
 using App.Domain.Core.Accounting.Contract.AppServices.AccountIn;
 using App.Domain.Core.Accounting.Contract.AppServices.Accounts;
 using App.Domain.Core.Accounting.Contract.AppServices.Accounts.Sub;
+using App.Domain.Core.Accounting.Contract.AppServices.Budgetings;
 using App.Domain.Core.Accounting.Contract.AppServices.payment;
 using App.Domain.Core.Accounting.Contract.AppServices.PMEList;
 using App.Domain.Core.Accounting.Contract.AppServices.Reports;
@@ -24,6 +26,7 @@ using App.Domain.Core.Accounting.Contract.Repositories.Users;
 using App.Domain.Core.Accounting.Contract.Services;
 using App.Domain.Core.Accounting.Contract.Services.AccountIn;
 using App.Domain.Core.Accounting.Contract.Services.Accounts;
+using App.Domain.Core.Accounting.Contract.Services.Budgetings;
 using App.Domain.Core.Accounting.Contract.Services.payment;
 using App.Domain.Core.Accounting.Contract.Services.PMEList;
 using App.Domain.Core.Accounting.Contract.Services.Reports;
@@ -33,6 +36,7 @@ using App.Domain.Services.Accounting.Services;
 using App.Domain.Services.Accounting.Services.AccountIn;
 using App.Domain.Services.Accounting.Services.Accounts;
 using App.Domain.Services.Accounting.Services.Accounts.Sub;
+using App.Domain.Services.Accounting.Services.Budgetings;
 using App.Domain.Services.Accounting.Services.payment;
 using App.Domain.Services.Accounting.Services.PMEList;
 using App.Domain.Services.Accounting.Services.Reports;
@@ -123,11 +127,15 @@ builder.Services.AddScoped<ISubCategoryCostService, SubCategoryCostService>();
 builder.Services.AddScoped<IFromAccountService, FromAccountService>();
 builder.Services.AddScoped<IMemberService, MemberService>();
 builder.Services.AddScoped<IEventService, EventService>();
+
+
 builder.Services.AddScoped<IProjectAppService, ProjectAppService>();
 builder.Services.AddScoped<IBankAppService, BankAppService>();
 builder.Services.AddScoped<ICheckAppService, CheckAppService>();
 builder.Services.AddScoped<ISubcategoryIncomeAppService, SubcategoryIncomeAppService>();
 builder.Services.AddScoped<ICategoryIncomeAppService, CategoryIncomeAppService>();
+builder.Services.AddScoped<IFundsService, FundsService>();
+builder.Services.AddScoped<IBudgetingService, BudgetingService>();
 
 
 //*************************************************************************
@@ -145,6 +153,10 @@ builder.Services.AddScoped<IBankService, BankService>();
 builder.Services.AddScoped<ICheckService, CheckService>();
 builder.Services.AddScoped<ISubcategoryIncomeService, SubcategoryIncomeService>();
 builder.Services.AddScoped<ICategoryIncomeService, CategoryIncomeService>();
+builder.Services.AddScoped<IFundsAppService, FundsAppService>();
+builder.Services.AddScoped<IBudgetingAppService, BudgetingAppService>();
+
+
 
 
 

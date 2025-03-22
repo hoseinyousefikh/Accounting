@@ -24,7 +24,8 @@ namespace App.Domain.Core.Accounting.Entities.Budgetings
         public DateTime FDate { get; set; }
         public DateTime TDate { get; set; }
         public bool IsDeleted { get; set; }
-
+        public int? SubCategoryCostId { get; set; }
+        public int? SubCategoryIncomeId { get; set; }
 
         public int UserId { get; set; }
         public User Users { get; set; }

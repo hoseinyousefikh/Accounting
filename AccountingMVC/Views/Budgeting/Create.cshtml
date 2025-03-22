@@ -1,0 +1,137 @@
+﻿@using App.Domain.Core.Accounting.Entities.Enum
+@model AccountingMVC.Models.BudgetingViewModel
+
+@{
+    ViewData["Title"] = "افزودن بودجه جدید";
+}
+
+<h2 class="text-center">افزودن بودجه جدید</h2>
+
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card shadow-lg p-4" style="width: 500px;">
+        <h3 class="text-center">افزودن بودجه جدید</h3>
+        <form asp-action="Create" method="post">
+
+
+            <div class="form-group">
+                <label asp-for="Timings">نوع تایم را مشخص کنید</label>
+                <select asp-for="Timings" class="form-control">
+                    <option value="@((int)Timing.future)" selected="@(Model.Timings == Timing.future ? "selected" : null)">آینده</option>
+                    <option value="@((int)Timing.past)" selected="@(Model.Timings == Timing.past ? "selected" : null)">گذشته</option>
+                    <option value="@((int)Timing.current)" selected="@(Model.Timings == Timing.current ? "selected" : null)">جاری</option>
+                </select>
+                <span asp-validation-for="Timings" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Xxpenses">نوع هزینه</label>
+                <select asp-for="Xxpenses" class="form-control" id="Xxpenses" onchange="toggleCategoryFields()">
+                    <option value="1">هزینه‌ها</option>
+                    <option value="2">درآمدها</option>
+                </select>
+                <span asp-validation-for="Xxpenses" class="text-danger"></span>
+            </div>
+
+            <!-- فیلد دسته‌بندی هزینه -->
+            <div id="costFields" style="display: none;">
+                <div class="form-group">
+                    <label for="CategoryCostId">دسته‌بندی هزینه :</label>
+                    <div class="d-flex align-items-center">
+                        <input type="text" class="form-control" id="CategoryCostName" name="CategoryCostName" value="@Model.CategoryCostName" readonly />
+                        <button type="button" class="btn btn-info btn-sm ml-2" id="CategoryCostButton" data-toggle="modal" data-target="#CategoryCostModal"
+                                onclick="window.location.href='@Url.Action("GetCategoriesCost", "Budgeting")'">
+                            انتخاب
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="SubcategoryCostId">زیر دسته:</label>
+                    <div class="d-flex align-items-center">
+                        <input type="text" class="form-control" id="SubcategoryCostName" name="SubcategoryCostName" value="@Model.SubcategoryCostName" readonly />
+                        <input type="hidden" id="SubcategoryCostId" name="SubcategoryCostId" value="@Model.SubCategoryCostId" />
+                        <a class="btn btn-info btn-sm ml-2" href="@Url.Action("Create", "Budgeting", new { subcategoryCostId = Model.SubCategoryCostId, subcategoryCostName = Model.SubcategoryCostName })">
+                            انتخاب
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- فیلد دسته‌بندی درآمد -->
+            <div id="incomeFields" style="display: none;">
+                <div class="form-group">
+                    <label for="CategoryIncomeId">دسته‌بندی درآمد:</label>
+                    <div class="d-flex align-items-center">
+                        <input type="text" class="form-control" id="CategoryIncomeName" name="CategoryIncomeName" value="@Model.CategoryIncomeName" readonly />
+                        <button type="button" class="btn btn-info btn-sm ml-2" id="CategoryIncomeButton" data-toggle="modal" data-target="#CategoryIncomeModal"
+                                onclick="window.location.href='@Url.Action("GetCategoriesIncome", "Budgeting")'">
+                            انتخاب
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="SubcategoryIncomeId">زیر دسته:</label>
+                    <div class="d-flex align-items-center">
+                        <input type="text" class="form-control" id="SubcategoryIncomeName" name="SubcategoryIncomeName" value="@Model.SubcategoryIncomeName" readonly />
+                        <input type="hidden" id="SubcategoryIncomeId" name="SubcategoryIncomeId" value="@Model.SubCategoryIncomeId" />
+                        <a class="btn btn-info btn-sm ml-2" href="@Url.Action("Create", "Budgeting", new { subcategoryIncomeId = Model.SubCategoryIncomeId, subcategoryIncomeName = Model.SubcategoryIncomeName })">
+                            انتخاب
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MinAmount">حداقل مقدار</label>
+                <input asp-for="MinAmount" class="form-control" />
+                <span asp-validation-for="MinAmount" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MaxAmount">حداکثر مقدار</label>
+                <input asp-for="MaxAmount" class="form-control" />
+                <span asp-validation-for="MaxAmount" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FDate">تاریخ شروع</label>
+                <input asp-for="FDate" class="form-control" type="date" />
+                <span asp-validation-for="FDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TDate">تاریخ پایان</label>
+                <input asp-for="TDate" class="form-control" type="date" />
+                <span asp-validation-for="TDate" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">ثبت</button>
+                <a href="@Url.Action("Index")" class="btn btn-secondary">بازگشت</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleCategoryFields() {
+            var selectedValue = document.getElementById('Xxpenses').value;
+
+            document.getElementById('costFields').style.display = 'none';
+            document.getElementById('incomeFields').style.display = 'none';
+
+            if (selectedValue == '1') {
+                document.getElementById('costFields').style.display = 'block';
+            } else if (selectedValue == '2') {
+                document.getElementById('incomeFields').style.display = 'block';
+            }
+        }
+
+        window.onload = function() {
+            toggleCategoryFields();
+        }
+    </script>
+}

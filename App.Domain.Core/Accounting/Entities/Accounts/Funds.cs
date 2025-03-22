@@ -17,8 +17,7 @@ namespace App.Domain.Core.Accounting.Entities.Accounts
         public string Name { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsPublic { get; set; }
-        public FundOperations FundOperations { get; set; }
-
+        public PersonCondition PersonConditions { get; set; }
         public int UserId { get; set; }
         public User Users { get; set; }
     }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250320210521_init")]
+    [Migration("20250321142413_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -430,9 +430,6 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("FundOperations")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -443,6 +440,9 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("PersonConditions")
+                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -457,28 +457,28 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 1,
-                            FundOperations = 0,
                             IsDeleted = false,
                             IsPublic = true,
                             Name = "کیف پول",
+                            PersonConditions = 0,
                             UserId = 1
                         },
                         new
                         {
                             Id = 2,
-                            FundOperations = 0,
                             IsDeleted = false,
                             IsPublic = true,
                             Name = "گاو صندوق",
+                            PersonConditions = 0,
                             UserId = 1
                         },
                         new
                         {
                             Id = 3,
-                            FundOperations = 0,
                             IsDeleted = false,
                             IsPublic = true,
                             Name = " منزل",
+                            PersonConditions = 0,
                             UserId = 1
                         });
                 });
@@ -1972,6 +1972,12 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     b.Property<decimal>("MinAmount")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<int?>("SubCategoryCostId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SubCategoryIncomeId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("TDate")
                         .HasColumnType("datetime2");
 
@@ -2358,7 +2364,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d42888d1-a2d9-4a9b-b956-ee4e8492037a",
+                            ConcurrencyStamp = "55c82fea-0ed5-4b28-984a-65b326655a7b",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -2369,11 +2375,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL6YCg2ViT1zB2+ZJ0nqjpUFIVTu/zLWGFKVWAvnItfB+glux646zykmGhMWjw1i7A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENkB1vTk36pnBJhQqdVT/SIqr2KmuS7yfE8Pd2Gslxf2Ugu0Sx5B1q4+Ty1PAVzQTA==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
-                            SecurityStamp = "36579e6e-acf1-40b9-842e-df3c8f4d5384",
+                            SecurityStamp = "499291e2-44ce-4f65-9939-6ae1a855b1fb",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -2381,7 +2387,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8dffe5a7-00d2-4dbf-9ea5-2470ba9741ef",
+                            ConcurrencyStamp = "cc756784-7722-4318-8fd5-87015951f02b",
                             Email = "employee@example.com",
                             EmailConfirmed = true,
                             FirstName = "Employee",
@@ -2392,11 +2398,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "EMPLOYEE@EXAMPLE.COM",
                             NormalizedUserName = "EMPLOYEE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEORaINCmT4wyAAcJorYjwxv2RliWSXFg4JwtLV90JuMFHhkuYHWrg+0n8RHzv7GAyw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEN5OjarMwttwx68th4/GLgV3vXV1IVWl6KodFOCwJT8QOLuTDXxLSRtcp2ft78krEA==",
                             PhoneNumber = "0987654321",
                             PhoneNumberConfirmed = false,
                             RoleId = 2,
-                            SecurityStamp = "bb46e04d-8809-47c3-a70b-b47f446e5603",
+                            SecurityStamp = "2f19bb59-bff4-4b8b-9f1d-290997e1e886",
                             TwoFactorEnabled = false,
                             UserName = "employee"
                         });

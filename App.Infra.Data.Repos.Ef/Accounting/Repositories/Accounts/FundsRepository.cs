@@ -1,74 +1,69 @@
 ﻿using App.Domain.Core.Accounting.Contract.Repositories.Accounts;
 using App.Domain.Core.Accounting.Entities.Accounts;
 using App.Domain.Core.Accounting.Entities.Enum;
+using App.Infra.Data.Db.SqlServer.Ef.Accounting.DBContaxt;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts
 {
     public class FundsRepository : IFundsRepository
     {
-        private readonly List<Funds> _funds;
+        private readonly AppDbContext _context;
 
-        public FundsRepository()
+        public FundsRepository(AppDbContext context)
         {
-            _funds = new List<Funds>();
+            _context = context;
         }
 
         public async Task AddFundsAsync(Funds fund)
         {
-            await Task.Run(() => _funds.Add(fund));
+            _context.Funds.Add(fund);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateFundsAsync(Funds fund)
         {
-            await Task.Run(() =>
+            var existingFund = await _context.Funds.FindAsync(fund.Id);
+            if (existingFund != null)
             {
-                var existingFund = _funds.FirstOrDefault(f => f.Id == fund.Id);
-                if (existingFund != null)
-                {
-                    existingFund.Name = fund.Name;
-                    existingFund.IsPublic = fund.IsPublic;
-                    existingFund.FundOperations = fund.FundOperations;
-                    existingFund.UserId = fund.UserId;
-                    existingFund.Users = fund.Users;
-                }
-            });
+                existingFund.Name = fund.Name;
+                existingFund.IsPublic = fund.IsPublic;
+                existingFund.UserId = fund.UserId;
+                existingFund.Users = fund.Users;
+
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteFundsAsync(int id)
         {
-            await Task.Run(() =>
+            var fund = await _context.Funds.FindAsync(id);
+            if (fund != null)
             {
-                var fund = _funds.FirstOrDefault(f => f.Id == id);
-                if (fund != null)
-                {
-                    fund.IsDeleted = true;
-                }
-            });
+                fund.IsDeleted = true;
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<Funds> GetFundsByIdAsync(int id)
         {
-            var x = await Task.Run(() => _funds.FirstOrDefault(f => f.Id == id && !f.IsDeleted));
-            if (x != null)
+            var fund = await _context.Funds.FirstOrDefaultAsync(f => f.Id == id && !f.IsDeleted);
+            if (fund != null)
             {
-                return x;
+                return fund;
             }
-            throw new Exception("is null");
+            throw new Exception("Fund not found");
         }
 
         public async Task<List<Funds>> GetFundsByUserIdAsync(int userId)
         {
-            return await Task.Run(() => _funds.Where(f => f.UserId == userId && !f.IsDeleted).ToList());
+            return await _context.Funds.Where(f => f.UserId == userId && !f.IsDeleted).ToListAsync();
         }
 
-        public async Task<List<Funds>> GetFundsByFundOperationsAsync()
-        {
-            return await Task.Run(() => _funds.Where(f => f.FundOperations == FundOperations.invoice && !f.IsDeleted).ToList());
-        }
+        
     }
 }

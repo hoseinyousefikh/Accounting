@@ -1,0 +1,33 @@
+﻿@using App.Domain.Core.Accounting.Entities.Enum
+@model AccountingMVC.Models.FundsViewModel
+
+@{
+    ViewData["Title"] = "افزودن صندوق جدید";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card shadow-lg p-4" style="width: 400px;">
+        <h3 class="text-center">افزودن صندوق جدید</h3>
+        <form asp-action="Create" method="post">
+            <div class="form-group">
+                <label asp-for="Name">نام صندوق</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <input asp-for="IsPublic" class="form-check-input" />
+                <label asp-for="IsPublic">صندوق عمومی باشد</label>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PersonConditions">وضعیت شخص</label>
+                <select asp-for="PersonConditions" asp-items="Html.GetEnumSelectList<PersonCondition>()" class="form-control"></select>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mt-3">ذخیره</button>
+            </div>
+        </form>
+    </div>
+</div>

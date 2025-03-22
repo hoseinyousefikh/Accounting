@@ -5,14 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Domain.Core.Accounting.Contract.Repositories.Accounts
+namespace App.Domain.Core.Accounting.Contract.Services.Accounts
 {
-    public interface IFundsRepository
+    public interface IFundsService
     {
         Task AddFundsAsync(Funds fund);
-        Task UpdateFundsAsync(Funds fund);
-        Task DeleteFundsAsync(int id);
-        Task<Funds> GetFundsByIdAsync(int id);
         Task<List<Funds>> GetFundsByUserIdAsync(int userId);
     }
 }
