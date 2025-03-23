@@ -163,7 +163,7 @@ namespace AccountingMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(BudgetingViewModel model)
+        public async Task<IActionResult> Edit(BudgetingViewModel model)//
         {
           
             if (!ModelState.IsValid)
