@@ -40,7 +40,7 @@
                     <div class="d-flex align-items-center">
                         <input type="text" class="form-control" id="CategoryCostName" name="CategoryCostName" value="@Model.CategoryCostName" readonly />
                         <button type="button" class="btn btn-info btn-sm ml-2" id="CategoryCostButton" data-toggle="modal" data-target="#CategoryCostModal"
-                                onclick="window.location.href='@Url.Action("GetCategoriesCost", "Budgeting")'">
+                                onclick="window.location.href='@Url.Action("GetCategoriesCostCreate", "Budgeting")'">
                             انتخاب
                         </button>
                     </div>
@@ -65,7 +65,7 @@
                     <div class="d-flex align-items-center">
                         <input type="text" class="form-control" id="CategoryIncomeName" name="CategoryIncomeName" value="@Model.CategoryIncomeName" readonly />
                         <button type="button" class="btn btn-info btn-sm ml-2" id="CategoryIncomeButton" data-toggle="modal" data-target="#CategoryIncomeModal"
-                                onclick="window.location.href='@Url.Action("GetCategoriesIncome", "Budgeting")'">
+                                onclick="window.location.href='@Url.Action("GetCategoriesIncomeCreate", "Budgeting")'">
                             انتخاب
                         </button>
                     </div>
@@ -132,6 +132,48 @@
 
         window.onload = function() {
             toggleCategoryFields();
+        }
+         function toggleCategoryFields() {
+            var selectedValue = document.getElementById('Xxpenses').value;
+
+            document.getElementById('costFields').style.display = 'none';
+            document.getElementById('incomeFields').style.display = 'none';
+
+            if (selectedValue == '1') {
+                document.getElementById('costFields').style.display = 'block';
+            } else if (selectedValue == '2') {
+                document.getElementById('incomeFields').style.display = 'block';
+            }
+        }
+
+        function setDefaultDates() {
+            var timingValue = document.getElementById("Timings").value;
+            var today = new Date();
+            var startDate = new Date();
+            var endDate = new Date();
+
+            if (timingValue == '@((int)Timing.current)') {
+                startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
+                endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+            }
+            else if (timingValue == '@((int)Timing.past)') {
+                startDate.setDate(today.getDate() - 7);
+                endDate = today;
+            }
+            else if (timingValue == '@((int)Timing.future)') {
+                startDate = today;
+                endDate.setDate(today.getDate() + 7);
+            }
+
+            document.getElementById("FDate").value = startDate.toISOString().split("T")[0];
+            document.getElementById("TDate").value = endDate.toISOString().split("T")[0];
+        }
+
+        document.getElementById("Timings").addEventListener("change", setDefaultDates);
+
+        window.onload = function() {
+            toggleCategoryFields();
+            setDefaultDates();
         }
     </script>
 }

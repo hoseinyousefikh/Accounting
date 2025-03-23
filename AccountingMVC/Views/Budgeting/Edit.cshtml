@@ -11,7 +11,17 @@
     <div class="card shadow-lg p-4" style="width: 500px;">
         <h3 class="text-center">ویرایش بودجه</h3>
         <form asp-action="Edit" method="post">
-            
+
+            <div class="form-group">
+                <label asp-for="Timings">نوع تایم را مشخص کنید</label>
+                <select asp-for="Timings" class="form-control">
+                    <option value="@((int)Timing.future)" selected="@(Model.Timings == Timing.future ? "selected" : null)">آینده</option>
+                    <option value="@((int)Timing.past)" selected="@(Model.Timings == Timing.past ? "selected" : null)">گذشته</option>
+                    <option value="@((int)Timing.current)" selected="@(Model.Timings == Timing.current ? "selected" : null)">جاری</option>
+                </select>
+                <span asp-validation-for="Timings" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Xxpenses">نوع هزینه</label>
                 <select asp-for="Xxpenses" class="form-control" id="Xxpenses" onchange="toggleCategoryFields()">
@@ -32,7 +42,7 @@
                     <div class="d-flex align-items-center">
                         <input type="text" class="form-control" id="CategoryCostName" name="CategoryCostName" value="@Model.CategoryCostName" readonly />
                         <button type="button" class="btn btn-info btn-sm ml-2" id="CategoryCostButton" data-toggle="modal" data-target="#CategoryCostModal"
-                                onclick="window.location.href='@Url.Action("GetCategoriesCost", "Budgeting")'">
+                                onclick="window.location.href='@Url.Action("GetCategoriesCostEdit", "Budgeting")'">
                             انتخاب
                         </button>
                     </div>
@@ -43,7 +53,7 @@
                     <div class="d-flex align-items-center">
                         <input type="text" class="form-control" id="SubcategoryCostName" name="SubcategoryCostName" value="@Model.SubcategoryCostName" readonly />
                         <input type="hidden" id="SubcategoryCostId" name="SubcategoryCostId" value="@Model.SubCategoryCostId" />
-                        <a class="btn btn-info btn-sm ml-2" href="@Url.Action("Create", "Budgeting", new { subcategoryCostId = Model.SubCategoryCostId, subcategoryCostName = Model.SubcategoryCostName })">
+                        <a class="btn btn-info btn-sm ml-2" href="@Url.Action("Edit", "Budgeting", new { subcategoryCostId = Model.SubCategoryCostId, subcategoryCostName = Model.SubcategoryCostName })">
                             انتخاب
                         </a>
                     </div>
@@ -57,18 +67,20 @@
                     <div class="d-flex align-items-center">
                         <input type="text" class="form-control" id="CategoryIncomeName" name="CategoryIncomeName" value="@Model.CategoryIncomeName" readonly />
                         <button type="button" class="btn btn-info btn-sm ml-2" id="CategoryIncomeButton" data-toggle="modal" data-target="#CategoryIncomeModal"
-                                onclick="window.location.href='@Url.Action("GetCategoriesIncome", "Budgeting")'">
+                                onclick="window.location.href='@Url.Action("GetCategoriesIncomeEdit", "Budgeting", new { id = Model.Id })'">
                             انتخاب
                         </button>
                     </div>
                 </div>
+
+
 
                 <div class="form-group">
                     <label for="SubcategoryIncomeId">زیر دسته:</label>
                     <div class="d-flex align-items-center">
                         <input type="text" class="form-control" id="SubcategoryIncomeName" name="SubcategoryIncomeName" value="@Model.SubcategoryIncomeName" readonly />
                         <input type="hidden" id="SubcategoryIncomeId" name="SubcategoryIncomeId" value="@Model.SubCategoryIncomeId" />
-                        <a class="btn btn-info btn-sm ml-2" href="@Url.Action("Create", "Budgeting", new { subcategoryIncomeId = Model.SubCategoryIncomeId, subcategoryIncomeName = Model.SubcategoryIncomeName })">
+                        <a class="btn btn-info btn-sm ml-2" href="@Url.Action("Edit", "Budgeting", new { subcategoryIncomeId = Model.SubCategoryIncomeId, subcategoryIncomeName = Model.SubcategoryIncomeName })">
                             انتخاب
                         </a>
                     </div>
@@ -125,6 +137,48 @@
 
         window.onload = function() {
             toggleCategoryFields();
+        }
+         function toggleCategoryFields() {
+            var selectedValue = document.getElementById('Xxpenses').value;
+
+            document.getElementById('costFields').style.display = 'none';
+            document.getElementById('incomeFields').style.display = 'none';
+
+            if (selectedValue == '1') {
+                document.getElementById('costFields').style.display = 'block';
+            } else if (selectedValue == '2') {
+                document.getElementById('incomeFields').style.display = 'block';
+            }
+        }
+
+        function setDefaultDates() {
+            var timingValue = document.getElementById("Timings").value;
+            var today = new Date();
+            var startDate = new Date();
+            var endDate = new Date();
+
+            if (timingValue == '@((int)Timing.current)') {
+                startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0);
+                endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+            }
+            else if (timingValue == '@((int)Timing.past)') {
+                startDate.setDate(today.getDate() - 7);
+                endDate = today;
+            }
+            else if (timingValue == '@((int)Timing.future)') {
+                startDate = today;
+                endDate.setDate(today.getDate() + 7);
+            }
+
+            document.getElementById("FDate").value = startDate.toISOString().split("T")[0];
+            document.getElementById("TDate").value = endDate.toISOString().split("T")[0];
+        }
+
+        document.getElementById("Timings").addEventListener("change", setDefaultDates);
+
+        window.onload = function() {
+            toggleCategoryFields();
+            setDefaultDates();
         }
     </script>
 }
