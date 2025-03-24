@@ -2,6 +2,7 @@
 using App.Domain.Core.Accounting.Contract.Services.Accounts;
 using App.Domain.Core.Accounting.DTO;
 using App.Domain.Core.Accounting.Entities.Accounts.Sub;
+using App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts.Sub;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,22 @@ namespace App.Domain.Services.Accounting.Services.Accounts.Sub
         public async Task<List<SubcategoryIncome>> GetSubcategoryIncomesByCategoryId(int categoryIncomeId)
         {
             return await _subcategoryIncomeRepository.GetByCategoryIncomeId(categoryIncomeId);
+        }
+        public async Task<SubcategoryIncome> GetByIdSubCatIncomeAsync(int id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("Invalid subcategory ID", nameof(id));
+            }
+
+            var subcategory = await _subcategoryIncomeRepository.GetBySubCatIncomeId(id);
+
+            if (subcategory == null)
+            {
+                throw new KeyNotFoundException($"Subcategory with ID {id} not found.");
+            }
+
+            return subcategory;
         }
     }
 }

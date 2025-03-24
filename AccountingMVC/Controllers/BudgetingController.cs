@@ -1,4 +1,5 @@
 ﻿using AccountingMVC.Models;
+using App.Domain.AppServices.Accounting.AppServices.Accounts.Sub;
 using App.Domain.Core.Accounting.Contract.AppServices.Accounts;
 using App.Domain.Core.Accounting.Contract.AppServices.Accounts.Sub;
 using App.Domain.Core.Accounting.Contract.AppServices.Budgetings;
@@ -39,7 +40,7 @@ namespace AccountingMVC.Controllers
 
             var model = budgetings.Select(b => new BudgetingViewModel
             {
-               
+
                 Id = b.Id,
                 Timings = b.timings,
                 Xxpenses = b.Xxpenses,
@@ -54,7 +55,7 @@ namespace AccountingMVC.Controllers
 
         public IActionResult Create(int? subcategoryCostId, string subcategoryCostName, int categoryCostId, string categoryCostName, int? subcategoryIncomeId, string subcategoryIncomeName, int categoryIncomeId, string categoryIncomeName)
         {
-         
+
             SetCategoryCostData(categoryCostId, categoryCostName);
             SetSubcategoryCostData(subcategoryCostId, subcategoryCostName);
             SetCategoryIncomeData(categoryIncomeId, categoryIncomeName);
@@ -71,15 +72,15 @@ namespace AccountingMVC.Controllers
                 CategoryIncomeName = HttpContext.Session.GetString("CategoryIncomeName"),
                 SubcategoryIncomeName = HttpContext.Session.GetString("SubcategoryIncomeName"),
             };
-            
+
             return View(result);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(BudgetingViewModel model )
+        public async Task<IActionResult> Create(BudgetingViewModel model)
         {
-           
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -102,9 +103,9 @@ namespace AccountingMVC.Controllers
             {
                 return Unauthorized();
             }
+           
 
             int userId = int.Parse(userIdClaim.Value);
-
             var budgeting = new Budgeting
             {
                 timings = model.Timings,
@@ -115,7 +116,8 @@ namespace AccountingMVC.Controllers
                 TDate = model.TDate,
                 UserId = userId,
                 SubCategoryCostId = model.SubCategoryCostId,
-                SubCategoryIncomeId =model.SubCategoryIncomeId
+                SubCategoryIncomeId = model.SubCategoryIncomeId,
+               
                 
             };
 
@@ -130,10 +132,34 @@ namespace AccountingMVC.Controllers
             SetSubcategoryCostData(subcategoryCostId, subcategoryCostName);
             SetCategoryIncomeData(categoryIncomeId, categoryIncomeName);
             SetSubcategoryIncomeData(subcategoryIncomeId, subcategoryIncomeName);
+
             var budgeting = await _budgetingAppService.GetBudgetingByIdAsync(id);
             if (budgeting == null)
             {
                 return NotFound();
+            }
+
+            if (budgeting.SubCategoryIncomeId.HasValue && budgeting.SubCategoryIncomeId.Value != 0)
+            {
+                var resultIncome = budgeting.SubCategoryIncomeId.HasValue
+              ? await _subcategoryIncomeAppService.GetByIdSubCatIncomeAsync(budgeting.SubCategoryIncomeId.Value)
+              : null;
+                if (HttpContext.Session.GetString("SubcategoryIncomeName") == null)
+                {
+                    HttpContext.Session.SetString("SubcategoryIncomeName", resultIncome?.Name ?? subcategoryIncomeName ?? "نام مشخص نشده");
+                }
+
+            }
+            else
+            {
+                var resultCost = budgeting.SubCategoryCostId.HasValue
+                   ? await _subCategoryCostAppService.GetByIdSubCatCostAsync(budgeting.SubCategoryCostId.Value)
+                   : null;
+               
+                if (HttpContext.Session.GetString("SubcategoryCostName") == null)
+                {
+                    HttpContext.Session.SetString("SubcategoryCostName", resultCost?.Name ?? subcategoryCostName ?? "نام مشخص نشده");
+                }
             }
 
             var model = new BudgetingViewModel
@@ -146,26 +172,25 @@ namespace AccountingMVC.Controllers
                 FDate = budgeting.FDate,
                 TDate = budgeting.TDate,
 
-                SubCategoryCostId = HttpContext.Session.GetInt32("SubcategoryCostId") ?? 0,
-                CategoryCostId = HttpContext.Session.GetInt32("CategoryCostId") ?? 0,
-                CategoryCostName = HttpContext.Session.GetString("CategoryCostName"),
+                SubCategoryCostId = HttpContext.Session.GetInt32("SubcategoryCostId") ?? subcategoryCostId ?? 0,
+                CategoryCostId = HttpContext.Session.GetInt32("CategoryCostId") ?? categoryCostId,
+                CategoryCostName = HttpContext.Session.GetString("CategoryCostName") ?? categoryCostName,
                 SubcategoryCostName = HttpContext.Session.GetString("SubcategoryCostName"),
 
-                SubCategoryIncomeId = HttpContext.Session.GetInt32("SubcategoryIncomeId") ?? 0,
-                CategoryIncomeId = HttpContext.Session.GetInt32("CategoryIncomeId") ?? 0,
-                CategoryIncomeName = HttpContext.Session.GetString("CategoryIncomeName"),
+                SubCategoryIncomeId = HttpContext.Session.GetInt32("SubcategoryIncomeId") ?? subcategoryIncomeId ?? 0,
+                CategoryIncomeId = HttpContext.Session.GetInt32("CategoryIncomeId") ?? categoryIncomeId,
+                CategoryIncomeName = HttpContext.Session.GetString("CategoryIncomeName") ?? categoryIncomeName,
                 SubcategoryIncomeName = HttpContext.Session.GetString("SubcategoryIncomeName")
             };
 
             return View(model);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(BudgetingViewModel model)//
         {
-          
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -228,12 +253,12 @@ namespace AccountingMVC.Controllers
             });
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _budgetingAppService.DeleteBudgetingAsync(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Budgeting");
         }
 
         private void SetCategoryIncomeData(int categoryIncomeId, string categoryIncomeName)
@@ -351,13 +376,13 @@ namespace AccountingMVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSubcategoriesIncomeEdit(int categoryIncomeId, string categoryIncomeName,int id)
+        public async Task<IActionResult> GetSubcategoriesIncomeEdit(int categoryIncomeId, string categoryIncomeName, int id)
         {
             var subcategories = await _subcategoryIncomeAppService.GetSubcategoryIncomesByCategoryId(categoryIncomeId);
 
             var viewModel = new BudgetingViewModel
             {
-                Id =id,
+                Id = id,
                 SubcategoryIncomes = subcategories,
                 CategoryIncomeId = categoryIncomeId,
                 CategoryIncomeName = categoryIncomeName
@@ -367,7 +392,7 @@ namespace AccountingMVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCategoriesCostEdit()
+        public async Task<IActionResult> GetCategoriesCostEdit(int id)
         {
             int userId = 0;
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -378,18 +403,20 @@ namespace AccountingMVC.Controllers
             var categoryCosts = await _categoryCostAppService.GetCategoryCostByUserIdAsync(userId);
             var viewModel = new BudgetingViewModel
             {
+                Id =id,
                 CategoryCosts = categoryCosts
             };
             return View(viewModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSubcategoriesCostEdit(int categoryCostId, string categoryCostName)
+        public async Task<IActionResult> GetSubcategoriesCostEdit(int categoryCostId, string categoryCostName, int id)
         {
             var subcategories = await _subCategoryCostAppService.GetSubCatCostByCategoryIdAsync(categoryCostId);
 
             var viewModel = new BudgetingViewModel
             {
+                Id=id,
                 SubcategoryCosts = subcategories,
                 CategoryCostId = categoryCostId,
                 CategoryCostName = categoryCostName

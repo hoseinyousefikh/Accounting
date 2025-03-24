@@ -22,6 +22,11 @@ namespace App.Domain.AppServices.Accounting.AppServices.Accounts.Sub
             _subcategoryIncomeService = subcategoryIncomeService;
         }
 
+        public Task<SubcategoryIncome> GetByIdSubCatIncomeAsync(int id)
+        {
+            return _subcategoryIncomeService.GetByIdSubCatIncomeAsync(id);
+        }
+
         public async Task<List<SubcategoryIncomeDto>> GetBySubCatIncomeUserIdAsync(int userId)
         {
             var subcategoryIncomes = await _subcategoryIncomeService.GetBySubCatIncomeUserIdAsync(userId);

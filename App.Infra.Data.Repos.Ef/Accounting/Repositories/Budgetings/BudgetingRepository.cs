@@ -46,6 +46,7 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Budgetings
         public async Task<List<Budgeting>> GetAllBudgetingAsync()
         {
             return await _context.Budgetings
+                .Where(b => !b.IsDeleted) // فیلتر کردن بودجه‌های حذف نشده
                 .Include(b => b.Users)
                 .ToListAsync();
         }
@@ -53,8 +54,8 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Budgetings
         public async Task<Budgeting> GetBudgetingByIdAsync(int id)
         {
             var x = await _context.Budgetings
+                .Where(b => b.Id == id && !b.IsDeleted) // اضافه کردن شرط برای حذف نشده بودن
                 .Include(b => b.Users)
-                .Where(b => b.Id == id)
                 .FirstOrDefaultAsync();
             if (x != null)
             {
@@ -66,22 +67,23 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Budgetings
         public async Task<List<Budgeting>> GetBudgetingByUserIdAsync(int userId)
         {
             return await _context.Budgetings
-                .Where(b => b.UserId == userId)
+                .Where(b => b.UserId == userId && !b.IsDeleted)
                 .ToListAsync();
         }
 
         public async Task<List<Budgeting>> GetBudgetingByExpensAsync(Xxpens expens)
         {
             return await _context.Budgetings
-                .Where(b => b.Xxpenses == expens)
+                .Where(b => b.Xxpenses == expens && !b.IsDeleted) 
                 .ToListAsync();
         }
 
         public async Task<List<Budgeting>> GetBudgetingByTimingAsync(Timing timing)
         {
             return await _context.Budgetings
-                .Where(b => b.timings == timing)
+                .Where(b => b.timings == timing && !b.IsDeleted)
                 .ToListAsync();
         }
+
     }
 }

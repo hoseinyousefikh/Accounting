@@ -36,7 +36,7 @@ namespace AccountingMVC.Models
 
         public string? CategoryCostName { get; set; }
         public int? CategoryCostId { get; set; }
-
+        public  int UserId { get; set; }
         public List<CategoryCost>? CategoryCosts { get; set; }
         public List<SubcategoryCost>? SubcategoryCosts { get; set; }
         public List<CategoryIncomeDto>? CategoryIncomes { get; set; }

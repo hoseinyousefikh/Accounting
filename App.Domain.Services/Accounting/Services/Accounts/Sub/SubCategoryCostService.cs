@@ -50,5 +50,22 @@ namespace App.Domain.Services.Accounting.Services.Accounts.Sub
 
             return subcategories;
         }
+
+        public async Task<SubcategoryCost> GetByIdSubCatCostAsync(int id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("Invalid subcategory ID", nameof(id));
+            }
+
+            var subcategory = await _subcategoryCostRepository.GetByIdSubCatCost(id);
+
+            if (subcategory == null)
+            {
+                throw new KeyNotFoundException($"Subcategory with ID {id} not found.");
+            }
+
+            return subcategory;
+        }
     }
 }

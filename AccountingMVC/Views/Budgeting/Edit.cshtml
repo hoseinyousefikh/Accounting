@@ -42,7 +42,7 @@
                     <div class="d-flex align-items-center">
                         <input type="text" class="form-control" id="CategoryCostName" name="CategoryCostName" value="@Model.CategoryCostName" readonly />
                         <button type="button" class="btn btn-info btn-sm ml-2" id="CategoryCostButton" data-toggle="modal" data-target="#CategoryCostModal"
-                                onclick="window.location.href='@Url.Action("GetCategoriesCostEdit", "Budgeting")'">
+                                onclick="window.location.href='@Url.Action("GetCategoriesCostEdit", "Budgeting", new { id = Model.Id })'">
                             انتخاب
                         </button>
                     </div>

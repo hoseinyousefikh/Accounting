@@ -11,5 +11,6 @@ namespace App.Domain.Core.Accounting.Contract.Services.Accounts
     {
         Task<List<SubcategoryCost>> GetSubcategoryCostByUserIdAsync(int userId);
         Task<List<SubcategoryCost>> GetSubCatCostByCategoryIdAsync(int categoryId);
+        Task<SubcategoryCost> GetByIdSubCatCostAsync(int id);
     }
 }
