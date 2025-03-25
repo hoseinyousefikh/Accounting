@@ -35,7 +35,7 @@ namespace App.Domain.AppServices.Accounting.AppServices.Accounts.Sub
 
         public async Task<List<SubcategoryIncomeDto>> GetSubcategoryIncomesByCategoryId(int categoryIncomeId)
         {
-            var subcategoryCosts = await _subcategoryIncomeService.GetSubcategoryIncomesByCategoryId(categoryIncomeId);
+            var subcategoryCosts = await _subcategoryIncomeService.GetSubcategoryIncomesByCategoryIdAsync(categoryIncomeId);
             return _mapper.Map<List<SubcategoryIncomeDto>>(subcategoryCosts);
         }
 

@@ -2,6 +2,7 @@
 using App.Domain.Core.Accounting.Contract.Services.AccountIn;
 using App.Domain.Core.Accounting.DTO;
 using App.Domain.Core.Accounting.Entities.Accounts;
+using App.Domain.Core.Accounting.Entities.Accounts.Sub;
 using App.Domain.Core.Accounting.Entities.payment;
 using System;
 using System.Collections.Generic;
@@ -38,14 +39,9 @@ namespace App.Domain.AppServices.Accounting.AppServices.AccountIn
             return await _fromAccountService.GetAllCapitalsAsync();
         }
 
-        public async Task<List<CategoryCost>> GetAllCategoryCostsAsync()
+        public async Task<List<Creditors>> GetAllCreditorsAsync()
         {
-            return await _fromAccountService.GetAllCategoryCostsAsync();
-        }
-
-        public async Task<List<CategoryIncome>> GetAllCategoryIncomesAsync()
-        {
-            return await _fromAccountService.GetAllCategoryIncomesAsync();
+            return await _fromAccountService.GetAllCreditorsAsync();
         }
 
         public async Task<List<Debts>> GetAllDebtsAsync()
@@ -63,9 +59,24 @@ namespace App.Domain.AppServices.Accounting.AppServices.AccountIn
             return await _fromAccountService.GetAllPersonsAsync();
         }
 
-        public async Task<List<Criticism>> GetAllCriticismsAsync()
+        public async Task<List<SubcategoryIncome>> GetAllSubCategoryIncomesAsync()
         {
-            return await _fromAccountService.GetAllCriticismsAsync();
+            return await _fromAccountService.GetAllSubCategoryIncomesAsync();
         }
+
+        public async Task<bool> SubtractAmountFromAccountAsync(int fromAccountId, decimal amount)
+        {
+            try
+            {
+                await _fromAccountService.SubtractAmountFromAccountAsync(fromAccountId, amount);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
     }
 }

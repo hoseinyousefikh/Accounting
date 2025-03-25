@@ -67,5 +67,22 @@ namespace App.Domain.Services.Accounting.Services.Accounts.Sub
 
             return subcategory;
         }
+        public async Task AddAmountToSubCategoryCostAsync(int subCategoryId, decimal amount)
+        {
+            if (subCategoryId <= 0)
+                throw new ArgumentException("Invalid subcategory ID", nameof(subCategoryId));
+
+            if (amount <= 0)
+                throw new ArgumentException("Amount must be greater than zero", nameof(amount));
+
+            var subcategory = await _subcategoryCostRepository.GetByIdSubCatCost(subCategoryId);
+
+            if (subcategory == null)
+                throw new KeyNotFoundException($"Subcategory with ID {subCategoryId} not found.");
+
+            subcategory.Amount += amount;
+
+            await _subcategoryCostRepository.UpdateSubCatCost(subcategory);
+        }
     }
 }

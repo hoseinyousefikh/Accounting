@@ -35,9 +35,7 @@ namespace App.Domain.Core.Accounting.Entities.Users
         public List<SubcategoryIncome> SubcategoryIncomes { get; set; }
         public List<Debtors> Debtors { get; set; }
         public List<Creditors> Creditorses { get; set; }
-        public List<AddDbts> AddDbts { get; set; }
-        public List<AddCapital> AddCapitals { get; set; }
-        public List<AddAssets> AddAssets { get; set; }
+       
         public List<Assets> Assetses { get; set; }
         public List<Bank> Banks { get; set; }
         public List<Capital> Capitals { get; set; }

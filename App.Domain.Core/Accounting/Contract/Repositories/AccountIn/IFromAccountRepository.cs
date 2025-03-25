@@ -1,5 +1,6 @@
 ﻿using App.Domain.Core.Accounting.Entities.AccountIn;
 using App.Domain.Core.Accounting.Entities.Accounts;
+using App.Domain.Core.Accounting.Entities.Accounts.Sub;
 using App.Domain.Core.Accounting.Entities.payment;
 using System;
 using System.Collections.Generic;
@@ -11,16 +12,16 @@ namespace App.Domain.Core.Accounting.Contract.Repositories.AccountIn
 {
     public interface IFromAccountRepository
     {
+        Task<FromAccount> GetFromAccountByIdAsync(int id);
         Task<List<Assets>> GetAllAssetsAsync();
         Task<List<Bank>> GetAllBanksAsync();
         Task<List<Capital>> GetAllCapitalsAsync();
-        Task<List<CategoryCost>> GetAllCategoryCostsAsync();
-        Task<List<CategoryIncome>> GetAllCategoryIncomesAsync();
         Task<List<Debts>> GetAllDebtsAsync();
         Task<List<Funds>> GetAllFundsAsync();
         Task<List<Persons>> GetAllPersonsAsync();
-        Task<List<Criticism>> GetAllCriticismsAsync();
         Task<int> AddFromAccountAsync(FromAccount fromAccount);
         Task UpdateFromAccountAsync(FromAccount fromAccount);
+        Task<List<Creditors>> GetAllCreditorsAsync();
+        Task<List<SubcategoryIncome>> GetAllSubCategoryIncomesAsync();
     }
 }

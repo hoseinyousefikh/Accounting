@@ -33,7 +33,6 @@ using App.Domain.Core.Accounting.Contract.Services.Reports;
 using App.Domain.Core.Accounting.Entities.Users;
 using App.Domain.Core.Accounting.Maper;
 using App.Domain.Services.Accounting.Services;
-using App.Domain.Services.Accounting.Services.AccountIn;
 using App.Domain.Services.Accounting.Services.Accounts;
 using App.Domain.Services.Accounting.Services.Accounts.Sub;
 using App.Domain.Services.Accounting.Services.Budgetings;
@@ -57,7 +56,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("AppDbContext");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString), ServiceLifetime.Scoped);
+
 builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -73,7 +73,6 @@ builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 }).AddRoles<IdentityRole<int>>()
   .AddEntityFrameworkStores<AppDbContext>();
 
-builder.Services.AddScoped<AppDbContext>();
 builder.Services.AddDistributedMemoryCache();  
 builder.Services.AddSession(options =>
 {
@@ -87,11 +86,8 @@ builder.Services.AddAutoMapper(typeof(ProjectProfile));
 
 //******************************************************************************
 builder.Services.AddScoped<IFromAccountRepository, FromAccountRepository>();
-builder.Services.AddScoped<IAddAssetsRepository, AddAssetsRepository>();
-builder.Services.AddScoped<IAddCapitalRepository, AddCapitalRepository>();
-builder.Services.AddScoped<IAddDbtsRepository, AddDbtsRepository>();
 builder.Services.AddScoped<ICreditorsRepository, CreditorsRepository>();
-builder.Services.AddScoped<IDebtorsRepository, DebtorsRepository>();
+//builder.Services.AddScoped<IDebtorsRepository, DebtorsRepository>();
 builder.Services.AddScoped<ISubcategoryCostRepository, SubcategoryCostRepository>();
 builder.Services.AddScoped<ISubcategoryIncomeRepository, SubcategoryIncomeRepository>();
 builder.Services.AddScoped<IAssetsRepository, AssetsRepository>();

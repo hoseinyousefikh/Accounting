@@ -21,10 +21,10 @@
                                 </div>
 
                                 <div class="collapse" id="collapseIncome">
-                                    @if (Model.IncomeOptions != null && Model.IncomeOptions.Any())
+                                    @if (Model.SubCategoryIncomeOptions != null && Model.SubCategoryIncomeOptions.Any())
                                     {
                                         <ul class="list-group">
-                                            @foreach (var item in Model.IncomeOptions)
+                                            @foreach (var item in Model.SubCategoryIncomeOptions)
                                             {
                                                 <li class="list-group-item">
                                                     <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 1 })">
@@ -89,8 +89,8 @@
                                             @foreach (var item in Model.AssetOptions)
                                             {
                                                 <li class="list-group-item">
-                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 3 })">
-                                                        @item.Name
+                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Title, Titr = 3 })">
+                                                        @item.Title
                                                     </a>
                                                 </li>
                                             }
@@ -151,8 +151,8 @@
                                             @foreach (var item in Model.DebtorOptions)
                                             {
                                                 <li class="list-group-item">
-                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 5 })">
-                                                        @item.Name
+                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Title, Titr = 5 })">
+                                                        @item.Title
                                                     </a>
                                                 </li>
                                             }
@@ -176,10 +176,10 @@
                                 </div>
 
                                 <div class="collapse" id="collapseCreditors">
-                                    @if (Model.CreditorOptions != null && Model.CreditorOptions.Any())
+                                    @if (Model.CreditorsOptions != null && Model.CreditorsOptions.Any())
                                     {
                                         <ul class="list-group">
-                                            @foreach (var item in Model.CreditorOptions)
+                                            @foreach (var item in Model.CreditorsOptions)
                                             {
                                                 <li class="list-group-item">
                                                     <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 6 })">
@@ -244,8 +244,8 @@
                                             @foreach (var item in Model.CapitalOptions)
                                             {
                                                 <li class="list-group-item">
-                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 8 })">
-                                                        @item.Name
+                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Title, Titr = 8 })">
+                                                        @item.Title
                                                     </a>
                                                 </li>
                                             }

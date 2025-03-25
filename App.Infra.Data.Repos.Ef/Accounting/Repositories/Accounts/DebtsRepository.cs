@@ -28,11 +28,10 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts
             var existingDebt = _debts.FirstOrDefault(d => d.Id == debt.Id);
             if (existingDebt != null)
             {
-                existingDebt.Name = debt.Name;
+                existingDebt.Title = debt.Title;
                 existingDebt.IsPublic = debt.IsPublic;
                 existingDebt.UserId = debt.UserId;
                 existingDebt.Users = debt.Users;
-                existingDebt.AddDbts = debt.AddDbts;
             }
             await Task.CompletedTask;
         }

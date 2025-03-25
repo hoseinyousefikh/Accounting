@@ -164,12 +164,12 @@ namespace AccountingMVC.Controllers
         {
             FromAccountCreateDto N = titr switch
             {
-                1 => new FromAccountCreateDto { CategoryIncomeId = fromAccountSubId },
+                1 => new FromAccountCreateDto { SubCategoryIncomeId = fromAccountSubId },  // تغییر به SubCategoryIncomeId
                 2 => new FromAccountCreateDto { FundsId = fromAccountSubId },
                 3 => new FromAccountCreateDto { AssetsId = fromAccountSubId },
                 4 => new FromAccountCreateDto { BankId = fromAccountSubId },
                 5 => new FromAccountCreateDto { DebtsId = fromAccountSubId },
-                6 => new FromAccountCreateDto { CategoryCostId = fromAccountSubId },
+                6 => new FromAccountCreateDto { CreditorsId = fromAccountSubId },  // تغییر به CreditorsId
                 7 => new FromAccountCreateDto { PersonsId = fromAccountSubId },
                 8 => new FromAccountCreateDto { CapitalId = fromAccountSubId },
                 _ => null
@@ -184,28 +184,27 @@ namespace AccountingMVC.Controllers
             return 0;
         }
 
+
         [HttpGet]
         public async Task<IActionResult> GetOptions()
         {
-            var incomeOptions = await _fromAccountAppService.GetAllCategoryIncomesAsync();
+            var subCategoryIncomeOptions = await _fromAccountAppService.GetAllSubCategoryIncomesAsync(); 
+            var creditorsOptions = await _fromAccountAppService.GetAllCreditorsAsync();  
             var fundOptions = await _fromAccountAppService.GetAllFundsAsync();
             var assetOptions = await _fromAccountAppService.GetAllAssetsAsync();
             var bankOptions = await _fromAccountAppService.GetAllBanksAsync();
             var debtorOptions = await _fromAccountAppService.GetAllDebtsAsync();
-            var creditorOptions = await _fromAccountAppService.GetAllCategoryCostsAsync();
-            var otherOptions = await _fromAccountAppService.GetAllCriticismsAsync();
             var personOptions = await _fromAccountAppService.GetAllPersonsAsync();
             var capitalOptions = await _fromAccountAppService.GetAllCapitalsAsync();
 
             var model = new OptionsViewModel
             {
-                IncomeOptions = incomeOptions,
+                SubCategoryIncomeOptions = subCategoryIncomeOptions, 
+                CreditorsOptions = creditorsOptions, 
                 FundOptions = fundOptions,
                 AssetOptions = assetOptions,
                 BankOptions = bankOptions,
                 DebtorOptions = debtorOptions,
-                CreditorOptions = creditorOptions,
-                OtherOptions = otherOptions,
                 PersonOptions = personOptions,
                 CapitalOptions = capitalOptions
             };

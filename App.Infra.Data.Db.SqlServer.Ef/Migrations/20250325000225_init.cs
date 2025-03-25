@@ -172,9 +172,12 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    personConditions = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -250,7 +253,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    personConditions = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -335,6 +342,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Descriptions = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
@@ -357,6 +365,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Descriptions = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
@@ -379,8 +388,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    personConditions = table.Column<int>(type: "int", nullable: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -424,6 +436,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     PersonConditions = table.Column<int>(type: "int", nullable: false),
@@ -514,38 +527,6 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AddAssets",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    personConditions = table.Column<int>(type: "int", nullable: false),
-                    AssetsId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AddAssets", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AddAssets_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_AddAssets_Assets_AssetsId",
-                        column: x => x.AssetsId,
-                        principalTable: "Assets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "IncomeLists",
                 columns: table => new
                 {
@@ -610,37 +591,6 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AddCapitals",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    personConditions = table.Column<int>(type: "int", nullable: false),
-                    CapitalId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AddCapitals", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AddCapitals_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_AddCapitals_Capitals_CapitalId",
-                        column: x => x.CapitalId,
-                        principalTable: "Capitals",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SubcategoryCosts",
                 columns: table => new
                 {
@@ -649,6 +599,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CategoryCostId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -677,6 +628,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CategoryIncomeId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -727,37 +679,6 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         column: x => x.ContactsId,
                         principalTable: "Contacts",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AddDbts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    personConditions = table.Column<int>(type: "int", nullable: false),
-                    DebtsId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AddDbts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AddDbts_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_AddDbts_Debts_DebtsId",
-                        column: x => x.DebtsId,
-                        principalTable: "Debts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -826,6 +747,66 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FromAccounts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AssetsId = table.Column<int>(type: "int", nullable: true),
+                    BankId = table.Column<int>(type: "int", nullable: true),
+                    CapitalId = table.Column<int>(type: "int", nullable: true),
+                    DebtsId = table.Column<int>(type: "int", nullable: true),
+                    FundsId = table.Column<int>(type: "int", nullable: true),
+                    PersonsId = table.Column<int>(type: "int", nullable: true),
+                    CreditorsId = table.Column<int>(type: "int", nullable: true),
+                    SubCategoryIncomeId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FromAccounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FromAccounts_Assets_AssetsId",
+                        column: x => x.AssetsId,
+                        principalTable: "Assets",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FromAccounts_Banks_BankId",
+                        column: x => x.BankId,
+                        principalTable: "Banks",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FromAccounts_Capitals_CapitalId",
+                        column: x => x.CapitalId,
+                        principalTable: "Capitals",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FromAccounts_Creditors_CreditorsId",
+                        column: x => x.CreditorsId,
+                        principalTable: "Creditors",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FromAccounts_Debts_DebtsId",
+                        column: x => x.DebtsId,
+                        principalTable: "Debts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FromAccounts_Funds_FundsId",
+                        column: x => x.FundsId,
+                        principalTable: "Funds",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FromAccounts_Persons_PersonsId",
+                        column: x => x.PersonsId,
+                        principalTable: "Persons",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FromAccounts_SubcategoryIncomes_SubCategoryIncomeId",
+                        column: x => x.SubCategoryIncomeId,
+                        principalTable: "SubcategoryIncomes",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Criticisms",
                 columns: table => new
                 {
@@ -859,6 +840,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         principalTable: "Events",
                         principalColumn: "Id");
                     table.ForeignKey(
+                        name: "FK_Criticisms_FromAccounts_FromAccountId",
+                        column: x => x.FromAccountId,
+                        principalTable: "FromAccounts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Criticisms_Members_MemderId",
                         column: x => x.MemderId,
                         principalTable: "Members",
@@ -882,73 +868,6 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         onDelete: ReferentialAction.SetNull);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "FromAccounts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AssetsId = table.Column<int>(type: "int", nullable: true),
-                    BankId = table.Column<int>(type: "int", nullable: true),
-                    CapitalId = table.Column<int>(type: "int", nullable: true),
-                    CategoryCostId = table.Column<int>(type: "int", nullable: true),
-                    CategoryIncomeId = table.Column<int>(type: "int", nullable: true),
-                    DebtsId = table.Column<int>(type: "int", nullable: true),
-                    FundsId = table.Column<int>(type: "int", nullable: true),
-                    PersonsId = table.Column<int>(type: "int", nullable: true),
-                    CriticismId = table.Column<int>(type: "int", nullable: true),
-                    CriticismsId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FromAccounts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FromAccounts_Assets_AssetsId",
-                        column: x => x.AssetsId,
-                        principalTable: "Assets",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_FromAccounts_Banks_BankId",
-                        column: x => x.BankId,
-                        principalTable: "Banks",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_FromAccounts_Capitals_CapitalId",
-                        column: x => x.CapitalId,
-                        principalTable: "Capitals",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_FromAccounts_CategoryCosts_CategoryCostId",
-                        column: x => x.CategoryCostId,
-                        principalTable: "CategoryCosts",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_FromAccounts_CategoryIncomes_CategoryIncomeId",
-                        column: x => x.CategoryIncomeId,
-                        principalTable: "CategoryIncomes",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_FromAccounts_Criticisms_CriticismsId",
-                        column: x => x.CriticismsId,
-                        principalTable: "Criticisms",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_FromAccounts_Debts_DebtsId",
-                        column: x => x.DebtsId,
-                        principalTable: "Debts",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_FromAccounts_Funds_FundsId",
-                        column: x => x.FundsId,
-                        principalTable: "Funds",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_FromAccounts_Persons_PersonsId",
-                        column: x => x.PersonsId,
-                        principalTable: "Persons",
-                        principalColumn: "Id");
-                });
-
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -963,8 +882,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "IsActive", "IsDeleted", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "55c82fea-0ed5-4b28-984a-65b326655a7b", "admin@example.com", true, "Admin", true, false, "User", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAENkB1vTk36pnBJhQqdVT/SIqr2KmuS7yfE8Pd2Gslxf2Ugu0Sx5B1q4+Ty1PAVzQTA==", "1234567890", false, 1, "499291e2-44ce-4f65-9939-6ae1a855b1fb", false, "admin" },
-                    { 2, 0, "cc756784-7722-4318-8fd5-87015951f02b", "employee@example.com", true, "Employee", true, false, "User", false, null, "EMPLOYEE@EXAMPLE.COM", "EMPLOYEE", "AQAAAAIAAYagAAAAEN5OjarMwttwx68th4/GLgV3vXV1IVWl6KodFOCwJT8QOLuTDXxLSRtcp2ft78krEA==", "0987654321", false, 2, "2f19bb59-bff4-4b8b-9f1d-290997e1e886", false, "employee" }
+                    { 1, 0, "a2f20316-520f-44c9-b88f-77457bf3096e", "admin@example.com", true, "Admin", true, false, "User", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEBqkkKahNjNVf1P97tIhVDl2qfuJjst37cxHGQ4H+p9+00yq+TxIjb2BRp7pYfkE6w==", "1234567890", false, 1, "8a381403-4670-41aa-85e7-8d8f47931b27", false, "admin" },
+                    { 2, 0, "97d39508-2c2f-458b-90de-6e61fd808928", "employee@example.com", true, "Employee", true, false, "User", false, null, "EMPLOYEE@EXAMPLE.COM", "EMPLOYEE", "AQAAAAIAAYagAAAAEPQ9bjQ331y1/5TIM9PWp5hNBWr9FxEU0/OXISVhPPXV1LMOHXAmtWempL90X4e5/A==", "0987654321", false, 2, "c0863d64-831b-4c86-9715-3b4a815d2af3", false, "employee" }
                 });
 
             migrationBuilder.InsertData(
@@ -1009,185 +928,155 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
 
             migrationBuilder.InsertData(
                 table: "Funds",
-                columns: new[] { "Id", "IsDeleted", "IsPublic", "Name", "PersonConditions", "UserId" },
+                columns: new[] { "Id", "Amount", "IsDeleted", "IsPublic", "Name", "PersonConditions", "UserId" },
                 values: new object[,]
                 {
-                    { 1, false, true, "کیف پول", 0, 1 },
-                    { 2, false, true, "گاو صندوق", 0, 1 },
-                    { 3, false, true, " منزل", 0, 1 }
+                    { 1, 0m, false, true, "کیف پول", 0, 1 },
+                    { 2, 0m, false, true, "گاو صندوق", 0, 1 },
+                    { 3, 0m, false, true, " منزل", 0, 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "SubcategoryCosts",
-                columns: new[] { "Id", "CategoryCostId", "IsPublic", "Name", "UserId" },
+                columns: new[] { "Id", "Amount", "CategoryCostId", "IsPublic", "Name", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 1, true, "تنقلات", 1 },
-                    { 2, 1, true, "گوشت قرمز", 1 },
-                    { 3, 1, true, "مرغ", 1 },
-                    { 4, 1, true, "ماهی و میگو", 1 },
-                    { 5, 1, true, "برنج", 1 },
-                    { 6, 1, true, "نان", 1 },
-                    { 7, 1, true, "لبنیات", 1 },
-                    { 8, 1, true, "نوشیدنی", 1 },
-                    { 9, 1, true, "حبوبات", 1 },
-                    { 10, 1, true, "غلات", 1 },
-                    { 11, 1, true, "میوه و تره بار", 1 },
-                    { 12, 1, true, "غذای بیرون", 1 },
-                    { 13, 1, true, "رستوران", 1 },
-                    { 14, 1, true, "کافی شاپ", 1 },
-                    { 15, 1, true, "سایر", 1 },
-                    { 16, 2, true, "قبض اب", 1 },
-                    { 17, 2, true, "قبض برق", 1 },
-                    { 18, 2, true, "قبض گاز", 1 },
-                    { 19, 2, true, "قبض تلفن", 1 },
-                    { 20, 2, true, "شارژ ساختمان", 1 },
-                    { 21, 2, true, "اجاره منزل", 1 },
-                    { 22, 2, true, "لوازم منزل", 1 },
-                    { 23, 2, true, "قبض شارژ موبایل", 1 },
-                    { 24, 2, true, "بیمه ساختمان", 1 },
-                    { 25, 2, true, "تعمیرات ساختمان", 1 },
-                    { 26, 2, true, "عوارض شهرداری", 1 },
-                    { 27, 2, true, "مالیات", 1 },
-                    { 28, 2, true, "سایر", 1 },
-                    { 29, 3, true, "خیاطی", 1 },
-                    { 30, 3, true, "خرید پوشاک", 1 },
-                    { 31, 3, true, "خشکشویی", 1 },
-                    { 32, 3, true, "سایر", 1 },
-                    { 33, 4, true, "بنزین", 1 },
-                    { 34, 4, true, "تعویض روغن", 1 },
-                    { 35, 4, true, "جرایم رانندگی", 1 },
-                    { 36, 4, true, "طرح ترافیک", 1 },
-                    { 37, 4, true, "پارکینگ", 1 },
-                    { 38, 4, true, "بیمه ثالث", 1 },
-                    { 39, 4, true, "بیمه بدنه", 1 },
-                    { 40, 4, true, "تغییرات اساسی", 1 },
-                    { 41, 4, true, "عوارض خودرو", 1 },
-                    { 42, 4, true, "سایر", 1 },
-                    { 43, 5, true, "کرایه اژانس", 1 },
-                    { 44, 5, true, "کرایه تاکسی", 1 },
-                    { 45, 5, true, "کرایه اتوبوس", 1 },
-                    { 46, 5, true, "کرایه مترو", 1 },
-                    { 47, 5, true, "سرویس", 1 },
-                    { 48, 5, true, "بلیط قطار", 1 },
-                    { 49, 5, true, "بلیط هواپیما", 1 },
-                    { 50, 5, true, "بلیط اتوبوس", 1 },
-                    { 51, 5, true, "کرایه هتل و محل اقامت", 1 },
-                    { 52, 6, true, "کلاس های ورزشی", 1 },
-                    { 53, 6, true, "شهریه مدرسه", 1 },
-                    { 54, 6, true, "شهریه دانشگاه", 1 },
-                    { 55, 6, true, "شهریه مهد کودک", 1 },
-                    { 56, 6, true, "لوازم التحریر", 1 },
-                    { 57, 6, true, "کلاس های آموزش", 1 },
-                    { 58, 6, true, "سایر", 1 },
-                    { 59, 7, true, "نرم افزار", 1 },
-                    { 60, 7, true, "کتاب", 1 },
-                    { 61, 7, true, "روزنامه و مجله", 1 },
-                    { 62, 7, true, "فیلم", 1 },
-                    { 63, 7, true, "سینما", 1 },
-                    { 64, 7, true, "موسیقی", 1 },
-                    { 65, 7, true, "تیاتر", 1 },
-                    { 66, 7, true, "کنسرت", 1 },
-                    { 67, 7, true, "اینترنت", 1 },
-                    { 68, 7, true, "بازی و سرگرمی", 1 },
-                    { 69, 7, true, "اماكن فرهنگی", 1 },
-                    { 70, 7, true, "سایر", 1 },
-                    { 71, 8, true, "سوغات", 1 },
-                    { 72, 8, true, "فرهنگی", 1 },
-                    { 73, 8, true, "لوازم", 1 },
-                    { 74, 8, true, "سایر", 1 },
-                    { 75, 9, true, "ویزیت پزشک", 1 },
-                    { 76, 9, true, "لوازم بهداشتی", 1 },
-                    { 77, 9, true, "لوازم ارایشی", 1 },
-                    { 78, 9, true, "لوازم پزشکی", 1 },
-                    { 79, 9, true, "دندان پزشکی", 1 },
-                    { 80, 9, true, "جراحی", 1 },
-                    { 81, 9, true, "بستری", 1 },
-                    { 82, 9, true, "آزمایشگاه", 1 },
-                    { 83, 9, true, "تصویر برداری", 1 },
-                    { 84, 9, true, "دارو", 1 },
-                    { 85, 9, true, "بیمه ها", 1 },
-                    { 86, 9, true, "سایر", 1 },
-                    { 87, 10, true, "هزینه های تشکیل پرونده", 1 },
-                    { 88, 10, true, "هزینه دادرسی", 1 },
-                    { 89, 10, true, "هزینه پست", 1 },
-                    { 90, 10, true, "هزینه مشاور", 1 },
-                    { 91, 10, true, "هزینه دعاوی", 1 },
-                    { 92, 10, true, "هزینه ثبت نام در کارگاه", 1 },
-                    { 93, 10, true, "سایر", 1 },
-                    { 94, 11, true, "زکات", 1 },
-                    { 95, 11, true, "خمس", 1 },
-                    { 96, 11, true, "صدقه", 1 },
-                    { 97, 11, true, "کفاره", 1 },
-                    { 98, 11, true, "نذری", 1 },
-                    { 99, 11, true, "وقف", 1 },
-                    { 100, 11, true, "سایر دیون اسلامی", 1 },
-                    { 101, 12, true, "سهام", 1 },
-                    { 102, 12, true, "اوراق قرضه", 1 },
-                    { 103, 12, true, "سرمایه گذاری در املاک", 1 },
-                    { 104, 12, true, "سرمایه گذاری در ارز", 1 },
-                    { 105, 12, true, "سرمایه گذاری در طلا", 1 },
-                    { 106, 12, true, "سرمایه گذاری در کریپتوکارنسی", 1 },
-                    { 107, 12, true, "سرمایه گذاری در صندوق های سرمایه گذاری", 1 },
-                    { 108, 12, true, "سایر سرمایه گذاری ها", 1 }
+                    { 1, 10000000m, 1, true, "تنقلات", 1 },
+                    { 2, 10000000m, 1, true, "گوشت قرمز", 1 },
+                    { 3, 10000000m, 1, true, "مرغ", 1 },
+                    { 4, 10000000m, 1, true, "ماهی و میگو", 1 },
+                    { 5, 10000000m, 1, true, "برنج", 1 },
+                    { 6, 10000000m, 1, true, "نان", 1 },
+                    { 7, 10000000m, 1, true, "لبنیات", 1 },
+                    { 8, 10000000m, 1, true, "نوشیدنی", 1 },
+                    { 9, 10000000m, 1, true, "حبوبات", 1 },
+                    { 10, 10000000m, 1, true, "غلات", 1 },
+                    { 11, 10000000m, 1, true, "میوه و تره بار", 1 },
+                    { 12, 10000000m, 1, true, "غذای بیرون", 1 },
+                    { 13, 10000000m, 1, true, "رستوران", 1 },
+                    { 14, 10000000m, 1, true, "کافی شاپ", 1 },
+                    { 15, 10000000m, 1, true, "سایر", 1 },
+                    { 16, 10000000m, 2, true, "قبض اب", 1 },
+                    { 17, 10000000m, 2, true, "قبض برق", 1 },
+                    { 18, 10000000m, 2, true, "قبض گاز", 1 },
+                    { 19, 10000000m, 2, true, "قبض تلفن", 1 },
+                    { 20, 10000000m, 2, true, "شارژ ساختمان", 1 },
+                    { 21, 10000000m, 2, true, "اجاره منزل", 1 },
+                    { 22, 10000000m, 2, true, "لوازم منزل", 1 },
+                    { 23, 10000000m, 2, true, "قبض شارژ موبایل", 1 },
+                    { 24, 10000000m, 2, true, "بیمه ساختمان", 1 },
+                    { 25, 10000000m, 2, true, "تعمیرات ساختمان", 1 },
+                    { 26, 10000000m, 2, true, "عوارض شهرداری", 1 },
+                    { 27, 10000000m, 2, true, "مالیات", 1 },
+                    { 28, 10000000m, 2, true, "سایر", 1 },
+                    { 29, 10000000m, 3, true, "خیاطی", 1 },
+                    { 30, 10000000m, 3, true, "خرید پوشاک", 1 },
+                    { 31, 10000000m, 3, true, "خشکشویی", 1 },
+                    { 32, 10000000m, 3, true, "سایر", 1 },
+                    { 33, 10000000m, 4, true, "بنزین", 1 },
+                    { 34, 10000000m, 4, true, "تعویض روغن", 1 },
+                    { 35, 10000000m, 4, true, "جرایم رانندگی", 1 },
+                    { 36, 10000000m, 4, true, "طرح ترافیک", 1 },
+                    { 37, 10000000m, 4, true, "پارکینگ", 1 },
+                    { 38, 10000000m, 4, true, "بیمه ثالث", 1 },
+                    { 39, 10000000m, 4, true, "بیمه بدنه", 1 },
+                    { 40, 10000000m, 4, true, "تغییرات اساسی", 1 },
+                    { 41, 10000000m, 4, true, "عوارض خودرو", 1 },
+                    { 42, 10000000m, 4, true, "سایر", 1 },
+                    { 43, 10000000m, 5, true, "کرایه اژانس", 1 },
+                    { 44, 10000000m, 5, true, "کرایه تاکسی", 1 },
+                    { 45, 10000000m, 5, true, "کرایه اتوبوس", 1 },
+                    { 46, 10000000m, 5, true, "کرایه مترو", 1 },
+                    { 47, 10000000m, 5, true, "سرویس", 1 },
+                    { 48, 10000000m, 5, true, "بلیط قطار", 1 },
+                    { 49, 10000000m, 5, true, "بلیط هواپیما", 1 },
+                    { 50, 10000000m, 5, true, "بلیط اتوبوس", 1 },
+                    { 51, 10000000m, 5, true, "کرایه هتل و محل اقامت", 1 },
+                    { 52, 10000000m, 6, true, "کلاس های ورزشی", 1 },
+                    { 53, 10000000m, 6, true, "شهریه مدرسه", 1 },
+                    { 54, 10000000m, 6, true, "شهریه دانشگاه", 1 },
+                    { 55, 10000000m, 6, true, "شهریه مهد کودک", 1 },
+                    { 56, 10000000m, 6, true, "لوازم التحریر", 1 },
+                    { 57, 10000000m, 6, true, "کلاس های آموزش", 1 },
+                    { 58, 10000000m, 6, true, "سایر", 1 },
+                    { 59, 10000000m, 7, true, "نرم افزار", 1 },
+                    { 60, 10000000m, 7, true, "کتاب", 1 },
+                    { 61, 10000000m, 7, true, "روزنامه و مجله", 1 },
+                    { 62, 10000000m, 7, true, "فیلم", 1 },
+                    { 63, 10000000m, 7, true, "سینما", 1 },
+                    { 64, 10000000m, 7, true, "موسیقی", 1 },
+                    { 65, 10000000m, 7, true, "تیاتر", 1 },
+                    { 66, 10000000m, 7, true, "کنسرت", 1 },
+                    { 67, 10000000m, 7, true, "اینترنت", 1 },
+                    { 68, 10000000m, 7, true, "بازی و سرگرمی", 1 },
+                    { 69, 10000000m, 7, true, "اماكن فرهنگی", 1 },
+                    { 70, 10000000m, 7, true, "سایر", 1 },
+                    { 71, 10000000m, 8, true, "سوغات", 1 },
+                    { 72, 10000000m, 8, true, "فرهنگی", 1 },
+                    { 73, 10000000m, 8, true, "لوازم", 1 },
+                    { 74, 10000000m, 8, true, "سایر", 1 },
+                    { 75, 10000000m, 9, true, "ویزیت پزشک", 1 },
+                    { 76, 10000000m, 9, true, "لوازم بهداشتی", 1 },
+                    { 77, 10000000m, 9, true, "لوازم ارایشی", 1 },
+                    { 78, 10000000m, 9, true, "لوازم پزشکی", 1 },
+                    { 79, 10000000m, 9, true, "دندان پزشکی", 1 },
+                    { 80, 10000000m, 9, true, "جراحی", 1 },
+                    { 81, 10000000m, 9, true, "بستری", 1 },
+                    { 82, 10000000m, 9, true, "آزمایشگاه", 1 },
+                    { 83, 10000000m, 9, true, "تصویر برداری", 1 },
+                    { 84, 10000000m, 9, true, "دارو", 1 },
+                    { 85, 10000000m, 9, true, "بیمه ها", 1 },
+                    { 86, 10000000m, 9, true, "سایر", 1 },
+                    { 87, 10000000m, 10, true, "هزینه های تشکیل پرونده", 1 },
+                    { 88, 10000000m, 10, true, "هزینه دادرسی", 1 },
+                    { 89, 10000000m, 10, true, "هزینه پست", 1 },
+                    { 90, 10000000m, 10, true, "هزینه مشاور", 1 },
+                    { 91, 10000000m, 10, true, "هزینه دعاوی", 1 },
+                    { 92, 10000000m, 10, true, "هزینه ثبت نام در کارگاه", 1 },
+                    { 93, 10000000m, 10, true, "سایر", 1 },
+                    { 94, 10000000m, 11, true, "زکات", 1 },
+                    { 95, 10000000m, 11, true, "خمس", 1 },
+                    { 96, 10000000m, 11, true, "صدقه", 1 },
+                    { 97, 10000000m, 11, true, "کفاره", 1 },
+                    { 98, 10000000m, 11, true, "نذری", 1 },
+                    { 99, 10000000m, 11, true, "وقف", 1 },
+                    { 100, 10000000m, 11, true, "سایر دیون اسلامی", 1 },
+                    { 101, 10000000m, 12, true, "سهام", 1 },
+                    { 102, 10000000m, 12, true, "اوراق قرضه", 1 },
+                    { 103, 10000000m, 12, true, "سرمایه گذاری در املاک", 1 },
+                    { 104, 10000000m, 12, true, "سرمایه گذاری در ارز", 1 },
+                    { 105, 10000000m, 12, true, "سرمایه گذاری در طلا", 1 },
+                    { 106, 10000000m, 12, true, "سرمایه گذاری در کریپتوکارنسی", 1 },
+                    { 107, 10000000m, 12, true, "سرمایه گذاری در صندوق های سرمایه گذاری", 1 },
+                    { 108, 10000000m, 12, true, "سایر سرمایه گذاری ها", 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "SubcategoryIncomes",
-                columns: new[] { "Id", "CategoryIncomeId", "IsPublic", "Name", "UserId" },
+                columns: new[] { "Id", "Amount", "CategoryIncomeId", "IsPublic", "Name", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 1, true, "حقوق ماهیانه", 1 },
-                    { 2, 1, true, "عیدی", 1 },
-                    { 3, 1, true, "پاداش", 1 },
-                    { 4, 1, true, "مزایا", 1 },
-                    { 5, 1, true, "سایر حقوق", 1 },
-                    { 6, 2, true, "لوازم", 1 },
-                    { 7, 2, true, "مسکن", 1 },
-                    { 8, 2, true, "خودرو", 1 },
-                    { 9, 2, true, "سایر فروش", 1 },
-                    { 10, 3, true, "سود سپرده بانکی", 1 },
-                    { 11, 3, true, "سود اوراق مشارکت", 1 },
-                    { 12, 3, true, "سود سهام", 1 },
-                    { 13, 3, true, "سایر سود سرمایه", 1 },
-                    { 14, 4, true, "یارانه نقدی", 1 },
-                    { 15, 4, true, "هدیه", 1 },
-                    { 16, 4, true, "سایر یارانه و هدایا", 1 },
-                    { 17, 5, true, "اجاره آپارتمان", 1 },
-                    { 18, 5, true, "اجاره مغازه", 1 },
-                    { 19, 5, true, "اجاره شرکت", 1 },
-                    { 20, 5, true, "سایر درآمد اجاره", 1 }
+                    { 1, 10000000m, 1, true, "حقوق ماهیانه", 1 },
+                    { 2, 10000000m, 1, true, "عیدی", 1 },
+                    { 3, 10000000m, 1, true, "پاداش", 1 },
+                    { 4, 10000000m, 1, true, "مزایا", 1 },
+                    { 5, 10000000m, 1, true, "سایر حقوق", 1 },
+                    { 6, 10000000m, 2, true, "لوازم", 1 },
+                    { 7, 10000000m, 2, true, "مسکن", 1 },
+                    { 8, 10000000m, 2, true, "خودرو", 1 },
+                    { 9, 10000000m, 2, true, "سایر فروش", 1 },
+                    { 10, 10000000m, 3, true, "سود سپرده بانکی", 1 },
+                    { 11, 10000000m, 3, true, "سود اوراق مشارکت", 1 },
+                    { 12, 10000000m, 3, true, "سود سهام", 1 },
+                    { 13, 10000000m, 3, true, "سایر سود سرمایه", 1 },
+                    { 14, 10000000m, 4, true, "یارانه نقدی", 1 },
+                    { 15, 10000000m, 4, true, "هدیه", 1 },
+                    { 16, 10000000m, 4, true, "سایر یارانه و هدایا", 1 },
+                    { 17, 10000000m, 5, true, "اجاره آپارتمان", 1 },
+                    { 18, 10000000m, 5, true, "اجاره مغازه", 1 },
+                    { 19, 10000000m, 5, true, "اجاره شرکت", 1 },
+                    { 20, 10000000m, 5, true, "سایر درآمد اجاره", 1 }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AddAssets_AssetsId",
-                table: "AddAssets",
-                column: "AssetsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AddAssets_UserId",
-                table: "AddAssets",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AddCapitals_CapitalId",
-                table: "AddCapitals",
-                column: "CapitalId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AddCapitals_UserId",
-                table: "AddCapitals",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AddDbts_DebtsId",
-                table: "AddDbts",
-                column: "DebtsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AddDbts_UserId",
-                table: "AddDbts",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -1369,19 +1258,9 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 column: "CapitalId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FromAccounts_CategoryCostId",
+                name: "IX_FromAccounts_CreditorsId",
                 table: "FromAccounts",
-                column: "CategoryCostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FromAccounts_CategoryIncomeId",
-                table: "FromAccounts",
-                column: "CategoryIncomeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FromAccounts_CriticismsId",
-                table: "FromAccounts",
-                column: "CriticismsId");
+                column: "CreditorsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FromAccounts_DebtsId",
@@ -1397,6 +1276,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 name: "IX_FromAccounts_PersonsId",
                 table: "FromAccounts",
                 column: "PersonsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FromAccounts_SubCategoryIncomeId",
+                table: "FromAccounts",
+                column: "SubCategoryIncomeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Funds_UserId",
@@ -1467,127 +1351,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 name: "IX_SubcategoryIncomes_UserId",
                 table: "SubcategoryIncomes",
                 column: "UserId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Criticisms_FromAccounts_FromAccountId",
-                table: "Criticisms",
-                column: "FromAccountId",
-                principalTable: "FromAccounts",
-                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Assets_AspNetUsers_UserId",
-                table: "Assets");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Banks_AspNetUsers_UserId",
-                table: "Banks");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Capitals_AspNetUsers_UserId",
-                table: "Capitals");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_CategoryCosts_AspNetUsers_UserId",
-                table: "CategoryCosts");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_CategoryIncomes_AspNetUsers_UserId",
-                table: "CategoryIncomes");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Contacts_AspNetUsers_UserId",
-                table: "Contacts");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Criticisms_AspNetUsers_UserId",
-                table: "Criticisms");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Debts_AspNetUsers_UserId",
-                table: "Debts");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Events_AspNetUsers_UserId",
-                table: "Events");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Funds_AspNetUsers_UserId",
-                table: "Funds");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Members_AspNetUsers_UserId",
-                table: "Members");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Persons_AspNetUsers_UserId",
-                table: "Persons");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Projects_AspNetUsers_UserId",
-                table: "Projects");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_SubcategoryCosts_AspNetUsers_UserId",
-                table: "SubcategoryCosts");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_SubcategoryIncomes_AspNetUsers_UserId",
-                table: "SubcategoryIncomes");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_FromAccounts_Assets_AssetsId",
-                table: "FromAccounts");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_FromAccounts_Capitals_CapitalId",
-                table: "FromAccounts");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_FromAccounts_Debts_DebtsId",
-                table: "FromAccounts");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_FromAccounts_Banks_BankId",
-                table: "FromAccounts");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Criticisms_Events_EventId",
-                table: "Criticisms");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Criticisms_Members_MemderId",
-                table: "Criticisms");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Criticisms_Projects_ProjectId",
-                table: "Criticisms");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Criticisms_SubcategoryCosts_SubcategoryCostId",
-                table: "Criticisms");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Criticisms_SubcategoryIncomes_SubcategoryIncomeId",
-                table: "Criticisms");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Criticisms_FromAccounts_FromAccountId",
-                table: "Criticisms");
-
-            migrationBuilder.DropTable(
-                name: "AddAssets");
-
-            migrationBuilder.DropTable(
-                name: "AddCapitals");
-
-            migrationBuilder.DropTable(
-                name: "AddDbts");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -1610,7 +1378,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 name: "Checks");
 
             migrationBuilder.DropTable(
-                name: "Creditors");
+                name: "Criticisms");
 
             migrationBuilder.DropTable(
                 name: "Debtors");
@@ -1628,22 +1396,10 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Assets");
-
-            migrationBuilder.DropTable(
-                name: "Capitals");
-
-            migrationBuilder.DropTable(
-                name: "Debts");
-
-            migrationBuilder.DropTable(
-                name: "Banks");
-
-            migrationBuilder.DropTable(
                 name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "FromAccounts");
 
             migrationBuilder.DropTable(
                 name: "Members");
@@ -1655,19 +1411,19 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 name: "SubcategoryCosts");
 
             migrationBuilder.DropTable(
-                name: "SubcategoryIncomes");
+                name: "Assets");
 
             migrationBuilder.DropTable(
-                name: "FromAccounts");
+                name: "Banks");
 
             migrationBuilder.DropTable(
-                name: "CategoryCosts");
+                name: "Capitals");
 
             migrationBuilder.DropTable(
-                name: "CategoryIncomes");
+                name: "Creditors");
 
             migrationBuilder.DropTable(
-                name: "Criticisms");
+                name: "Debts");
 
             migrationBuilder.DropTable(
                 name: "Funds");
@@ -1676,7 +1432,19 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 name: "Persons");
 
             migrationBuilder.DropTable(
+                name: "SubcategoryIncomes");
+
+            migrationBuilder.DropTable(
+                name: "CategoryCosts");
+
+            migrationBuilder.DropTable(
                 name: "Contacts");
+
+            migrationBuilder.DropTable(
+                name: "CategoryIncomes");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

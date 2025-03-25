@@ -2,12 +2,9 @@
 using App.Domain.Core.Accounting.Contract.Services.Accounts;
 using App.Domain.Core.Accounting.DTO;
 using App.Domain.Core.Accounting.Entities.Accounts.Sub;
-using App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts.Sub;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace App.Domain.Services.Accounting.Services.Accounts.Sub
@@ -25,13 +22,15 @@ namespace App.Domain.Services.Accounting.Services.Accounts.Sub
 
         public async Task<List<SubcategoryIncomeDto>> GetBySubCatIncomeUserIdAsync(int userId)
         {
-            var subcategoryIncomes = await _subcategoryIncomeRepository.GetBySubCatIncomeUserId(userId);
+            var subcategoryIncomes = await _subcategoryIncomeRepository.GetBySubCatIncomeUserIdAsync(userId);
             return _mapper.Map<List<SubcategoryIncomeDto>>(subcategoryIncomes);
         }
-        public async Task<List<SubcategoryIncome>> GetSubcategoryIncomesByCategoryId(int categoryIncomeId)
+
+        public async Task<List<SubcategoryIncome>> GetSubcategoryIncomesByCategoryIdAsync(int categoryIncomeId)
         {
-            return await _subcategoryIncomeRepository.GetByCategoryIncomeId(categoryIncomeId);
+            return await _subcategoryIncomeRepository.GetByCategoryIncomeIdAsync(categoryIncomeId);
         }
+
         public async Task<SubcategoryIncome> GetByIdSubCatIncomeAsync(int id)
         {
             if (id <= 0)
@@ -39,7 +38,8 @@ namespace App.Domain.Services.Accounting.Services.Accounts.Sub
                 throw new ArgumentException("Invalid subcategory ID", nameof(id));
             }
 
-            var subcategory = await _subcategoryIncomeRepository.GetBySubCatIncomeId(id);
+            // Ensuring the async operation is awaited
+            var subcategory = await _subcategoryIncomeRepository.GetBySubCatIncomeIdAsync(id);
 
             if (subcategory == null)
             {

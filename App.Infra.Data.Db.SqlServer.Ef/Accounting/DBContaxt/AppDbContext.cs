@@ -44,9 +44,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Accounting.DBContaxt
         public DbSet<Debts> Debts { get; set; }
         public DbSet<Funds> Funds { get; set; }
         public DbSet<Persons> Persons { get; set; }
-        public DbSet<AddAssets> AddAssets { get; set; }
-        public DbSet<AddCapital> AddCapitals { get; set; }
-        public DbSet<AddDbts> AddDbts { get; set; }
+       
         public DbSet<Creditors> Creditorses { get; set; }
         public DbSet<Debtors> Debtorses { get; set; }
         public DbSet<SubcategoryCost> SubcategoryCosts { get; set; }
@@ -94,11 +92,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Accounting.DBContaxt
             modelBuilder.ApplyConfiguration(new BudgetingConfiguration());
             modelBuilder.ApplyConfiguration(new BankConfiguration());
             modelBuilder.ApplyConfiguration(new AssetsConfiguration());
-            modelBuilder.ApplyConfiguration(new AddDbtsConfiguration());
-            modelBuilder.ApplyConfiguration(new AddAssetsConfiguration());
-            modelBuilder.ApplyConfiguration(new AddCapitalConfiguration()); 
-
-
+           
         }
     }
 

@@ -17,6 +17,11 @@ namespace App.Domain.AppServices.Accounting.AppServices.Accounts.Sub
             _subCategoryCostService = subCategoryCostService;
         }
 
+        public async Task AddAmountToSubCategoryCostAsync(int subCategoryId, decimal amount)
+        {
+            await _subCategoryCostService.AddAmountToSubCategoryCostAsync(subCategoryId, amount);
+        }
+
         public Task<SubcategoryCost> GetByIdSubCatCostAsync(int id)
         {
             return _subCategoryCostService.GetByIdSubCatCostAsync(id);

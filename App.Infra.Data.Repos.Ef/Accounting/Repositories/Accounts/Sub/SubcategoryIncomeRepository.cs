@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts.Sub
@@ -16,57 +15,75 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts.Sub
 
         public SubcategoryIncomeRepository(AppDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task AddSubCatIncome(SubcategoryIncome subcategoryIncome)
+        // Add a new SubcategoryIncome record asynchronously
+        public async Task AddSubCatIncomeAsync(SubcategoryIncome subcategoryIncome)
         {
+            if (subcategoryIncome == null)
+                throw new ArgumentNullException(nameof(subcategoryIncome), "SubcategoryIncome cannot be null.");
+
             await _context.SubcategoryIncomes.AddAsync(subcategoryIncome);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateSubCatIncome(SubcategoryIncome subcategoryIncome)
+        // Update an existing SubcategoryIncome record asynchronously
+        public async Task UpdateSubCatIncomeAsync(SubcategoryIncome subcategoryIncome)
         {
+            if (subcategoryIncome == null)
+                throw new ArgumentNullException(nameof(subcategoryIncome), "SubcategoryIncome cannot be null.");
+
             _context.SubcategoryIncomes.Update(subcategoryIncome);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteSubCatIncome(int id)
+        // Soft delete a SubcategoryIncome record asynchronously by marking it as deleted
+        public async Task DeleteSubCatIncomeAsync(int id)
         {
             var subcategoryIncome = await _context.SubcategoryIncomes.FindAsync(id);
-            if (subcategoryIncome != null)
+            if (subcategoryIncome == null)
             {
-                subcategoryIncome.IsDeleted = true;
-                await _context.SaveChangesAsync();
+                throw new KeyNotFoundException($"SubcategoryIncome with ID {id} not found.");
             }
+
+            // Mark as deleted if soft delete is needed
+            subcategoryIncome.IsDeleted = true;
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<List<SubcategoryIncome>> GetAllSubCatIncome()
+        // Retrieve all SubcategoryIncome records asynchronously
+        public async Task<List<SubcategoryIncome>> GetAllSubCatIncomeAsync()
         {
             return await _context.SubcategoryIncomes
                 .Where(s => !s.IsDeleted)
                 .ToListAsync();
         }
 
-        public async Task<SubcategoryIncome> GetBySubCatIncomeId(int id)
+        // Retrieve a specific SubcategoryIncome record by ID asynchronously
+        public async Task<SubcategoryIncome> GetBySubCatIncomeIdAsync(int id)
         {
-            var x = await _context.SubcategoryIncomes
+            var subcategoryIncome = await _context.SubcategoryIncomes
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
-            if (x != null)
+
+            if (subcategoryIncome == null)
             {
-                return x;
+                throw new KeyNotFoundException($"SubcategoryIncome with ID {id} not found.");
             }
-            throw new Exception("is null");
+
+            return subcategoryIncome;
         }
-        public async Task<List<SubcategoryIncome>> GetByCategoryIncomeId(int categoryIncomeId)
+
+        // Retrieve SubcategoryIncome records by CategoryIncomeId asynchronously
+        public async Task<List<SubcategoryIncome>> GetByCategoryIncomeIdAsync(int categoryIncomeId)
         {
             return await _context.SubcategoryIncomes
                 .Where(s => s.CategoryIncomeId == categoryIncomeId && !s.IsDeleted)
                 .ToListAsync();
         }
 
-
-        public async Task<List<SubcategoryIncome>> GetBySubCatIncomeUserId(int userId)
+        // Retrieve SubcategoryIncome records by UserId asynchronously
+        public async Task<List<SubcategoryIncome>> GetBySubCatIncomeUserIdAsync(int userId)
         {
             return await _context.SubcategoryIncomes
                 .Where(s => s.UserId == userId && !s.IsDeleted)

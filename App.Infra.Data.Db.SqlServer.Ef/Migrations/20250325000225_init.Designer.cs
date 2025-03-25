@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250321142413_init")]
+    [Migration("20250325000225_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -42,16 +42,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     b.Property<int?>("CapitalId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategoryCostId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CategoryIncomeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CriticismId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CriticismsId")
+                    b.Property<int?>("CreditorsId")
                         .HasColumnType("int");
 
                     b.Property<int?>("DebtsId")
@@ -63,6 +54,9 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     b.Property<int?>("PersonsId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SubCategoryIncomeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AssetsId");
@@ -71,17 +65,15 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
 
                     b.HasIndex("CapitalId");
 
-                    b.HasIndex("CategoryCostId");
-
-                    b.HasIndex("CategoryIncomeId");
-
-                    b.HasIndex("CriticismsId");
+                    b.HasIndex("CreditorsId");
 
                     b.HasIndex("DebtsId");
 
                     b.HasIndex("FundsId");
 
                     b.HasIndex("PersonsId");
+
+                    b.HasIndex("SubCategoryIncomeId");
 
                     b.ToTable("FromAccounts", (string)null);
                 });
@@ -94,18 +86,27 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("personConditions")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -172,12 +173,24 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("personConditions")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -401,18 +414,27 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("personConditions")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -429,6 +451,9 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -457,6 +482,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 1,
+                            Amount = 0m,
                             IsDeleted = false,
                             IsPublic = true,
                             Name = "کیف پول",
@@ -466,6 +492,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 2,
+                            Amount = 0m,
                             IsDeleted = false,
                             IsPublic = true,
                             Name = "گاو صندوق",
@@ -475,6 +502,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 3,
+                            Amount = 0m,
                             IsDeleted = false,
                             IsPublic = true,
                             Name = " منزل",
@@ -538,132 +566,6 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     b.ToTable("Persons");
                 });
 
-            modelBuilder.Entity("App.Domain.Core.Accounting.Entities.Accounts.Sub.AddAssets", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<int>("AssetsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("personConditions")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetsId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AddAssets", (string)null);
-                });
-
-            modelBuilder.Entity("App.Domain.Core.Accounting.Entities.Accounts.Sub.AddCapital", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<int>("CapitalId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("personConditions")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CapitalId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AddCapitals", (string)null);
-                });
-
-            modelBuilder.Entity("App.Domain.Core.Accounting.Entities.Accounts.Sub.AddDbts", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<int>("DebtsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("personConditions")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DebtsId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AddDbts", (string)null);
-                });
-
             modelBuilder.Entity("App.Domain.Core.Accounting.Entities.Accounts.Sub.Creditors", b =>
                 {
                     b.Property<int>("Id")
@@ -681,6 +583,10 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -710,6 +616,10 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -727,6 +637,9 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("CategoryCostId")
                         .HasColumnType("int");
@@ -761,6 +674,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 1,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -770,6 +684,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 2,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -779,6 +694,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 3,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -788,6 +704,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 4,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -797,6 +714,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 5,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -806,6 +724,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 6,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -815,6 +734,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 7,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -824,6 +744,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 8,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -833,6 +754,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 9,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -842,6 +764,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 10,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -851,6 +774,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 11,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -860,6 +784,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 12,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -869,6 +794,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 13,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -878,6 +804,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 14,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -887,6 +814,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 15,
+                            Amount = 10000000m,
                             CategoryCostId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -896,6 +824,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 16,
+                            Amount = 10000000m,
                             CategoryCostId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -905,6 +834,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 17,
+                            Amount = 10000000m,
                             CategoryCostId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -914,6 +844,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 18,
+                            Amount = 10000000m,
                             CategoryCostId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -923,6 +854,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 19,
+                            Amount = 10000000m,
                             CategoryCostId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -932,6 +864,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 20,
+                            Amount = 10000000m,
                             CategoryCostId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -941,6 +874,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 21,
+                            Amount = 10000000m,
                             CategoryCostId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -950,6 +884,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 22,
+                            Amount = 10000000m,
                             CategoryCostId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -959,6 +894,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 23,
+                            Amount = 10000000m,
                             CategoryCostId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -968,6 +904,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 24,
+                            Amount = 10000000m,
                             CategoryCostId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -977,6 +914,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 25,
+                            Amount = 10000000m,
                             CategoryCostId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -986,6 +924,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 26,
+                            Amount = 10000000m,
                             CategoryCostId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -995,6 +934,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 27,
+                            Amount = 10000000m,
                             CategoryCostId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1004,6 +944,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 28,
+                            Amount = 10000000m,
                             CategoryCostId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1013,6 +954,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 29,
+                            Amount = 10000000m,
                             CategoryCostId = 3,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1022,6 +964,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 30,
+                            Amount = 10000000m,
                             CategoryCostId = 3,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1031,6 +974,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 31,
+                            Amount = 10000000m,
                             CategoryCostId = 3,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1040,6 +984,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 32,
+                            Amount = 10000000m,
                             CategoryCostId = 3,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1049,6 +994,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 33,
+                            Amount = 10000000m,
                             CategoryCostId = 4,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1058,6 +1004,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 34,
+                            Amount = 10000000m,
                             CategoryCostId = 4,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1067,6 +1014,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 35,
+                            Amount = 10000000m,
                             CategoryCostId = 4,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1076,6 +1024,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 36,
+                            Amount = 10000000m,
                             CategoryCostId = 4,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1085,6 +1034,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 37,
+                            Amount = 10000000m,
                             CategoryCostId = 4,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1094,6 +1044,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 38,
+                            Amount = 10000000m,
                             CategoryCostId = 4,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1103,6 +1054,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 39,
+                            Amount = 10000000m,
                             CategoryCostId = 4,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1112,6 +1064,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 40,
+                            Amount = 10000000m,
                             CategoryCostId = 4,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1121,6 +1074,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 41,
+                            Amount = 10000000m,
                             CategoryCostId = 4,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1130,6 +1084,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 42,
+                            Amount = 10000000m,
                             CategoryCostId = 4,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1139,6 +1094,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 43,
+                            Amount = 10000000m,
                             CategoryCostId = 5,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1148,6 +1104,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 44,
+                            Amount = 10000000m,
                             CategoryCostId = 5,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1157,6 +1114,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 45,
+                            Amount = 10000000m,
                             CategoryCostId = 5,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1166,6 +1124,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 46,
+                            Amount = 10000000m,
                             CategoryCostId = 5,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1175,6 +1134,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 47,
+                            Amount = 10000000m,
                             CategoryCostId = 5,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1184,6 +1144,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 48,
+                            Amount = 10000000m,
                             CategoryCostId = 5,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1193,6 +1154,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 49,
+                            Amount = 10000000m,
                             CategoryCostId = 5,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1202,6 +1164,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 50,
+                            Amount = 10000000m,
                             CategoryCostId = 5,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1211,6 +1174,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 51,
+                            Amount = 10000000m,
                             CategoryCostId = 5,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1220,6 +1184,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 52,
+                            Amount = 10000000m,
                             CategoryCostId = 6,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1229,6 +1194,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 53,
+                            Amount = 10000000m,
                             CategoryCostId = 6,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1238,6 +1204,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 54,
+                            Amount = 10000000m,
                             CategoryCostId = 6,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1247,6 +1214,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 55,
+                            Amount = 10000000m,
                             CategoryCostId = 6,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1256,6 +1224,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 56,
+                            Amount = 10000000m,
                             CategoryCostId = 6,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1265,6 +1234,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 57,
+                            Amount = 10000000m,
                             CategoryCostId = 6,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1274,6 +1244,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 58,
+                            Amount = 10000000m,
                             CategoryCostId = 6,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1283,6 +1254,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 59,
+                            Amount = 10000000m,
                             CategoryCostId = 7,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1292,6 +1264,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 60,
+                            Amount = 10000000m,
                             CategoryCostId = 7,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1301,6 +1274,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 61,
+                            Amount = 10000000m,
                             CategoryCostId = 7,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1310,6 +1284,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 62,
+                            Amount = 10000000m,
                             CategoryCostId = 7,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1319,6 +1294,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 63,
+                            Amount = 10000000m,
                             CategoryCostId = 7,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1328,6 +1304,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 64,
+                            Amount = 10000000m,
                             CategoryCostId = 7,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1337,6 +1314,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 65,
+                            Amount = 10000000m,
                             CategoryCostId = 7,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1346,6 +1324,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 66,
+                            Amount = 10000000m,
                             CategoryCostId = 7,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1355,6 +1334,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 67,
+                            Amount = 10000000m,
                             CategoryCostId = 7,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1364,6 +1344,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 68,
+                            Amount = 10000000m,
                             CategoryCostId = 7,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1373,6 +1354,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 69,
+                            Amount = 10000000m,
                             CategoryCostId = 7,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1382,6 +1364,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 70,
+                            Amount = 10000000m,
                             CategoryCostId = 7,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1391,6 +1374,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 71,
+                            Amount = 10000000m,
                             CategoryCostId = 8,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1400,6 +1384,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 72,
+                            Amount = 10000000m,
                             CategoryCostId = 8,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1409,6 +1394,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 73,
+                            Amount = 10000000m,
                             CategoryCostId = 8,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1418,6 +1404,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 74,
+                            Amount = 10000000m,
                             CategoryCostId = 8,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1427,6 +1414,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 75,
+                            Amount = 10000000m,
                             CategoryCostId = 9,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1436,6 +1424,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 76,
+                            Amount = 10000000m,
                             CategoryCostId = 9,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1445,6 +1434,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 77,
+                            Amount = 10000000m,
                             CategoryCostId = 9,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1454,6 +1444,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 78,
+                            Amount = 10000000m,
                             CategoryCostId = 9,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1463,6 +1454,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 79,
+                            Amount = 10000000m,
                             CategoryCostId = 9,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1472,6 +1464,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 80,
+                            Amount = 10000000m,
                             CategoryCostId = 9,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1481,6 +1474,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 81,
+                            Amount = 10000000m,
                             CategoryCostId = 9,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1490,6 +1484,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 82,
+                            Amount = 10000000m,
                             CategoryCostId = 9,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1499,6 +1494,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 83,
+                            Amount = 10000000m,
                             CategoryCostId = 9,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1508,6 +1504,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 84,
+                            Amount = 10000000m,
                             CategoryCostId = 9,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1517,6 +1514,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 85,
+                            Amount = 10000000m,
                             CategoryCostId = 9,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1526,6 +1524,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 86,
+                            Amount = 10000000m,
                             CategoryCostId = 9,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1535,6 +1534,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 87,
+                            Amount = 10000000m,
                             CategoryCostId = 10,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1544,6 +1544,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 88,
+                            Amount = 10000000m,
                             CategoryCostId = 10,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1553,6 +1554,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 89,
+                            Amount = 10000000m,
                             CategoryCostId = 10,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1562,6 +1564,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 90,
+                            Amount = 10000000m,
                             CategoryCostId = 10,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1571,6 +1574,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 91,
+                            Amount = 10000000m,
                             CategoryCostId = 10,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1580,6 +1584,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 92,
+                            Amount = 10000000m,
                             CategoryCostId = 10,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1589,6 +1594,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 93,
+                            Amount = 10000000m,
                             CategoryCostId = 10,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1598,6 +1604,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 94,
+                            Amount = 10000000m,
                             CategoryCostId = 11,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1607,6 +1614,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 95,
+                            Amount = 10000000m,
                             CategoryCostId = 11,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1616,6 +1624,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 96,
+                            Amount = 10000000m,
                             CategoryCostId = 11,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1625,6 +1634,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 97,
+                            Amount = 10000000m,
                             CategoryCostId = 11,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1634,6 +1644,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 98,
+                            Amount = 10000000m,
                             CategoryCostId = 11,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1643,6 +1654,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 99,
+                            Amount = 10000000m,
                             CategoryCostId = 11,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1652,6 +1664,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 100,
+                            Amount = 10000000m,
                             CategoryCostId = 11,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1661,6 +1674,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 101,
+                            Amount = 10000000m,
                             CategoryCostId = 12,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1670,6 +1684,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 102,
+                            Amount = 10000000m,
                             CategoryCostId = 12,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1679,6 +1694,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 103,
+                            Amount = 10000000m,
                             CategoryCostId = 12,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1688,6 +1704,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 104,
+                            Amount = 10000000m,
                             CategoryCostId = 12,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1697,6 +1714,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 105,
+                            Amount = 10000000m,
                             CategoryCostId = 12,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1706,6 +1724,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 106,
+                            Amount = 10000000m,
                             CategoryCostId = 12,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1715,6 +1734,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 107,
+                            Amount = 10000000m,
                             CategoryCostId = 12,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1724,6 +1744,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 108,
+                            Amount = 10000000m,
                             CategoryCostId = 12,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1739,6 +1760,9 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("CategoryIncomeId")
                         .HasColumnType("int");
@@ -1773,6 +1797,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 1,
+                            Amount = 10000000m,
                             CategoryIncomeId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1782,6 +1807,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 2,
+                            Amount = 10000000m,
                             CategoryIncomeId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1791,6 +1817,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 3,
+                            Amount = 10000000m,
                             CategoryIncomeId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1800,6 +1827,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 4,
+                            Amount = 10000000m,
                             CategoryIncomeId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1809,6 +1837,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 5,
+                            Amount = 10000000m,
                             CategoryIncomeId = 1,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1818,6 +1847,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 6,
+                            Amount = 10000000m,
                             CategoryIncomeId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1827,6 +1857,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 7,
+                            Amount = 10000000m,
                             CategoryIncomeId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1836,6 +1867,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 8,
+                            Amount = 10000000m,
                             CategoryIncomeId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1845,6 +1877,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 9,
+                            Amount = 10000000m,
                             CategoryIncomeId = 2,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1854,6 +1887,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 10,
+                            Amount = 10000000m,
                             CategoryIncomeId = 3,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1863,6 +1897,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 11,
+                            Amount = 10000000m,
                             CategoryIncomeId = 3,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1872,6 +1907,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 12,
+                            Amount = 10000000m,
                             CategoryIncomeId = 3,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1881,6 +1917,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 13,
+                            Amount = 10000000m,
                             CategoryIncomeId = 3,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1890,6 +1927,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 14,
+                            Amount = 10000000m,
                             CategoryIncomeId = 4,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1899,6 +1937,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 15,
+                            Amount = 10000000m,
                             CategoryIncomeId = 4,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1908,6 +1947,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 16,
+                            Amount = 10000000m,
                             CategoryIncomeId = 4,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1917,6 +1957,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 17,
+                            Amount = 10000000m,
                             CategoryIncomeId = 5,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1926,6 +1967,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 18,
+                            Amount = 10000000m,
                             CategoryIncomeId = 5,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1935,6 +1977,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 19,
+                            Amount = 10000000m,
                             CategoryIncomeId = 5,
                             IsDeleted = false,
                             IsPublic = true,
@@ -1944,6 +1987,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         new
                         {
                             Id = 20,
+                            Amount = 10000000m,
                             CategoryIncomeId = 5,
                             IsDeleted = false,
                             IsPublic = true,
@@ -2364,7 +2408,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "55c82fea-0ed5-4b28-984a-65b326655a7b",
+                            ConcurrencyStamp = "a2f20316-520f-44c9-b88f-77457bf3096e",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -2375,11 +2419,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAENkB1vTk36pnBJhQqdVT/SIqr2KmuS7yfE8Pd2Gslxf2Ugu0Sx5B1q4+Ty1PAVzQTA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBqkkKahNjNVf1P97tIhVDl2qfuJjst37cxHGQ4H+p9+00yq+TxIjb2BRp7pYfkE6w==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
-                            SecurityStamp = "499291e2-44ce-4f65-9939-6ae1a855b1fb",
+                            SecurityStamp = "8a381403-4670-41aa-85e7-8d8f47931b27",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -2387,7 +2431,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cc756784-7722-4318-8fd5-87015951f02b",
+                            ConcurrencyStamp = "97d39508-2c2f-458b-90de-6e61fd808928",
                             Email = "employee@example.com",
                             EmailConfirmed = true,
                             FirstName = "Employee",
@@ -2398,11 +2442,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "EMPLOYEE@EXAMPLE.COM",
                             NormalizedUserName = "EMPLOYEE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEN5OjarMwttwx68th4/GLgV3vXV1IVWl6KodFOCwJT8QOLuTDXxLSRtcp2ft78krEA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPQ9bjQ331y1/5TIM9PWp5hNBWr9FxEU0/OXISVhPPXV1LMOHXAmtWempL90X4e5/A==",
                             PhoneNumber = "0987654321",
                             PhoneNumberConfirmed = false,
                             RoleId = 2,
-                            SecurityStamp = "2f19bb59-bff4-4b8b-9f1d-290997e1e886",
+                            SecurityStamp = "c0863d64-831b-4c86-9715-3b4a815d2af3",
                             TwoFactorEnabled = false,
                             UserName = "employee"
                         });
@@ -2730,19 +2774,10 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         .HasForeignKey("CapitalId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("App.Domain.Core.Accounting.Entities.Accounts.CategoryCost", "CategoryCosts")
+                    b.HasOne("App.Domain.Core.Accounting.Entities.Accounts.Sub.Creditors", "Creditors")
                         .WithMany()
-                        .HasForeignKey("CategoryCostId")
+                        .HasForeignKey("CreditorsId")
                         .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("App.Domain.Core.Accounting.Entities.Accounts.CategoryIncome", "CategoryIncomes")
-                        .WithMany()
-                        .HasForeignKey("CategoryIncomeId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("App.Domain.Core.Accounting.Entities.payment.Criticism", "Criticisms")
-                        .WithMany()
-                        .HasForeignKey("CriticismsId");
 
                     b.HasOne("App.Domain.Core.Accounting.Entities.Accounts.Debts", "Debt")
                         .WithMany()
@@ -2759,23 +2794,26 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         .HasForeignKey("PersonsId")
                         .OnDelete(DeleteBehavior.NoAction);
 
+                    b.HasOne("App.Domain.Core.Accounting.Entities.Accounts.Sub.SubcategoryIncome", "SubcategoryIncomes")
+                        .WithMany()
+                        .HasForeignKey("SubCategoryIncomeId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.Navigation("Asset");
 
                     b.Navigation("Banks");
 
                     b.Navigation("Capitals");
 
-                    b.Navigation("CategoryCosts");
-
-                    b.Navigation("CategoryIncomes");
-
-                    b.Navigation("Criticisms");
+                    b.Navigation("Creditors");
 
                     b.Navigation("Debt");
 
                     b.Navigation("Fund");
 
                     b.Navigation("Person");
+
+                    b.Navigation("SubcategoryIncomes");
                 });
 
             modelBuilder.Entity("App.Domain.Core.Accounting.Entities.Accounts.Assets", b =>
@@ -2868,63 +2906,6 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         .IsRequired();
 
                     b.Navigation("Contacts");
-
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("App.Domain.Core.Accounting.Entities.Accounts.Sub.AddAssets", b =>
-                {
-                    b.HasOne("App.Domain.Core.Accounting.Entities.Accounts.Assets", "Assets")
-                        .WithMany("AddAsset")
-                        .HasForeignKey("AssetsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("App.Domain.Core.Accounting.Entities.Users.User", "Users")
-                        .WithMany("AddAssets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Assets");
-
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("App.Domain.Core.Accounting.Entities.Accounts.Sub.AddCapital", b =>
-                {
-                    b.HasOne("App.Domain.Core.Accounting.Entities.Accounts.Capital", "Capitals")
-                        .WithMany("AddCapital")
-                        .HasForeignKey("CapitalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("App.Domain.Core.Accounting.Entities.Users.User", "Users")
-                        .WithMany("AddCapitals")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Capitals");
-
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("App.Domain.Core.Accounting.Entities.Accounts.Sub.AddDbts", b =>
-                {
-                    b.HasOne("App.Domain.Core.Accounting.Entities.Accounts.Debts", "Debt")
-                        .WithMany("AddDbts")
-                        .HasForeignKey("DebtsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("App.Domain.Core.Accounting.Entities.Users.User", "Users")
-                        .WithMany("AddDbts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Debt");
 
                     b.Navigation("Users");
                 });
@@ -3252,16 +3233,6 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("App.Domain.Core.Accounting.Entities.Accounts.Assets", b =>
-                {
-                    b.Navigation("AddAsset");
-                });
-
-            modelBuilder.Entity("App.Domain.Core.Accounting.Entities.Accounts.Capital", b =>
-                {
-                    b.Navigation("AddCapital");
-                });
-
             modelBuilder.Entity("App.Domain.Core.Accounting.Entities.Accounts.CategoryCost", b =>
                 {
                     b.Navigation("SubcategoryCosts");
@@ -3272,19 +3243,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     b.Navigation("SubcategoryIncomes");
                 });
 
-            modelBuilder.Entity("App.Domain.Core.Accounting.Entities.Accounts.Debts", b =>
-                {
-                    b.Navigation("AddDbts");
-                });
-
             modelBuilder.Entity("App.Domain.Core.Accounting.Entities.Users.User", b =>
                 {
-                    b.Navigation("AddAssets");
-
-                    b.Navigation("AddCapitals");
-
-                    b.Navigation("AddDbts");
-
                     b.Navigation("Assetses");
 
                     b.Navigation("Banks");

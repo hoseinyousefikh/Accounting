@@ -20,6 +20,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Accounting.Configoration.Accounts
             builder.Property(f => f.Name)
                 .IsRequired()
                 .HasMaxLength(100);
+            builder.Property(d => d.Amount)
+             .IsRequired().HasColumnType("decimal(18, 2)");
 
 
 

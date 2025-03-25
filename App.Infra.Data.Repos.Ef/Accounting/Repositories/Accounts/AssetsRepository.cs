@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts
@@ -19,60 +18,77 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts
             _context = context;
         }
 
+        // Add a new asset
         public async Task AddAssetsAsync(Assets assets)
         {
-            _context.Assets.Add(assets);
+            if (assets == null)
+                throw new ArgumentNullException(nameof(assets), "Asset cannot be null.");
+
+            await _context.Assets.AddAsync(assets);
             await _context.SaveChangesAsync();
         }
 
+        // Update an existing asset
         public async Task UpdateAssetsAsync(Assets assets)
         {
+            if (assets == null)
+                throw new ArgumentNullException(nameof(assets), "Asset cannot be null.");
+
             _context.Assets.Update(assets);
             await _context.SaveChangesAsync();
         }
 
+        // Soft delete an asset by setting IsDeleted flag
         public async Task DeleteAssetsAsync(int id)
         {
             var asset = await _context.Assets.FindAsync(id);
-            if (asset != null)
+            if (asset == null)
             {
-                asset.IsDeleted = true;
-                _context.Assets.Update(asset);
-                await _context.SaveChangesAsync();
+                throw new KeyNotFoundException($"Asset with ID {id} not found.");
             }
+
+            asset.IsDeleted = true;
+            _context.Assets.Update(asset);
+            await _context.SaveChangesAsync();
         }
 
+        // Get all assets with associated users
         public async Task<List<Assets>> GetAllAssetsAsync()
         {
             return await _context.Assets
                 .Include(a => a.Users)
+                .Where(a => !a.IsDeleted)  // Assuming you want to exclude deleted assets
                 .ToListAsync();
         }
 
+        // Get an asset by its ID
         public async Task<Assets> GetAssetsByIdAsync(int id)
         {
-            var x = await _context.Assets
+            var asset = await _context.Assets
                 .Include(a => a.Users)
-                .Where(a => a.Id == id)
-                .FirstOrDefaultAsync();
-            if (x != null)
+                .FirstOrDefaultAsync(a => a.Id == id && !a.IsDeleted);  // Assuming you want to exclude deleted assets
+
+            if (asset == null)
             {
-                return x;
+                throw new KeyNotFoundException($"Asset with ID {id} not found.");
             }
-            throw new Exception("Is null");
+
+            return asset;
         }
 
+        // Get all assets belonging to a specific user
         public async Task<List<Assets>> GetAssetsByUserIdAsync(int userId)
         {
             return await _context.Assets
-                .Where(a => a.UserId == userId)
+                .Where(a => a.UserId == userId && !a.IsDeleted) // Assuming you want to exclude deleted assets
                 .ToListAsync();
         }
 
+        // Get assets that are marked as public or private
         public async Task<List<Assets>> GetAssetsByIsPublicAsync(bool isPublic)
         {
             return await _context.Assets
-                .Where(a => a.IsPublic == isPublic)
+                .Where(a => a.IsPublic == isPublic && !a.IsDeleted) // Assuming you want to exclude deleted assets
                 .ToListAsync();
         }
     }

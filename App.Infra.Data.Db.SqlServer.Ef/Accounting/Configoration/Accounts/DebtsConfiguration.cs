@@ -17,14 +17,12 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Accounting.Configoration.Accounts
 
             builder.HasKey(d => d.Id);
 
-            builder.Property(d => d.Name)
+            builder.Property(d => d.Title)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.HasMany(d => d.AddDbts)
-                .WithOne()
-                .HasForeignKey(ad => ad.DebtsId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.Property(d => d.Amount)
+               .IsRequired().HasColumnType("decimal(18, 2)");
 
             builder.HasOne(d => d.Users)
                 .WithMany(d => d.Debtses)

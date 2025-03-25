@@ -88,17 +88,6 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Accounting.Configoration.Users
                 .WithOne(c => c.Users)
                 .HasForeignKey(c => c.UserId);
 
-            builder.HasMany(u => u.AddDbts)
-                .WithOne(ad => ad.Users)
-                .HasForeignKey(ad => ad.UserId);
-
-            builder.HasMany(u => u.AddCapitals)
-                .WithOne(ac => ac.Users)
-                .HasForeignKey(ac => ac.UserId);
-
-            builder.HasMany(u => u.AddAssets)
-                .WithOne(aa => aa.Users)
-                .HasForeignKey(aa => aa.UserId);
 
             builder.HasMany(u => u.Assetses)
                 .WithOne(a => a.Users)

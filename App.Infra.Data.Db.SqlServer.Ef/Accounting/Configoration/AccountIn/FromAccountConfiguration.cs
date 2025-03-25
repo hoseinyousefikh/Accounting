@@ -1,11 +1,6 @@
 ﻿using App.Domain.Core.Accounting.Entities.AccountIn;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace App.Infra.Data.Db.SqlServer.Ef.Accounting.Configoration.AccountIn
 {
@@ -32,16 +27,6 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Accounting.Configoration.AccountIn
                 .HasForeignKey(fa => fa.CapitalId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(fa => fa.CategoryCosts)
-                .WithMany()
-                .HasForeignKey(fa => fa.CategoryCostId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            builder.HasOne(fa => fa.CategoryIncomes)
-                .WithMany()
-                .HasForeignKey(fa => fa.CategoryIncomeId)
-                .OnDelete(DeleteBehavior.NoAction);
-
             builder.HasOne(fa => fa.Debt)
                 .WithMany()
                 .HasForeignKey(fa => fa.DebtsId)
@@ -55,6 +40,16 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Accounting.Configoration.AccountIn
             builder.HasOne(fa => fa.Person)
                 .WithMany()
                 .HasForeignKey(fa => fa.PersonsId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(fa => fa.Creditors)
+                .WithMany()
+                .HasForeignKey(fa => fa.CreditorsId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(fa => fa.SubcategoryIncomes)
+                .WithMany()
+                .HasForeignKey(fa => fa.SubCategoryIncomeId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

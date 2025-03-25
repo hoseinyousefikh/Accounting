@@ -46,7 +46,7 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Budgetings
         public async Task<List<Budgeting>> GetAllBudgetingAsync()
         {
             return await _context.Budgetings
-                .Where(b => !b.IsDeleted) // فیلتر کردن بودجه‌های حذف نشده
+                .Where(b => !b.IsDeleted)
                 .Include(b => b.Users)
                 .ToListAsync();
         }
