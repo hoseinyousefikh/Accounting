@@ -1,4 +1,5 @@
 ﻿using AccountingMVC.Models;
+using App.Domain.AppServices.Accounting.AppServices.payment;
 using App.Domain.Core.Accounting.Contract.AppServices.Accounts;
 using App.Domain.Core.Accounting.Contract.AppServices.Accounts.Sub;
 using App.Domain.Core.Accounting.Contract.AppServices.payment;
@@ -219,9 +220,12 @@ namespace AccountingMVC.Controllers
                 DuDate = viewModel.DuDate,
                 ChecNumber = viewModel.ChecNumber
             };
+            if ( viewModel.SubcategoryIncomeId.HasValue)
+            {
+                await _subcategoryIncomeAppService.AddAmountToSubCategoryIncomeAsync(viewModel.SubcategoryIncomeId.Value, viewModel.Amount);
+                await _checkAppService.AddCheckAsync(checkRequest);
+            }
 
-
-            await _checkAppService.AddCheckAsync(checkRequest);
 
             TempData["SuccessMessage"] = "Check added successfully.";
             return RedirectToAction("Index", "Home");

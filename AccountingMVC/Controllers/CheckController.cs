@@ -1,13 +1,11 @@
 ﻿using AccountingMVC.Models;
-using App.Domain.AppServices.Accounting.AppServices.Accounts;
+using App.Domain.AppServices.Accounting.AppServices.payment;
 using App.Domain.Core.Accounting.Contract.AppServices.Accounts;
 using App.Domain.Core.Accounting.Contract.AppServices.Accounts.Sub;
 using App.Domain.Core.Accounting.Contract.AppServices.payment;
 using App.Domain.Core.Accounting.Contract.AppServices.PMEList;
 using App.Domain.Core.Accounting.DTO;
 using App.Domain.Core.Accounting.Entities.Enum;
-using App.Domain.Core.Accounting.Entities.payment;
-using App.Domain.Core.Accounting.Entities.PMEList;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +37,7 @@ namespace AccountingMVC.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> CreateCheck(int subCategoryId,string subCategoryName,int categoryId , string categoryName,int bankId ,string bankName ,int titr , int? memberId , int? eventId ,int? projectId)
+        public async Task<IActionResult> CreateCheck(int subCategoryId, string subCategoryName, int categoryId, string categoryName, int bankId, string bankName, int titr, int? memberId, int? eventId, int? projectId)
         {
             SetCategoryData(categoryId, categoryName);
             SetSubcategoryData(subCategoryId, subCategoryName);
@@ -148,9 +146,9 @@ namespace AccountingMVC.Controllers
             }
         }
 
-        private void BankData(int? bankId ,string bankName)
+        private void BankData(int? bankId, string bankName)
         {
-            if(bankId.HasValue && !string.IsNullOrEmpty(bankName))
+            if (bankId.HasValue && !string.IsNullOrEmpty(bankName))
             {
                 HttpContext.Session.SetInt32("BankId", bankId.Value);
                 HttpContext.Session.SetString("BankName", bankName);
@@ -218,11 +216,14 @@ namespace AccountingMVC.Controllers
                 Xxpenses = Xxpens.Costs,
                 BankId = viewModel.BankId,
                 DuDate = viewModel.DuDate,
-                ChecNumber =viewModel.ChecNumber
+                ChecNumber = viewModel.ChecNumber
             };
+            if ( viewModel.SubcategoryCostId.HasValue)
+            {
+                await _subCategoryCostAppService.AddAmountToSubCategoryCostAsync(viewModel.SubcategoryCostId.Value, viewModel.Amount);
+                await _checkAppService.AddCheckAsync(checkRequest);
+            }
 
-
-            await _checkAppService.AddCheckAsync(checkRequest);
 
             TempData["SuccessMessage"] = "Check added successfully.";
             return RedirectToAction("Index", "Home");
