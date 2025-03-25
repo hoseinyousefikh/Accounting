@@ -19,7 +19,7 @@ namespace AccountingMVC.Controllers
     public class CriticismIncomeController : Controller
     {
 
-
+        private readonly ISubCategoryCostAppService _subCategoryCostAppService;
         private readonly ICriticismAppService _criticismAppService;
         private readonly ICategoryIncomeAppService _categoryIncomeAppService;
         private readonly ISubcategoryIncomeAppService _subcategoryIncomeAppService;
@@ -28,7 +28,7 @@ namespace AccountingMVC.Controllers
         private readonly IMemberAppService _memberAppService;
         private readonly IEventAppService _eventAppService;
         private readonly IProjectAppService _projectAppService;
-        public CriticismIncomeController(ICriticismAppService criticismAppService, IFromAccountAppService fromAccountAppService, IMemberAppService memberAppService, IEventAppService eventAppService, IProjectAppService projectAppService, ICategoryIncomeAppService categoryIncomeAppService, ISubcategoryIncomeAppService subcategoryIncomeAppService)
+        public CriticismIncomeController(ICriticismAppService criticismAppService, IFromAccountAppService fromAccountAppService, IMemberAppService memberAppService, IEventAppService eventAppService, IProjectAppService projectAppService, ICategoryIncomeAppService categoryIncomeAppService, ISubcategoryIncomeAppService subcategoryIncomeAppService, ISubCategoryCostAppService subCategoryCostAppService)
         {
             _criticismAppService = criticismAppService;
             _fromAccountAppService = fromAccountAppService;
@@ -37,6 +37,7 @@ namespace AccountingMVC.Controllers
             _projectAppService = projectAppService;
             _categoryIncomeAppService = categoryIncomeAppService;
             _subcategoryIncomeAppService = subcategoryIncomeAppService;
+            _subCategoryCostAppService = subCategoryCostAppService;
         }
         public async Task<IActionResult> Create(int? subcategoryId, string subcategoryName, int categoryId, string categoryName, int? fromAccountSubId, string fromAccountName, int titr, int? memberId, int? EventId, int? ProjectId)
         {
@@ -164,7 +165,7 @@ namespace AccountingMVC.Controllers
         {
             FromAccountCreateDto N = titr switch
             {
-                1 => new FromAccountCreateDto { SubCategoryIncomeId = fromAccountSubId },  // تغییر به SubCategoryIncomeId
+                1 => new FromAccountCreateDto { SubCategoryCostId = fromAccountSubId },  // تغییر به SubCategoryIncomeId
                 2 => new FromAccountCreateDto { FundsId = fromAccountSubId },
                 3 => new FromAccountCreateDto { AssetsId = fromAccountSubId },
                 4 => new FromAccountCreateDto { BankId = fromAccountSubId },
@@ -188,7 +189,7 @@ namespace AccountingMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOptions()
         {
-            var subCategoryIncomeOptions = await _fromAccountAppService.GetAllSubCategoryIncomesAsync(); 
+            var subCategoryCostOptions = await _fromAccountAppService.GetAllSubCategoryCostAsync(); 
             var creditorsOptions = await _fromAccountAppService.GetAllCreditorsAsync();  
             var fundOptions = await _fromAccountAppService.GetAllFundsAsync();
             var assetOptions = await _fromAccountAppService.GetAllAssetsAsync();
@@ -199,7 +200,7 @@ namespace AccountingMVC.Controllers
 
             var model = new OptionsViewModel
             {
-                SubCategoryIncomeOptions = subCategoryIncomeOptions, 
+                SubCategoryCostOptions = subCategoryCostOptions, 
                 CreditorsOptions = creditorsOptions, 
                 FundOptions = fundOptions,
                 AssetOptions = assetOptions,
@@ -273,8 +274,14 @@ namespace AccountingMVC.Controllers
                 Xxpenses = Xxpens.revenues,
                 FromAccountId = fromAccountId
             };
+            var result = await _fromAccountAppService.SubtractAmountFromAccountIncomeAsync(fromAccountId, viewModel.Amount);
 
-            await _criticismAppService.AddCriticismAsync(criticismRequest);
+            if (result == true && viewModel.SubcategoryIncomeId.HasValue)
+            {
+                await _subcategoryIncomeAppService.AddAmountToSubCategoryIncomeAsync(viewModel.SubcategoryIncomeId.Value, viewModel.Amount);
+                await _criticismAppService.AddCriticismAsync(criticismRequest);
+            }
+
 
             TempData["SuccessMessage"] = "Criticism added successfully.";
             return RedirectToAction("Index", "Home");

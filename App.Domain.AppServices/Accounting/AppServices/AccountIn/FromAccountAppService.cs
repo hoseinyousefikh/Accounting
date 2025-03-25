@@ -59,6 +59,11 @@ namespace App.Domain.AppServices.Accounting.AppServices.AccountIn
             return await _fromAccountService.GetAllPersonsAsync();
         }
 
+        public async Task<List<SubcategoryCost>> GetAllSubCategoryCostAsync()
+        {
+            return await _fromAccountService.GetAllSubCategoryCostAsync();
+        }
+
         public async Task<List<SubcategoryIncome>> GetAllSubCategoryIncomesAsync()
         {
             return await _fromAccountService.GetAllSubCategoryIncomesAsync();
@@ -78,5 +83,17 @@ namespace App.Domain.AppServices.Accounting.AppServices.AccountIn
             }
         }
 
+        public async Task<bool> SubtractAmountFromAccountIncomeAsync(int fromAccountId, decimal amount)
+        {
+            try
+            {
+                await _fromAccountService.SubtractAmountFromAccountIncomeAsync(fromAccountId, amount);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

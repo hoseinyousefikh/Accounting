@@ -22,9 +22,14 @@ namespace App.Domain.AppServices.Accounting.AppServices.Accounts.Sub
             _subcategoryIncomeService = subcategoryIncomeService;
         }
 
-        public Task<SubcategoryIncome> GetByIdSubCatIncomeAsync(int id)
+        public async Task AddAmountToSubCategoryIncomeAsync(int subCategoryId, decimal amount)
         {
-            return _subcategoryIncomeService.GetByIdSubCatIncomeAsync(id);
+            await _subcategoryIncomeService.AddAmountToSubCategoryIncomeAsync(subCategoryId, amount);
+        }
+
+        public async Task<SubcategoryIncome> GetByIdSubCatIncomeAsync(int id)
+        {
+            return await _subcategoryIncomeService.GetByIdSubCatIncomeAsync(id);
         }
 
         public async Task<List<SubcategoryIncomeDto>> GetBySubCatIncomeUserIdAsync(int userId)

@@ -6,7 +6,9 @@ namespace AccountingMVC.Models
 {
     public class OptionsViewModel
     {
-        public List<SubcategoryIncome> SubCategoryIncomeOptions { get; set; }  
+        public List<SubcategoryIncome>? SubCategoryIncomeOptions { get; set; }
+        public List<SubcategoryCost>? SubCategoryCostOptions { get; set; }
+
         public List<Creditors> CreditorsOptions { get; set; }  
         public List<Funds> FundOptions { get; set; }
         public List<Assets> AssetOptions { get; set; }

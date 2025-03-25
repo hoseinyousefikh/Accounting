@@ -13,6 +13,8 @@ namespace App.Domain.Core.Accounting.Contract.Services.AccountIn
 {
     public interface IFromAccountService
     {
+        Task<List<SubcategoryCost>> GetAllSubCategoryCostAsync();
+        Task SubtractAmountFromAccountIncomeAsync(int fromAccountId, decimal amount);
         Task SubtractAmountFromAccountAsync(int fromAccountId, decimal amount);
         Task<List<Assets>> GetAllAssetsAsync();
         Task<List<Bank>> GetAllBanksAsync();

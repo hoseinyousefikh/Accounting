@@ -13,6 +13,8 @@ namespace App.Domain.Core.Accounting.Contract.AppServices.Accounts.Sub
         Task<List<SubcategoryIncomeDto>> GetBySubCatIncomeUserIdAsync(int userId);
         Task<List<SubcategoryIncomeDto>> GetSubcategoryIncomesByCategoryId(int categoryIncomeId);
         Task<SubcategoryIncome> GetByIdSubCatIncomeAsync(int id);
+        Task AddAmountToSubCategoryIncomeAsync(int subCategoryId, decimal amount);
+
 
     }
 }

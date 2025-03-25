@@ -9,6 +9,8 @@
         public int? FundsId { get; set; }
         public int? PersonsId { get; set; }
         public int? CreditorsId { get; set; }  
-        public int? SubCategoryIncomeId { get; set; } 
+        public int? SubCategoryIncomeId { get; set; }
+        public int? SubCategoryCostId { get; set; }
+
     }
 }

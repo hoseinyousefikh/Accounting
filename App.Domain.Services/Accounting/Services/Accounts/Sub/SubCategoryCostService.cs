@@ -84,5 +84,6 @@ namespace App.Domain.Services.Accounting.Services.Accounts.Sub
 
             await _subcategoryCostRepository.UpdateSubCatCost(subcategory);
         }
+      
     }
 }

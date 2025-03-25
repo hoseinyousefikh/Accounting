@@ -12,6 +12,7 @@ namespace App.Domain.Core.Accounting.Contract.Repositories.AccountIn
 {
     public interface IFromAccountRepository
     {
+        Task<List<SubcategoryCost>> GetAllSubCategoryCostAsync();
         Task<FromAccount> GetFromAccountByIdAsync(int id);
         Task<List<Assets>> GetAllAssetsAsync();
         Task<List<Bank>> GetAllBanksAsync();

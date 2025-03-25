@@ -17,6 +17,8 @@ namespace App.Domain.Core.Accounting.Entities.AccountIn
         public int? PersonsId { get; set; }
         public int? CreditorsId { get; set; }
         public int? SubCategoryIncomeId { get; set; }
+        public int? SubCategoryCostId { get; set; }
+
 
 
         public Assets? Asset { get; set; }
@@ -27,6 +29,8 @@ namespace App.Domain.Core.Accounting.Entities.AccountIn
         public Persons? Person { get; set; }
         public Creditors? Creditors{ get; set; }
         public SubcategoryIncome? SubcategoryIncomes { get; set; }
+        public SubcategoryCost? SubcategoryCosts { get; set; }
+
 
     }
 }

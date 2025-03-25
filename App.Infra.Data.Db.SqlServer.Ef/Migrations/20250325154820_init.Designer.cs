@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250325000225_init")]
+    [Migration("20250325154820_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -54,6 +54,9 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     b.Property<int?>("PersonsId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SubCategoryCostId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("SubCategoryIncomeId")
                         .HasColumnType("int");
 
@@ -72,6 +75,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     b.HasIndex("FundsId");
 
                     b.HasIndex("PersonsId");
+
+                    b.HasIndex("SubCategoryCostId");
 
                     b.HasIndex("SubCategoryIncomeId");
 
@@ -2408,7 +2413,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a2f20316-520f-44c9-b88f-77457bf3096e",
+                            ConcurrencyStamp = "c2a4b7a8-f72b-4f30-ac12-c9a04db4ef31",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -2419,11 +2424,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBqkkKahNjNVf1P97tIhVDl2qfuJjst37cxHGQ4H+p9+00yq+TxIjb2BRp7pYfkE6w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEF9CRT7GIBIq23yR0K9uNVDi+tSHCqdTTII1EfHBagLn0NdLcE2fXSf8rU1gxn1KEg==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
                             RoleId = 1,
-                            SecurityStamp = "8a381403-4670-41aa-85e7-8d8f47931b27",
+                            SecurityStamp = "4dc06ba3-5f1a-4b69-8866-58c0a4e74a5b",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -2431,7 +2436,7 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "97d39508-2c2f-458b-90de-6e61fd808928",
+                            ConcurrencyStamp = "9aa3c77b-203c-4fbb-bd0f-739ba36414ea",
                             Email = "employee@example.com",
                             EmailConfirmed = true,
                             FirstName = "Employee",
@@ -2442,11 +2447,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "EMPLOYEE@EXAMPLE.COM",
                             NormalizedUserName = "EMPLOYEE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPQ9bjQ331y1/5TIM9PWp5hNBWr9FxEU0/OXISVhPPXV1LMOHXAmtWempL90X4e5/A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELVVlcu7Ypc9kPZOb1bkwGko7KK/dvT10m7tB41EScbfAPcW9fpaaU4Oz5PRiVEUwA==",
                             PhoneNumber = "0987654321",
                             PhoneNumberConfirmed = false,
                             RoleId = 2,
-                            SecurityStamp = "c0863d64-831b-4c86-9715-3b4a815d2af3",
+                            SecurityStamp = "e249353e-d98f-4512-b97c-e7bacfb39138",
                             TwoFactorEnabled = false,
                             UserName = "employee"
                         });
@@ -2794,6 +2799,10 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         .HasForeignKey("PersonsId")
                         .OnDelete(DeleteBehavior.NoAction);
 
+                    b.HasOne("App.Domain.Core.Accounting.Entities.Accounts.Sub.SubcategoryCost", "SubcategoryCosts")
+                        .WithMany()
+                        .HasForeignKey("SubCategoryCostId");
+
                     b.HasOne("App.Domain.Core.Accounting.Entities.Accounts.Sub.SubcategoryIncome", "SubcategoryIncomes")
                         .WithMany()
                         .HasForeignKey("SubCategoryIncomeId")
@@ -2812,6 +2821,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     b.Navigation("Fund");
 
                     b.Navigation("Person");
+
+                    b.Navigation("SubcategoryCosts");
 
                     b.Navigation("SubcategoryIncomes");
                 });

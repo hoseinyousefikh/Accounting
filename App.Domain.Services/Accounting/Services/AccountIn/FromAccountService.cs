@@ -6,6 +6,7 @@ using App.Domain.Core.Accounting.DTO;
 using App.Domain.Core.Accounting.Entities.AccountIn;
 using App.Domain.Core.Accounting.Entities.Accounts;
 using App.Domain.Core.Accounting.Entities.Accounts.Sub;
+using App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts.Sub;
 
 public class FromAccountService : IFromAccountService
 {
@@ -18,6 +19,7 @@ public class FromAccountService : IFromAccountService
     private readonly IPersonsRepository _personRepository;
     private readonly ICreditorsRepository _creditorsRepository;
     private readonly ISubcategoryIncomeRepository _subcategoryIncomeRepository;
+    private readonly ISubcategoryCostRepository _subcategoryCostRepository;
 
     public FromAccountService(
         IFromAccountRepository fromAccountRepository,
@@ -28,7 +30,8 @@ public class FromAccountService : IFromAccountService
         IFundsRepository fundRepository,
         IPersonsRepository personRepository,
         ICreditorsRepository creditorsRepository,
-        ISubcategoryIncomeRepository subcategoryIncomeRepository)
+        ISubcategoryIncomeRepository subcategoryIncomeRepository,
+        ISubcategoryCostRepository subcategoryCostRepository)
     {
         _fromAccountRepository = fromAccountRepository;
         _assetRepository = assetRepository;
@@ -39,8 +42,127 @@ public class FromAccountService : IFromAccountService
         _personRepository = personRepository;
         _creditorsRepository = creditorsRepository;
         _subcategoryIncomeRepository = subcategoryIncomeRepository;
+        _subcategoryCostRepository = subcategoryCostRepository;
     }
+    public async Task SubtractAmountFromAccountIncomeAsync(int fromAccountId, decimal amount)
+    {
+        if (fromAccountId <= 0)
+            throw new ArgumentException("Invalid FromAccountId");
 
+        if (amount <= 0)
+            throw new ArgumentException("Amount must be greater than zero");
+
+        var fromAccount = await _fromAccountRepository.GetFromAccountByIdAsync(fromAccountId);
+
+        if (fromAccount.AssetsId.HasValue)
+        {
+            var asset = await _assetRepository.GetAssetsByIdAsync(fromAccount.AssetsId.Value);
+            if (asset.Amount >= amount)
+            {
+                asset.Amount += amount;
+                await _assetRepository.UpdateAssetsAsync(asset);
+            }
+            else
+            {
+                throw new InvalidOperationException("Insufficient balance in Assets.");
+            }
+        }
+        else if (fromAccount.BankId.HasValue)
+        {
+            var bank = await _bankRepository.GetBankByIdAsync(fromAccount.BankId.Value);
+            if (bank.Amount >= amount)
+            {
+                bank.Amount += amount;
+                await _bankRepository.UpdateBankAsync(bank);
+            }
+            else
+            {
+                throw new InvalidOperationException("Insufficient balance in Bank.");
+            }
+        }
+        else if (fromAccount.CapitalId.HasValue)
+        {
+            var capital = await _capitalRepository.GetCapitalByIdAsync(fromAccount.CapitalId.Value);
+            if (capital.Amount >= amount)
+            {
+                capital.Amount += amount;
+                await _capitalRepository.UpdateCapitalAsync(capital);
+            }
+            else
+            {
+                throw new InvalidOperationException("Insufficient balance in Capital.");
+            }
+        }
+        else if (fromAccount.DebtsId.HasValue)
+        {
+            var debt = await _debtRepository.GetDebtsByIdAsync(fromAccount.DebtsId.Value);
+            if (debt.Amount >= amount)
+            {
+                debt.Amount += amount;
+                await _debtRepository.UpdateDebtsAsync(debt);
+            }
+            else
+            {
+                throw new InvalidOperationException("Insufficient balance in Debts.");
+            }
+        }
+        else if (fromAccount.FundsId.HasValue)
+        {
+            var fund = await _fundRepository.GetFundsByIdAsync(fromAccount.FundsId.Value);
+            if (fund.Amount >= amount)
+            {
+                fund.Amount += amount;
+                await _fundRepository.UpdateFundsAsync(fund);
+            }
+            else
+            {
+                throw new InvalidOperationException("Insufficient balance in Funds.");
+            }
+        }
+        else if (fromAccount.PersonsId.HasValue)
+        {
+            var person = await _personRepository.GetPersonsById(fromAccount.PersonsId.Value);
+            if (person.Amount >= amount)
+            {
+                person.Amount += amount;
+                await _personRepository.UpdatePersons(person);
+            }
+            else
+            {
+                throw new InvalidOperationException("Insufficient balance in Persons.");
+            }
+        }
+        else if (fromAccount.CreditorsId.HasValue)
+        {
+            var creditors = await _creditorsRepository.GetCreditorsByIdAsync(fromAccount.CreditorsId.Value);
+            if (creditors.Amount >= amount)
+            {
+                creditors.Amount += amount;
+                await _creditorsRepository.UpdateCreditorsAsync(creditors);
+            }
+            else
+            {
+                throw new InvalidOperationException("Insufficient balance in Creditors.");
+            }
+        }
+        else if (fromAccount.SubCategoryCostId.HasValue)
+        {
+            var subcategoryIncome = await _subcategoryCostRepository.GetByIdSubCatCost(fromAccount.SubCategoryCostId.Value);
+            if (subcategoryIncome.Amount >= amount)
+            {
+                subcategoryIncome.Amount += amount;
+                await _subcategoryCostRepository.UpdateSubCatCost(subcategoryIncome);
+            }
+            else
+            {
+                throw new InvalidOperationException("Insufficient balance in Subcategory Cost.");
+            }
+        }
+        else
+        {
+            throw new InvalidOperationException("No related entity found in the FromAccount.");
+        }
+    }
     public async Task SubtractAmountFromAccountAsync(int fromAccountId, decimal amount)
     {
         if (fromAccountId <= 0)
@@ -155,6 +277,19 @@ public class FromAccountService : IFromAccountService
                 throw new InvalidOperationException("Insufficient balance in Subcategory Income.");
             }
         }
+        else if (fromAccount.SubCategoryCostId.HasValue)
+        {
+            var subcategoryIncome = await _subcategoryCostRepository.GetByIdSubCatCost(fromAccount.SubCategoryCostId.Value);
+            if (subcategoryIncome.Amount >= amount)
+            {
+                subcategoryIncome.Amount += amount;
+                await _subcategoryCostRepository.UpdateSubCatCost(subcategoryIncome);
+            }
+            else
+            {
+                throw new InvalidOperationException("Insufficient balance in Subcategory Cost.");
+            }
+        }
         else
         {
             throw new InvalidOperationException("No related entity found in the FromAccount.");
@@ -172,7 +307,10 @@ public class FromAccountService : IFromAccountService
             FundsId = fromAccountCreateDto.FundsId,
             PersonsId = fromAccountCreateDto.PersonsId,
             CreditorsId = fromAccountCreateDto.CreditorsId,
-            SubCategoryIncomeId = fromAccountCreateDto.SubCategoryIncomeId
+            SubCategoryIncomeId = fromAccountCreateDto.SubCategoryIncomeId,
+            SubCategoryCostId = fromAccountCreateDto.SubCategoryCostId
+
+
         };
 
         return await _fromAccountRepository.AddFromAccountAsync(fromAccount);
@@ -216,5 +354,10 @@ public class FromAccountService : IFromAccountService
     public async Task<List<SubcategoryIncome>> GetAllSubCategoryIncomesAsync()
     {
         return await _fromAccountRepository.GetAllSubCategoryIncomesAsync();
+    }
+
+    public async Task<List<SubcategoryCost>> GetAllSubCategoryCostAsync()
+    {
+        return await _fromAccountRepository.GetAllSubCategoryCostAsync();
     }
 }

@@ -759,7 +759,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                     FundsId = table.Column<int>(type: "int", nullable: true),
                     PersonsId = table.Column<int>(type: "int", nullable: true),
                     CreditorsId = table.Column<int>(type: "int", nullable: true),
-                    SubCategoryIncomeId = table.Column<int>(type: "int", nullable: true)
+                    SubCategoryIncomeId = table.Column<int>(type: "int", nullable: true),
+                    SubCategoryCostId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -798,6 +799,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                         name: "FK_FromAccounts_Persons_PersonsId",
                         column: x => x.PersonsId,
                         principalTable: "Persons",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FromAccounts_SubcategoryCosts_SubCategoryCostId",
+                        column: x => x.SubCategoryCostId,
+                        principalTable: "SubcategoryCosts",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_FromAccounts_SubcategoryIncomes_SubCategoryIncomeId",
@@ -882,8 +888,8 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "IsActive", "IsDeleted", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "a2f20316-520f-44c9-b88f-77457bf3096e", "admin@example.com", true, "Admin", true, false, "User", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEBqkkKahNjNVf1P97tIhVDl2qfuJjst37cxHGQ4H+p9+00yq+TxIjb2BRp7pYfkE6w==", "1234567890", false, 1, "8a381403-4670-41aa-85e7-8d8f47931b27", false, "admin" },
-                    { 2, 0, "97d39508-2c2f-458b-90de-6e61fd808928", "employee@example.com", true, "Employee", true, false, "User", false, null, "EMPLOYEE@EXAMPLE.COM", "EMPLOYEE", "AQAAAAIAAYagAAAAEPQ9bjQ331y1/5TIM9PWp5hNBWr9FxEU0/OXISVhPPXV1LMOHXAmtWempL90X4e5/A==", "0987654321", false, 2, "c0863d64-831b-4c86-9715-3b4a815d2af3", false, "employee" }
+                    { 1, 0, "c2a4b7a8-f72b-4f30-ac12-c9a04db4ef31", "admin@example.com", true, "Admin", true, false, "User", false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEF9CRT7GIBIq23yR0K9uNVDi+tSHCqdTTII1EfHBagLn0NdLcE2fXSf8rU1gxn1KEg==", "1234567890", false, 1, "4dc06ba3-5f1a-4b69-8866-58c0a4e74a5b", false, "admin" },
+                    { 2, 0, "9aa3c77b-203c-4fbb-bd0f-739ba36414ea", "employee@example.com", true, "Employee", true, false, "User", false, null, "EMPLOYEE@EXAMPLE.COM", "EMPLOYEE", "AQAAAAIAAYagAAAAELVVlcu7Ypc9kPZOb1bkwGko7KK/dvT10m7tB41EScbfAPcW9fpaaU4Oz5PRiVEUwA==", "0987654321", false, 2, "e249353e-d98f-4512-b97c-e7bacfb39138", false, "employee" }
                 });
 
             migrationBuilder.InsertData(
@@ -1278,6 +1284,11 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 column: "PersonsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FromAccounts_SubCategoryCostId",
+                table: "FromAccounts",
+                column: "SubCategoryCostId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FromAccounts_SubCategoryIncomeId",
                 table: "FromAccounts",
                 column: "SubCategoryIncomeId");
@@ -1408,9 +1419,6 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 name: "Projects");
 
             migrationBuilder.DropTable(
-                name: "SubcategoryCosts");
-
-            migrationBuilder.DropTable(
                 name: "Assets");
 
             migrationBuilder.DropTable(
@@ -1432,13 +1440,16 @@ namespace App.Infra.Data.Db.SqlServer.Ef.Migrations
                 name: "Persons");
 
             migrationBuilder.DropTable(
+                name: "SubcategoryCosts");
+
+            migrationBuilder.DropTable(
                 name: "SubcategoryIncomes");
 
             migrationBuilder.DropTable(
-                name: "CategoryCosts");
+                name: "Contacts");
 
             migrationBuilder.DropTable(
-                name: "Contacts");
+                name: "CategoryCosts");
 
             migrationBuilder.DropTable(
                 name: "CategoryIncomes");

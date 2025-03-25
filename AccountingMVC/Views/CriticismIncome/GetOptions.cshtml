@@ -21,10 +21,10 @@
                                 </div>
 
                                 <div class="collapse" id="collapseIncome">
-                                    @if (Model.SubCategoryIncomeOptions != null && Model.SubCategoryIncomeOptions.Any())
+                                    @if (Model.SubCategoryCostOptions != null && Model.SubCategoryCostOptions.Any())
                                     {
                                         <ul class="list-group">
-                                            @foreach (var item in Model.SubCategoryIncomeOptions)
+                                            @foreach (var item in Model.SubCategoryCostOptions)
                                             {
                                                 <li class="list-group-item">
                                                     <a class="dropdown-item" href="@Url.Action("Create", "CriticismIncome", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 1 })">

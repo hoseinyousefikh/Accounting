@@ -95,5 +95,9 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.AccountIn
         {
             return await _context.SubcategoryIncomes.AsNoTracking().ToListAsync();
         }
+        public async Task<List<SubcategoryCost>> GetAllSubCategoryCostAsync()
+        {
+            return await _context.SubcategoryCosts.AsNoTracking().ToListAsync();
+        }
     }
 }
