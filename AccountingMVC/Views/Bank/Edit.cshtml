@@ -1,0 +1,167 @@
+﻿@model BankViewModel
+
+@{
+    ViewData["Title"] = "ویرایش بانک";
+}
+
+<div class="container">
+    <div class="glass-box">
+        <h2 class="text-center">ویرایش بانک</h2>
+
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+
+            @* مخفی برای آی‌دی بانک *@
+            <input asp-for="Id" type="hidden" />
+
+            <div class="form-group">
+                <label asp-for="Name">نام بانک:</label>
+                <input asp-for="Name" class="form-control" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description">توضیحات:</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Oranches">شعبه:</label>
+                <input asp-for="Oranches" class="form-control" required />
+                <span asp-validation-for="Oranches" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AccountNumber">شماره حساب:</label>
+                <input asp-for="AccountNumber" class="form-control" required />
+                <span asp-validation-for="AccountNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CardNumber">شماره کارت:</label>
+                <input asp-for="CardNumber" class="form-control" required />
+                <span asp-validation-for="CardNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ShabaNumber">شماره شبا:</label>
+                <input asp-for="ShabaNumber" class="form-control" required />
+                <span asp-validation-for="ShabaNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Amount">موجودی:</label>
+                <input asp-for="Amount" class="form-control" required />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <input asp-for="IsPublic" class="form-check-input" />
+                <label asp-for="IsPublic" class="form-check-label">بانک عمومی است</label>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+                <a href="@Url.Action("Index", "Bank")" class="btn btn-secondary">بازگشت</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    /* تنظیمات کلی برای صفحه */
+    body {
+        background: linear-gradient(to right, #3b82f6, #1e40af);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* کادر شیشه‌ای وسط صفحه */
+    .glass-box {
+        width: 50%;
+        margin: 50px auto;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        color: #fff;
+    }
+
+    h2 {
+        text-align: center;
+        color: #f0f8ff;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+        color: #dbeafe;
+    }
+
+    /* استایل ورودی‌ها با تم آبی و افکت hover */
+    .form-control {
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 8px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+
+    /* دکمه‌ها با استایل زیبا */
+    .form-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background: #3b82f6;
+        border: none;
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background: #1e40af;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+        }
+
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.3);
+        border: none;
+        color: white;
+    }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.6);
+            color: black;
+        }
+
+    .text-danger {
+        color: #ff4757;
+    }
+</style>

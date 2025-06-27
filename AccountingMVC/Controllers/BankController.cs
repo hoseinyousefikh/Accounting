@@ -86,39 +86,126 @@ namespace AccountingMVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDetailBankByUserId()
+        public async Task<IActionResult> GetDetailBankByUserId(int Id)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
             {
-                return Unauthorized(); 
+                return Unauthorized();
             }
 
-            var banks = await _bankAppService.GetBankByUserIdAsync(userId);
-
-            if (banks == null || banks.Count == 0)
+            var bank = await _bankAppService.GetBankByIdAsync(Id);
+            if (bank == null || bank.UserId != userId)
             {
-                ViewBag.Message = "بانکی برای این کاربر یافت نشد.";
+                ViewBag.Message = "بانکی برای این شناسه یافت نشد یا به شما تعلق ندارد.";
                 return View("NoBanks");
             }
 
-            var viewModelList = banks.Select(b => new BankViewModel
+            var viewModel = new BankViewModel
             {
-                Id = b.Id,
-                Name = b.Name,
-                Description = b.Description,
-                Oranches = b.Oranches,
-                AccountNumber = b.AccountNumber,
-                CardNumber = b.CardNumber,
-                ShabaNumber = b.ShabaNumber,
-                Amount = b.Amount,
-                IsPublic = b.IsPublic,
-                UserId = b.UserId
-            }).ToList();
+                Id = bank.Id,
+                Name = bank.Name,
+                Description = bank.Description,
+                Oranches = bank.Oranches,
+                AccountNumber = bank.AccountNumber,
+                CardNumber = bank.CardNumber,
+                ShabaNumber = bank.ShabaNumber,
+                Amount = bank.Amount,
+                IsPublic = bank.IsPublic,
+                UserId = bank.UserId
+            };
 
-            return View(viewModelList);
+            return View( viewModel); 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var bank = await _bankAppService.GetBankByIdAsync(id);
+            if (bank == null)
+                return NotFound();
+
+            var viewModel = new BankViewModel
+            {
+                Id = bank.Id,
+                Name = bank.Name,
+                Description = bank.Description,
+                Oranches = bank.Oranches,
+                AccountNumber = bank.AccountNumber,
+                CardNumber = bank.CardNumber,
+                ShabaNumber = bank.ShabaNumber,
+                Amount = bank.Amount,
+                IsPublic = bank.IsPublic,
+                UserId = bank.UserId
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(BankViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var bank = await _bankAppService.GetBankByIdAsync(model.Id);
+                if (bank == null || bank.UserId != userId)
+                {
+                    return NotFound(); 
+                }
+
+                bank.Name = model.Name;
+                bank.Description = model.Description;
+                bank.Oranches = model.Oranches;
+                bank.AccountNumber = model.AccountNumber;
+                bank.CardNumber = model.CardNumber;
+                bank.ShabaNumber = model.ShabaNumber;
+                bank.Amount = model.Amount;
+                bank.IsPublic = model.IsPublic;
+
+                await _bankAppService.UpdateBankAsync(bank);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "خطایی در به‌روزرسانی رخ داد: " + ex.Message);
+                return View(model);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return Unauthorized();
+            }
+
+            var result = await _bankAppService.DeleteBankAsync(id, userId);
+
+            if (!result)
+            {
+                TempData["Error"] = "حذف بانک انجام نشد. ممکن است بانک وجود نداشته یا متعلق به شما نباشد.";
+                return RedirectToAction("Index");
+            }
+
+            TempData["Success"] = "بانک با موفقیت حذف شد.";
+            return RedirectToAction("Index");
+        }
 
     }
 }

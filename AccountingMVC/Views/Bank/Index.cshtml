@@ -10,25 +10,35 @@
 
         @if (Model != null && Model.Count > 0)
         {
-            <table class="table table-hover text-white">
-                <thead>
-                    <tr>
-                        <th>نام بانک</th>
-                        <th>شماره کارت</th>
-                        <th>وضعیت</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var bank in Model)
-                    {
+            <div class="scroll-box">
+                <table class="table table-hover text-white mb-0">
+                    <thead>
                         <tr>
-                            <td>@bank.Name</td>
-                            <td>@bank.CardNumber</td>
-                            <td>@(bank.IsPublic ? "عمومی" : "خصوصی")</td>
+                            <th>نام بانک</th>
+                            <th>شماره کارت</th>
+                            <th>وضعیت</th>
+                            <th>عملیات</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var bank in Model)
+                        {
+                            <tr>
+                                <td>@bank.Name</td>
+                                <td>@bank.CardNumber</td>
+                                <td>@(bank.IsPublic ? "عمومی" : "خصوصی")</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@bank.Id" class="btn btn-sm btn-warning">ویرایش</a>
+                                    <a asp-action="GetDetailBankByUserId" asp-route-id="@bank.Id" class="btn btn-sm btn-info text-white">جزییات</a>
+                                    <form asp-action="Delete" asp-route-id="@bank.Id" method="post" style="display:inline;" onsubmit="return confirm('آیا مطمئن هستید که می‌خواهید حذف کنید؟');">
+                                        <button type="submit" class="btn btn-sm btn-danger">حذف</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         }
         else
         {
@@ -68,11 +78,23 @@
         margin-bottom: 20px;
     }
 
+    .scroll-box {
+        max-height: 300px; 
+        overflow-y: auto;
+        border-radius: 10px;
+    }
+
     table {
         width: 100%;
+        margin-bottom: 0;
     }
 
     th, td {
         text-align: center;
+        vertical-align: middle;
+    }
+
+    .btn {
+        margin: 2px;
     }
 </style>

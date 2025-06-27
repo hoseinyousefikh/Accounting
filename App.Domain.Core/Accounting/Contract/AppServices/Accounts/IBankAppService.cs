@@ -11,5 +11,8 @@ namespace App.Domain.Core.Accounting.Contract.AppServices.Accounts
     {
         Task AddBankAsync(Bank bank);
         Task<List<Bank>> GetBankByUserIdAsync(int userId);
+        Task<Bank> GetBankByIdAsync(int id);
+        Task UpdateBankAsync(Bank bank);
+        Task<bool> DeleteBankAsync(int id, int userId);
     }
 }
