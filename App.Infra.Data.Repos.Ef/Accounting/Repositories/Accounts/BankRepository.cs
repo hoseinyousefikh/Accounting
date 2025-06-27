@@ -18,7 +18,6 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        // Add a new bank record
         public async Task AddBankAsync(Bank bank)
         {
             if (bank == null)
@@ -28,7 +27,6 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts
             await _context.SaveChangesAsync();
         }
 
-        // Update an existing bank record
         public async Task UpdateBankAsync(Bank bank)
         {
             if (bank == null)
@@ -38,7 +36,6 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts
             await _context.SaveChangesAsync();
         }
 
-        // Soft delete a bank record by setting IsDeleted flag to true
         public async Task DeleteBankAsync(int id)
         {
             var bank = await _context.Banks.FindAsync(id);
@@ -52,21 +49,19 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts
             await _context.SaveChangesAsync();
         }
 
-        // Get all bank records with associated users (assuming IsDeleted flag is used for soft deletes)
         public async Task<List<Bank>> GetAllBankAsync()
         {
             return await _context.Banks
-                .Where(b => !b.IsDeleted)  // Assuming you want to exclude deleted banks
+                .Where(b => !b.IsDeleted)  
                 .Include(b => b.Users)
                 .ToListAsync();
         }
 
-        // Get a specific bank by ID, including associated users
         public async Task<Bank> GetBankByIdAsync(int id)
         {
             var bank = await _context.Banks
                 .Include(b => b.Users)
-                .Where(b => b.Id == id && !b.IsDeleted)  // Exclude deleted banks
+                .Where(b => b.Id == id && !b.IsDeleted)  
                 .FirstOrDefaultAsync();
 
             if (bank == null)
@@ -77,12 +72,14 @@ namespace App.Infra.Data.Repos.Ef.Accounting.Repositories.Accounts
             return bank;
         }
 
-        // Get all bank records for a specific user
         public async Task<List<Bank>> GetBankByUserIdAsync(int userId)
         {
             return await _context.Banks
-                .Where(b => b.UserId == userId && !b.IsDeleted)  // Exclude deleted banks
+                .Where(b =>
+                    (!b.IsDeleted && b.UserId == userId) || b.IsPublic
+                )
                 .ToListAsync();
         }
+
     }
 }

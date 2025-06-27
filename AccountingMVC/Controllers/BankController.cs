@@ -53,7 +53,72 @@ namespace AccountingMVC.Controllers
 
             await _bankAppService.AddBankAsync(bank);
 
-            return RedirectToAction("Index","Home"); 
+            return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return Unauthorized(); 
+            }
+
+            var banks = await _bankAppService.GetBankByUserIdAsync(userId);
+
+            if (banks == null || banks.Count == 0)
+            {
+                ViewBag.Message = "بانکی برای این کاربر یافت نشد.";
+                return View("NoBanks");
+            }
+
+            var viewModelList = banks.Select(b => new BankViewModel
+            {
+                Id = b.Id,
+                Name = b.Name,
+                CardNumber = b.CardNumber,
+                UserId = b.UserId,
+                IsPublic = b.IsPublic
+            }).ToList();
+
+            return View(viewModelList);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetDetailBankByUserId()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return Unauthorized(); 
+            }
+
+            var banks = await _bankAppService.GetBankByUserIdAsync(userId);
+
+            if (banks == null || banks.Count == 0)
+            {
+                ViewBag.Message = "بانکی برای این کاربر یافت نشد.";
+                return View("NoBanks");
+            }
+
+            var viewModelList = banks.Select(b => new BankViewModel
+            {
+                Id = b.Id,
+                Name = b.Name,
+                Description = b.Description,
+                Oranches = b.Oranches,
+                AccountNumber = b.AccountNumber,
+                CardNumber = b.CardNumber,
+                ShabaNumber = b.ShabaNumber,
+                Amount = b.Amount,
+                IsPublic = b.IsPublic,
+                UserId = b.UserId
+            }).ToList();
+
+            return View(viewModelList);
+        }
+
+
     }
 }
