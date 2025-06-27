@@ -11,31 +11,6 @@
     <div class="card shadow-lg p-4" style="width: 500px;">
         <h3 class="text-center">ویرایش بودجه</h3>
         <form asp-action="Edit" method="post">
-
-            <div class="form-group">
-                <label asp-for="Timings">نوع تایم را مشخص کنید</label>
-                <select asp-for="Timings" class="form-control">
-                    <option value="@((int)Timing.future)" selected="@(Model.Timings == Timing.future ? "selected" : null)">آینده</option>
-                    <option value="@((int)Timing.past)" selected="@(Model.Timings == Timing.past ? "selected" : null)">گذشته</option>
-                    <option value="@((int)Timing.current)" selected="@(Model.Timings == Timing.current ? "selected" : null)">جاری</option>
-                </select>
-                <span asp-validation-for="Timings" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Xxpenses">نوع هزینه</label>
-                <select asp-for="Xxpenses" class="form-control" id="Xxpenses" onchange="toggleCategoryFields()">
-                    <option value="1" selected="@(Model.Xxpenses == Xxpens.Costs ? "selected" : null)">
-                        هزینه‌ها
-                    </option>
-                    <option value="2" selected="@(Model.Xxpenses == Xxpens.revenues ? "selected" : null)">
-                        درآمدها
-                    </option>
-                </select>
-                <span asp-validation-for="Xxpenses" class="text-danger"></span>
-            </div>
-
-
             <div id="costFields" style="@(Model.Xxpenses == Xxpens.Costs ? "display: block;" : "display: none;")">
                 <div class="form-group">
                     <label for="CategoryCostId">دسته‌بندی هزینه :</label>
@@ -87,6 +62,31 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label asp-for="Timings">نوع تایم را مشخص کنید</label>
+                <select asp-for="Timings" class="form-control">
+                    <option value="@((int)Timing.future)" selected="@(Model.Timings == Timing.future ? "selected" : null)">آینده</option>
+                    <option value="@((int)Timing.past)" selected="@(Model.Timings == Timing.past ? "selected" : null)">گذشته</option>
+                    <option value="@((int)Timing.current)" selected="@(Model.Timings == Timing.current ? "selected" : null)">جاری</option>
+                </select>
+                <span asp-validation-for="Timings" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Xxpenses">نوع هزینه</label>
+                <select asp-for="Xxpenses" class="form-control" id="Xxpenses" onchange="toggleCategoryFields()">
+                    <option value="1" selected="@(Model.Xxpenses == Xxpens.Costs ? "selected" : null)">
+                        هزینه‌ها
+                    </option>
+                    <option value="2" selected="@(Model.Xxpenses == Xxpens.revenues ? "selected" : null)">
+                        درآمدها
+                    </option>
+                </select>
+                <span asp-validation-for="Xxpenses" class="text-danger"></span>
+            </div>
+
+
+            
             <!-- حداقل مقدار -->
             <div class="form-group">
                 <label asp-for="MinAmount">حداقل مقدار</label>

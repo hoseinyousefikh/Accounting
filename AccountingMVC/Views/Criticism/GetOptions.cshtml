@@ -8,258 +8,266 @@
     <h2 class="text-center mb-4">انتخاب دسته‌بندی</h2>
 
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg" style="background-color: rgba(0, 123, 255, 0.1); border-radius: 10px; backdrop-filter: blur(10px);">
-                <div class="card-body">
-
-                    <!-- درآمد ها -->
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="dropdown" style="cursor: pointer;">
-                                <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseIncome" aria-expanded="false" aria-controls="collapseIncome" id="category-1">
-                                    درآمد ها
-                                </div>
-
-                                <div class="collapse" id="collapseIncome">
-                                    @if (Model.SubCategoryIncomeOptions != null && Model.SubCategoryIncomeOptions.Any())
-                                    {
-                                        <ul class="list-group">
-                                            @foreach (var item in Model.SubCategoryIncomeOptions)
-                                            {
-                                                <li class="list-group-item">
-                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 1 })">
-                                                        @item.Name
-                                                    </a>
-                                                </li>
-                                            }
-                                        </ul>
-                                    }
-                                    else
-                                    {
-                                        <p class="text-center text-muted">هیچ گزینه‌ای موجود نیست</p>
-                                    }
-                                </div>
+        <div class="col-12">
+            <!-- ردیف اول (4 کارت) -->
+            <div class="row mb-4">
+                <!-- درآمد ها -->
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow-lg h-100" style="background-color: rgba(0, 123, 255, 0.1); border-radius: 10px; backdrop-filter: blur(10px);">
+                        <div class="card-header bg-transparent border-0">
+                            <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseIncome" aria-expanded="false" style="cursor: pointer;">
+                                درآمد ها
                             </div>
-                        </li>
-                    </ul>
-
-                    <!-- صندوق ها -->
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="dropdown" style="cursor: pointer;">
-                                <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseFunds" aria-expanded="false" aria-controls="collapseFunds" id="category-2">
-                                    صندوق ها
-                                </div>
-
-                                <div class="collapse" id="collapseFunds">
-                                    @if (Model.FundOptions != null && Model.FundOptions.Any())
-                                    {
-                                        <ul class="list-group">
-                                            @foreach (var item in Model.FundOptions)
-                                            {
-                                                <li class="list-group-item">
-                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 2 })">
-                                                        @item.Name
-                                                    </a>
-                                                </li>
-                                            }
-                                        </ul>
-                                    }
-                                    else
-                                    {
-                                        <p class="text-center text-muted">هیچ گزینه‌ای موجود نیست</p>
-                                    }
-                                </div>
+                        </div>
+                        <div class="collapse" id="collapseIncome">
+                            <div class="card-body p-0">
+                                @if (Model.SubCategoryIncomeOptions != null && Model.SubCategoryIncomeOptions.Any())
+                                {
+                                    <ul class="list-group" style="max-height: 200px; overflow-y: auto;">
+                                        @foreach (var item in Model.SubCategoryIncomeOptions)
+                                        {
+                                            <li class="list-group-item border-0">
+                                                <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 1 })">
+                                                    @item.Name
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p class="text-center text-muted p-3">هیچ گزینه‌ای موجود نیست</p>
+                                }
                             </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
+                </div>
 
-                    <!-- دارایی ها -->
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="dropdown" style="cursor: pointer;">
-                                <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseAssets" aria-expanded="false" aria-controls="collapseAssets" id="category-3">
-                                    دارایی ها
-                                </div>
-
-                                <div class="collapse" id="collapseAssets">
-                                    @if (Model.AssetOptions != null && Model.AssetOptions.Any())
-                                    {
-                                        <ul class="list-group">
-                                            @foreach (var item in Model.AssetOptions)
-                                            {
-                                                <li class="list-group-item">
-                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Title, Titr = 3 })">
-                                                        @item.Title
-                                                    </a>
-                                                </li>
-                                            }
-                                        </ul>
-                                    }
-                                    else
-                                    {
-                                        <p class="text-center text-muted">هیچ گزینه‌ای موجود نیست</p>
-                                    }
-                                </div>
+                <!-- صندوق ها -->
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow-lg h-100" style="background-color: rgba(0, 123, 255, 0.1); border-radius: 10px; backdrop-filter: blur(10px);">
+                        <div class="card-header bg-transparent border-0">
+                            <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseFunds" aria-expanded="false" style="cursor: pointer;">
+                                صندوق ها
                             </div>
-                        </li>
-                    </ul>
-
-                    <!-- بانک ها -->
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="dropdown" style="cursor: pointer;">
-                                <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseBanks" aria-expanded="false" aria-controls="collapseBanks" id="category-4">
-                                    بانک ها
-                                </div>
-
-                                <div class="collapse" id="collapseBanks">
-                                    @if (Model.BankOptions != null && Model.BankOptions.Any())
-                                    {
-                                        <ul class="list-group">
-                                            @foreach (var item in Model.BankOptions)
-                                            {
-                                                <li class="list-group-item">
-                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 4 })">
-                                                        @item.Name
-                                                    </a>
-                                                </li>
-                                            }
-                                        </ul>
-                                    }
-                                    else
-                                    {
-                                        <p class="text-center text-muted">هیچ گزینه‌ای موجود نیست</p>
-                                    }
-                                </div>
+                        </div>
+                        <div class="collapse" id="collapseFunds">
+                            <div class="card-body p-0">
+                                @if (Model.FundOptions != null && Model.FundOptions.Any())
+                                {
+                                    <ul class="list-group" style="max-height: 200px; overflow-y: auto;">
+                                        @foreach (var item in Model.FundOptions)
+                                        {
+                                            <li class="list-group-item border-0">
+                                                <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 2 })">
+                                                    @item.Name
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p class="text-center text-muted p-3">هیچ گزینه‌ای موجود نیست</p>
+                                }
                             </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
+                </div>
 
-                    <!-- بدهکاران -->
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="dropdown" style="cursor: pointer;">
-                                <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseDebtors" aria-expanded="false" aria-controls="collapseDebtors" id="category-5">
-                                    بدهکاران
-                                </div>
-
-                                <div class="collapse" id="collapseDebtors">
-                                    @if (Model.DebtorOptions != null && Model.DebtorOptions.Any())
-                                    {
-                                        <ul class="list-group">
-                                            @foreach (var item in Model.DebtorOptions)
-                                            {
-                                                <li class="list-group-item">
-                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Title, Titr = 5 })">
-                                                        @item.Title
-                                                    </a>
-                                                </li>
-                                            }
-                                        </ul>
-                                    }
-                                    else
-                                    {
-                                        <p class="text-center text-muted">هیچ گزینه‌ای موجود نیست</p>
-                                    }
-                                </div>
+                <!-- دارایی ها -->
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow-lg h-100" style="background-color: rgba(0, 123, 255, 0.1); border-radius: 10px; backdrop-filter: blur(10px);">
+                        <div class="card-header bg-transparent border-0">
+                            <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseAssets" aria-expanded="false" style="cursor: pointer;">
+                                دارایی ها
                             </div>
-                        </li>
-                    </ul>
-
-                    <!-- بستانکاران -->
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="dropdown" style="cursor: pointer;">
-                                <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseCreditors" aria-expanded="false" aria-controls="collapseCreditors" id="category-6">
-                                    بستانکاران
-                                </div>
-
-                                <div class="collapse" id="collapseCreditors">
-                                    @if (Model.CreditorsOptions != null && Model.CreditorsOptions.Any())
-                                    {
-                                        <ul class="list-group">
-                                            @foreach (var item in Model.CreditorsOptions)
-                                            {
-                                                <li class="list-group-item">
-                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 6 })">
-                                                        @item.Name
-                                                    </a>
-                                                </li>
-                                            }
-                                        </ul>
-                                    }
-                                    else
-                                    {
-                                        <p class="text-center text-muted">هیچ گزینه‌ای موجود نیست</p>
-                                    }
-                                </div>
+                        </div>
+                        <div class="collapse" id="collapseAssets">
+                            <div class="card-body p-0">
+                                @if (Model.AssetOptions != null && Model.AssetOptions.Any())
+                                {
+                                    <ul class="list-group" style="max-height: 200px; overflow-y: auto;">
+                                        @foreach (var item in Model.AssetOptions)
+                                        {
+                                            <li class="list-group-item border-0">
+                                                <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Title, Titr = 3 })">
+                                                    @item.Title
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p class="text-center text-muted p-3">هیچ گزینه‌ای موجود نیست</p>
+                                }
                             </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
+                </div>
 
-                    <!-- اشخاص -->
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="dropdown" style="cursor: pointer;">
-                                <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapsePersons" aria-expanded="false" aria-controls="collapsePersons" id="category-7">
-                                    اشخاص
-                                </div>
-
-                                <div class="collapse" id="collapsePersons">
-                                    @if (Model.PersonOptions != null && Model.PersonOptions.Any())
-                                    {
-                                        <ul class="list-group">
-                                            @foreach (var item in Model.PersonOptions)
-                                            {
-                                                <li class="list-group-item">
-                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.FirstName + " " + item.LastName, Titr = 7 })">
-                                                        @item.FirstName @item.LastName
-                                                    </a>
-                                                </li>
-                                            }
-                                        </ul>
-                                    }
-                                    else
-                                    {
-                                        <p class="text-center text-muted">هیچ گزینه‌ای موجود نیست</p>
-                                    }
-                                </div>
+                <!-- بانک ها -->
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow-lg h-100" style="background-color: rgba(0, 123, 255, 0.1); border-radius: 10px; backdrop-filter: blur(10px);">
+                        <div class="card-header bg-transparent border-0">
+                            <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseBanks" aria-expanded="false" style="cursor: pointer;">
+                                بانک ها
                             </div>
-                        </li>
-                    </ul>
-
-                    <!-- سرمایه -->
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div class="dropdown" style="cursor: pointer;">
-                                <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseCapital" aria-expanded="false" aria-controls="collapseCapital" id="category-8">
-                                    سرمایه
-                                </div>
-
-                                <div class="collapse" id="collapseCapital">
-                                    @if (Model.CapitalOptions != null && Model.CapitalOptions.Any())
-                                    {
-                                        <ul class="list-group">
-                                            @foreach (var item in Model.CapitalOptions)
-                                            {
-                                                <li class="list-group-item">
-                                                    <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Title, Titr = 8 })">
-                                                        @item.Title
-                                                    </a>
-                                                </li>
-                                            }
-                                        </ul>
-                                    }
-                                    else
-                                    {
-                                        <p class="text-center text-muted">هیچ گزینه‌ای موجود نیست</p>
-                                    }
-                                </div>
+                        </div>
+                        <div class="collapse" id="collapseBanks">
+                            <div class="card-body p-0">
+                                @if (Model.BankOptions != null && Model.BankOptions.Any())
+                                {
+                                    <ul class="list-group" style="max-height: 200px; overflow-y: auto;">
+                                        @foreach (var item in Model.BankOptions)
+                                        {
+                                            <li class="list-group-item border-0">
+                                                <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 4 })">
+                                                    @item.Name
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p class="text-center text-muted p-3">هیچ گزینه‌ای موجود نیست</p>
+                                }
                             </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <!-- ردیف دوم (4 کارت) -->
+            <div class="row">
+                <!-- بدهکاران -->
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow-lg h-100" style="background-color: rgba(0, 123, 255, 0.1); border-radius: 10px; backdrop-filter: blur(10px);">
+                        <div class="card-header bg-transparent border-0">
+                            <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseDebtors" aria-expanded="false" style="cursor: pointer;">
+                                بدهکاران
+                            </div>
+                        </div>
+                        <div class="collapse" id="collapseDebtors">
+                            <div class="card-body p-0">
+                                @if (Model.DebtorOptions != null && Model.DebtorOptions.Any())
+                                {
+                                    <ul class="list-group" style="max-height: 200px; overflow-y: auto;">
+                                        @foreach (var item in Model.DebtorOptions)
+                                        {
+                                            <li class="list-group-item border-0">
+                                                <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Title, Titr = 5 })">
+                                                    @item.Title
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p class="text-center text-muted p-3">هیچ گزینه‌ای موجود نیست</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- بستانکاران -->
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow-lg h-100" style="background-color: rgba(0, 123, 255, 0.1); border-radius: 10px; backdrop-filter: blur(10px);">
+                        <div class="card-header bg-transparent border-0">
+                            <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseCreditors" aria-expanded="false" style="cursor: pointer;">
+                                بستانکاران
+                            </div>
+                        </div>
+                        <div class="collapse" id="collapseCreditors">
+                            <div class="card-body p-0">
+                                @if (Model.CreditorsOptions != null && Model.CreditorsOptions.Any())
+                                {
+                                    <ul class="list-group" style="max-height: 200px; overflow-y: auto;">
+                                        @foreach (var item in Model.CreditorsOptions)
+                                        {
+                                            <li class="list-group-item border-0">
+                                                <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Name, Titr = 6 })">
+                                                    @item.Name
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p class="text-center text-muted p-3">هیچ گزینه‌ای موجود نیست</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- اشخاص -->
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow-lg h-100" style="background-color: rgba(0, 123, 255, 0.1); border-radius: 10px; backdrop-filter: blur(10px);">
+                        <div class="card-header bg-transparent border-0">
+                            <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapsePersons" aria-expanded="false" style="cursor: pointer;">
+                                اشخاص
+                            </div>
+                        </div>
+                        <div class="collapse" id="collapsePersons">
+                            <div class="card-body p-0">
+                                @if (Model.PersonOptions != null && Model.PersonOptions.Any())
+                                {
+                                    <ul class="list-group" style="max-height: 200px; overflow-y: auto;">
+                                        @foreach (var item in Model.PersonOptions)
+                                        {
+                                            <li class="list-group-item border-0">
+                                                <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.FirstName + " " + item.LastName, Titr = 7 })">
+                                                    @item.FirstName @item.LastName
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p class="text-center text-muted p-3">هیچ گزینه‌ای موجود نیست</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- سرمایه -->
+                <div class="col-md-3 mb-3">
+                    <div class="card shadow-lg h-100" style="background-color: rgba(0, 123, 255, 0.1); border-radius: 10px; backdrop-filter: blur(10px);">
+                        <div class="card-header bg-transparent border-0">
+                            <div class="dropdown-header" data-bs-toggle="collapse" data-bs-target="#collapseCapital" aria-expanded="false" style="cursor: pointer;">
+                                سرمایه
+                            </div>
+                        </div>
+                        <div class="collapse" id="collapseCapital">
+                            <div class="card-body p-0">
+                                @if (Model.CapitalOptions != null && Model.CapitalOptions.Any())
+                                {
+                                    <ul class="list-group" style="max-height: 200px; overflow-y: auto;">
+                                        @foreach (var item in Model.CapitalOptions)
+                                        {
+                                            <li class="list-group-item border-0">
+                                                <a class="dropdown-item" href="@Url.Action("Create", "Criticism", new { FromAccountSubId = item.Id, FromAccountName = item.Title, Titr = 8 })">
+                                                    @item.Title
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p class="text-center text-muted p-3">هیچ گزینه‌ای موجود نیست</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

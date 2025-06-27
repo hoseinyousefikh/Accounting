@@ -4,35 +4,86 @@
     ViewData["Title"] = "لیست بودجه‌ها";
 }
 
-<h2 class="text-center">لیست بودجه‌ها</h2>
+<div class="container">
+    <div class="glass-box">
+        <h2 class="text-center mb-4">لیست بودجه‌ها</h2>
 
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <ul class="list-group">
-                @foreach (var budget in Model)
-                {
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5>@budget.Xxpenses</h5>
-                            <p>حداقل مقدار: @budget.MinAmount - حداکثر مقدار: @budget.MaxAmount</p>
-                            <p>تاریخ شروع: @budget.FDate.ToShortDateString() - تاریخ پایان: @budget.TDate.ToShortDateString()</p>
-                        </div>
-                        <div class="d-flex">
-                            <a asp-action="Edit" asp-route-id="@budget.Id" class="btn btn-warning btn-sm mx-1">ویرایش</a>
-                            <a asp-action="Delete" asp-route-id="@budget.Id" class="btn btn-danger btn-sm mx-1"
-                               onclick="return confirm('آیا از حذف این بودجه مطمئن هستید؟')">حذف</a>
-                        </div>
-                    </li>
-                }
-            </ul>
-        </div>
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="scroll-box">
+                <ul class="list-group">
+                    @foreach (var budget in Model)
+                    {
+                        <li class="list-group-item bg-light d-flex justify-content-between align-items-start flex-wrap">
+                            <div class="me-2">
+                                <h5 class="mb-1">@budget.Xxpenses</h5>
+                                <small>
+                                    حداقل: @budget.MinAmount - حداکثر: @budget.MaxAmount<br />
+                                    شروع: @budget.FDate.ToShortDateString() - پایان: @budget.TDate.ToShortDateString()
+                                </small>
+                            </div>
+
+                            <div class="d-flex flex-column flex-sm-row mt-2 mt-sm-0">
+                                <a asp-action="Details" asp-route-id="@budget.Id" class="btn btn-info btn-sm text-white mx-1">جزییات</a>
+                                <a asp-action="Edit" asp-route-id="@budget.Id" class="btn btn-warning btn-sm mx-1">ویرایش</a>
+                                <form asp-action="Delete" asp-route-id="@budget.Id" method="post" onsubmit="return confirm('آیا از حذف این بودجه مطمئن هستید؟');">
+                                    <button type="submit" class="btn btn-danger btn-sm mx-1">حذف</button>
+                                </form>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info text-center">هیچ بودجه‌ای برای نمایش وجود ندارد.</div>
+        }
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+        <a asp-action="Create" class="btn btn-success btn-lg rounded-circle shadow"
+           style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 30px;">
+            +
+        </a>
     </div>
 </div>
 
-<div class="d-flex justify-content-center mt-4">
-    <a asp-action="Create" class="btn btn-success btn-lg rounded-circle shadow"
-       style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 30px;">
-        +
-    </a>
-</div>
+<style>
+    body {
+        background: linear-gradient(to right, #3b82f6, #1e40af);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .glass-box {
+        width: 80%;
+        margin: 40px auto;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .scroll-box {
+        max-height: 300px;
+        overflow-y: auto;
+        border-radius: 10px;
+        background-color: transparent;
+    }
+
+    .list-group-item {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+        border-radius: 10px;
+    }
+
+    .btn {
+        margin: 2px;
+    }
+
+    h2 {
+        color: #fff;
+        font-weight: bold;
+    }
+</style>

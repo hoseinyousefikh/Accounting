@@ -27,7 +27,7 @@
                                 <td>@(fund.IsPublic ? "عمومی" : "خصوصی")</td>
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@fund.Id" class="btn btn-sm btn-warning">ویرایش</a>
-
+                                    <a asp-action="Details" asp-route-id="@fund.Id" class="btn btn-sm btn-info text-white">جزییات</a>
                                     <form asp-action="Delete" asp-route-id="@fund.Id" method="post" style="display:inline;" onsubmit="return confirm('آیا مطمئن هستید که می‌خواهید حذف کنید؟');">
                                         <button type="submit" class="btn btn-sm btn-danger">حذف</button>
                                     </form>
@@ -77,7 +77,7 @@
     }
 
     .scroll-box {
-        max-height: 300px; /* ارتفاع حدودا معادل 5 ردیف */
+        max-height: 300px;
         overflow-y: auto;
         border-radius: 10px;
     }
